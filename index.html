@@ -248,10 +248,70 @@
 
 </div>
 
+<!-- Firebase -->
+<script type="module">
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+  import {
+    getFirestore,
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBOgOmfmySW0Wh9mlQyJvKHhAHC9wXz8uk",
+    authDomain: "gamemine-5d7ee.firebaseapp.com",
+    projectId: "gamemine-5d7ee",
+    storageBucket: "gamemine-5d7ee.firebasestorage.app",
+    messagingSenderId: "524612369793",
+    appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Temporary test user
+  const userId = "test_user";
+
+  async function loadUser() {
+
+    try {
+
+      const userRef = doc(db, "users", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+
+        const userData = userSnap.data();
+
+        document.getElementById("balance").textContent =
+          userData.balance || 0;
+
+        console.log("GameMine user loaded:", userData);
+
+      } else {
+
+        console.log("User document not found.");
+
+      }
+
+    } catch (error) {
+
+      console.error("Firebase error:", error);
+
+    }
+
+  }
+
+  loadUser();
+
+</script>
+
 <script>
 
 function startMining() {
-  alert("Mining started! 🚀");
+  alert("Mining system will be connected next 🚀");
 }
 
 </script>
