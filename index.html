@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title> Free Fire v2</title>
+<title>GameMine v3</title>
+
 <style>
 *{
   box-sizing:border-box;
@@ -252,10 +253,6 @@ button{
   transform:scale(.94);
 }
 
-.task-button:disabled{
-  opacity:.6;
-}
-
 .ad-badge{
   display:inline-block;
   font-size:9px;
@@ -278,6 +275,17 @@ button{
   color:#ff9ca7;
   border-radius:15px;
   padding:15px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.test-box{
+  background:#111923;
+  border:1px solid #293f55;
+  color:#9fd7ff;
+  border-radius:15px;
+  padding:15px;
+  margin-bottom:12px;
   font-size:13px;
   line-height:1.5;
 }
@@ -415,7 +423,6 @@ button{
 <div class="app">
 
 <div class="header">
-
   <div class="logo">
     Game<span>Mine</span>
   </div>
@@ -423,7 +430,6 @@ button{
   <div class="level" id="level">
     Level 1
   </div>
-
 </div>
 
 
@@ -519,6 +525,10 @@ button{
     Complete tasks and earn GameMine Coins.
   </div>
 
+  <div id="firebaseTest" class="test-box">
+    Firebase connection test will appear here.
+  </div>
+
   <div id="tasksContainer" class="tasks-container">
 
     <div class="loading">
@@ -572,7 +582,6 @@ button{
   <div class="page-subtitle">
     Redeem your coins for available gaming rewards.
   </div>
-
 
   <div class="coming-card">
 
@@ -698,6 +707,10 @@ button{
 
 <script type="module">
 
+/* ========================= */
+/* FIREBASE */
+/* ========================= */
+
 import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
@@ -745,7 +758,9 @@ const telegramUserId =
   "test_user";
 
 
+/* ========================= */
 /* USER */
+/* ========================= */
 
 async function loadUser(){
 
@@ -817,7 +832,9 @@ async function loadUser(){
 }
 
 
-/* TASKS */
+/* ========================= */
+/* TASKS + DIRECT TEST */
+/* ========================= */
 
 async function loadTasks(){
 
@@ -826,12 +843,59 @@ async function loadTasks(){
       "tasksContainer"
     );
 
+  const testBox =
+    document.getElementById(
+      "firebaseTest"
+    );
+
 
   container.innerHTML =
     `<div class="loading">Loading tasks...</div>`;
 
 
+  testBox.innerHTML =
+    "🔄 Testing Firebase...";
+
+
   try{
+
+    /* DIRECT TEST OF task_1 */
+
+    const directTask =
+      await getDoc(
+        doc(
+          db,
+          "tasks",
+          "task_1"
+        )
+      );
+
+
+    if(directTask.exists()){
+
+      const data =
+        directTask.data();
+
+
+      testBox.innerHTML =
+        "✅ Firebase can read task_1.<br>" +
+        "Title: " +
+        (data.title || "No title") +
+        "<br>" +
+        "Reward: " +
+        Number(data.reward || 0) +
+        " coins";
+
+    }
+    else{
+
+      testBox.innerHTML =
+        "❌ Firebase connected, but task_1 was NOT found.";
+
+    }
+
+
+    /* GET ALL TASKS */
 
     const snapshot =
       await getDocs(
@@ -842,18 +906,34 @@ async function loadTasks(){
       );
 
 
-    /*
-      IMPORTANT:
-      We are temporarily showing
-      every task returned by Firebase.
+    console.log(
+      "Task documents found:",
+      snapshot.size
+    );
 
-      We are NOT filtering by:
-      active
-      cycle
 
-      This is only to diagnose
-      the missing task problem.
-    */
+    if(snapshot.empty){
+
+      container.innerHTML = `
+
+        <div class="error">
+
+          ❌ Firebase returned 0 documents
+          from the <b>tasks</b> collection.
+
+          <br><br>
+
+          Direct task_1 test:
+          ${directTask.exists() ? "FOUND" : "NOT FOUND"}
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
 
     const tasks = [];
 
@@ -864,6 +944,8 @@ async function loadTasks(){
         const data =
           taskDoc.data();
 
+
+        /* NO ACTIVE/CYCLE FILTER */
 
         tasks.push({
 
@@ -879,9 +961,7 @@ async function loadTasks(){
             "",
 
           reward:
-            Number(
-              data.reward || 0
-            ),
+            Number(data.reward || 0),
 
           task_number:
             Number(
@@ -913,34 +993,6 @@ async function loadTasks(){
     container.innerHTML = "";
 
 
-    if(tasks.length === 0){
-
-      container.innerHTML = `
-
-        <div class="coming-card">
-
-          <div class="coming-icon">
-            📋
-          </div>
-
-          <div class="coming-title">
-            No Task Documents Found
-          </div>
-
-          <div>
-            Firebase returned zero documents
-            from the tasks collection.
-          </div>
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
     tasks.forEach(
       function(task){
 
@@ -962,8 +1014,7 @@ async function loadTasks(){
           "task-number";
 
         number.textContent =
-          task.task_number ||
-          "•";
+          task.task_number;
 
 
         const info =
@@ -1072,8 +1123,7 @@ async function loadTasks(){
               task
             );
 
-          },
-          false
+          }
         );
 
 
@@ -1106,6 +1156,13 @@ async function loadTasks(){
     );
 
 
+    document.getElementById(
+      "firebaseTest"
+    ).innerHTML =
+      "❌ Firebase error: " +
+      error.message;
+
+
     container.innerHTML = `
 
       <div class="error">
@@ -1125,7 +1182,9 @@ async function loadTasks(){
 }
 
 
+/* ========================= */
 /* OPEN TASK */
+/* ========================= */
 
 function openTask(task){
 
@@ -1166,7 +1225,9 @@ function openTask(task){
 }
 
 
-/* CLOSE MODAL */
+/* ========================= */
+/* MODAL */
+/* ========================= */
 
 document.getElementById(
   "modalClose"
@@ -1204,7 +1265,9 @@ document.getElementById(
 );
 
 
+/* ========================= */
 /* MINING */
+/* ========================= */
 
 let miningActive =
   false;
@@ -1246,7 +1309,9 @@ document.getElementById(
 );
 
 
+/* ========================= */
 /* NAVIGATION */
+/* ========================= */
 
 function showPage(
   pageName
@@ -1309,9 +1374,7 @@ function showPage(
   );
 
 
-  if(
-    pageName === "mine"
-  ){
+  if(pageName === "mine"){
 
     document.getElementById(
       "navMine"
@@ -1322,9 +1385,7 @@ function showPage(
   }
 
 
-  if(
-    pageName === "tasks"
-  ){
+  if(pageName === "tasks"){
 
     document.getElementById(
       "navTasks"
@@ -1337,9 +1398,7 @@ function showPage(
   }
 
 
-  if(
-    pageName === "refer"
-  ){
+  if(pageName === "refer"){
 
     document.getElementById(
       "navRefer"
@@ -1350,9 +1409,7 @@ function showPage(
   }
 
 
-  if(
-    pageName === "withdraw"
-  ){
+  if(pageName === "withdraw"){
 
     document.getElementById(
       "navWithdraw"
@@ -1365,7 +1422,9 @@ function showPage(
 }
 
 
+/* ========================= */
 /* NAV BUTTONS */
+/* ========================= */
 
 document.getElementById(
   "navMine"
@@ -1373,9 +1432,7 @@ document.getElementById(
   "click",
   function(){
 
-    showPage(
-      "mine"
-    );
+    showPage("mine");
 
   }
 );
@@ -1387,9 +1444,7 @@ document.getElementById(
   "click",
   function(){
 
-    showPage(
-      "tasks"
-    );
+    showPage("tasks");
 
   }
 );
@@ -1397,37 +1452,4 @@ document.getElementById(
 
 document.getElementById(
   "navRefer"
-).addEventListener(
-  "click",
-  function(){
-
-    showPage(
-      "refer"
-    );
-
-  }
-);
-
-
-document.getElementById(
-  "navWithdraw"
-).addEventListener(
-  "click",
-  function(){
-
-    showPage(
-      "withdraw"
-    );
-
-  }
-);
-
-
-/* START */
-
-loadUser();
-
-</script>
-
-</body>
-</html>
+).ad
