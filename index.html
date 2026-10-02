@@ -32,6 +32,8 @@
       padding: 18px;
     }
 
+    /* HEADER */
+
     .header {
       display: flex;
       align-items: center;
@@ -42,7 +44,6 @@
     .logo {
       font-size: 24px;
       font-weight: 800;
-      letter-spacing: 0.5px;
     }
 
     .logo span {
@@ -57,6 +58,8 @@
       font-size: 13px;
       color: #ffd400;
     }
+
+    /* PAGES */
 
     .page {
       display: none;
@@ -103,7 +106,6 @@
     .balance {
       font-size: 38px;
       font-weight: 900;
-      color: #ffffff;
     }
 
     .coin-name {
@@ -205,10 +207,10 @@
       background: #151820;
       border: 1px solid #292f3b;
       border-radius: 18px;
-      padding: 17px;
+      padding: 15px;
       display: flex;
       align-items: center;
-      gap: 13px;
+      gap: 12px;
     }
 
     .task-number {
@@ -229,7 +231,7 @@
     }
 
     .task-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       margin-bottom: 5px;
     }
@@ -254,17 +256,24 @@
       font-size: 12px;
       font-weight: 900;
       border-radius: 12px;
-      padding: 10px 12px;
+      padding: 11px 13px;
       white-space: nowrap;
+      cursor: pointer;
+      touch-action: manipulation;
     }
 
     .task-button:active {
-      transform: scale(0.96);
+      transform: scale(0.94);
+    }
+
+    .task-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .ad-badge {
       display: inline-block;
-      font-size: 10px;
+      font-size: 9px;
       color: #8e96a6;
       border: 1px solid #363d4b;
       padding: 3px 6px;
@@ -286,6 +295,83 @@
       padding: 15px;
       font-size: 13px;
       line-height: 1.5;
+    }
+
+    /* TASK MODAL */
+
+    .task-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 500;
+    }
+
+    .task-modal.show {
+      display: flex;
+    }
+
+    .task-modal-box {
+      width: 100%;
+      max-width: 500px;
+      background: #151820;
+      border: 1px solid #292f3b;
+      border-radius: 25px 25px 0 0;
+      padding: 25px 20px 30px;
+      animation: slideUp 0.2s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .modal-icon {
+      font-size: 42px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      text-align: center;
+      font-size: 21px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .modal-description {
+      text-align: center;
+      color: #8e96a6;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .modal-reward {
+      text-align: center;
+      color: #ffd400;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .modal-close {
+      width: 100%;
+      border: none;
+      border-radius: 15px;
+      padding: 15px;
+      background: #252a35;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
     }
 
     /* OTHER PAGES */
@@ -311,7 +397,7 @@
       margin-bottom: 8px;
     }
 
-    /* BOTTOM NAV */
+    /* NAV */
 
     .bottom-nav {
       position: fixed;
@@ -344,6 +430,7 @@
       gap: 4px;
       font-size: 11px;
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .nav-icon {
@@ -355,6 +442,7 @@
     }
 
     @media (max-width: 360px) {
+
       .app {
         padding: 14px;
       }
@@ -364,12 +452,14 @@
       }
 
       .task-card {
-        padding: 13px;
+        padding: 12px;
+        gap: 9px;
       }
 
       .task-button {
-        padding: 9px;
+        padding: 10px;
       }
+
     }
   </style>
 </head>
@@ -393,9 +483,7 @@
     </div>
 
 
-    <!-- ========================= -->
-    <!-- MINE PAGE -->
-    <!-- ========================= -->
+    <!-- MINE -->
 
     <div class="page active" id="minePage">
 
@@ -438,7 +526,6 @@
         <button
           class="mine-button"
           id="mineButton"
-          onclick="startMining()"
         >
           START MINING ⛏️
         </button>
@@ -483,9 +570,7 @@
     </div>
 
 
-    <!-- ========================= -->
-    <!-- TASKS PAGE -->
-    <!-- ========================= -->
+    <!-- TASKS -->
 
     <div class="page" id="tasksPage">
 
@@ -508,9 +593,7 @@
     </div>
 
 
-    <!-- ========================= -->
-    <!-- REFER PAGE -->
-    <!-- ========================= -->
+    <!-- REFER -->
 
     <div class="page" id="referPage">
 
@@ -541,9 +624,7 @@
     </div>
 
 
-    <!-- ========================= -->
-    <!-- WITHDRAW PAGE -->
-    <!-- ========================= -->
+    <!-- WITHDRAW -->
 
     <div class="page" id="withdrawPage">
 
@@ -621,9 +702,56 @@
   </div>
 
 
-  <!-- ========================= -->
-  <!-- BOTTOM NAVIGATION -->
-  <!-- ========================= -->
+  <!-- TASK MODAL -->
+
+  <div
+    class="task-modal"
+    id="taskModal"
+  >
+
+    <div class="task-modal-box">
+
+      <div
+        class="modal-icon"
+        id="modalIcon"
+      >
+        📋
+      </div>
+
+      <div
+        class="modal-title"
+        id="modalTitle"
+      >
+        Task
+      </div>
+
+      <div
+        class="modal-description"
+        id="modalDescription"
+      >
+        Task description
+      </div>
+
+      <div
+        class="modal-reward"
+        id="modalReward"
+      >
+        +20 🪙
+      </div>
+
+      <button
+        class="modal-close"
+        id="modalClose"
+      >
+        CLOSE
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- BOTTOM NAV -->
 
   <div class="bottom-nav">
 
@@ -632,7 +760,6 @@
       <button
         class="nav-button active"
         id="navMine"
-        onclick="showPage('mine')"
       >
         <div class="nav-icon">
           ⛏️
@@ -644,7 +771,6 @@
       <button
         class="nav-button"
         id="navTasks"
-        onclick="showPage('tasks')"
       >
         <div class="nav-icon">
           📋
@@ -656,7 +782,6 @@
       <button
         class="nav-button"
         id="navRefer"
-        onclick="showPage('refer')"
       >
         <div class="nav-icon">
           👥
@@ -668,7 +793,6 @@
       <button
         class="nav-button"
         id="navWithdraw"
-        onclick="showPage('withdraw')"
       >
         <div class="nav-icon">
           🎁
@@ -681,14 +805,15 @@
   </div>
 
 
-  <!-- ========================= -->
   <!-- FIREBASE -->
-  <!-- ========================= -->
 
   <script type="module">
 
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import {
+      initializeApp
+    }
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
 
     import {
       getFirestore,
@@ -725,7 +850,7 @@
     };
 
 
-    /* INITIALIZE FIREBASE */
+    /* FIREBASE */
 
     const app =
       initializeApp(firebaseConfig);
@@ -734,15 +859,15 @@
       getFirestore(app);
 
 
-    /* TEST USER FOR NOW */
+    /* TEST USER */
 
     const telegramUserId =
       "test_user";
 
 
-    /* ========================= */
+    /* ========================== */
     /* LOAD USER */
-    /* ========================= */
+    /* ========================== */
 
     async function loadUser() {
 
@@ -775,8 +900,6 @@
           userSnap.data();
 
 
-        /* BALANCE */
-
         document
           .getElementById("balance")
           .textContent =
@@ -784,8 +907,6 @@
             userData.balance || 0
           ).toLocaleString();
 
-
-        /* TODAY'S MINING */
 
         document
           .getElementById("todayMining")
@@ -795,8 +916,6 @@
           ).toLocaleString();
 
 
-        /* REFERRALS */
-
         document
           .getElementById("referrals")
           .textContent =
@@ -804,8 +923,6 @@
             userData.referral_count || 0
           ).toLocaleString();
 
-
-        /* LEVEL */
 
         document
           .getElementById("level")
@@ -815,8 +932,6 @@
             userData.level || 1
           );
 
-
-        /* MINING RATE */
 
         const speed =
           Number(
@@ -836,7 +951,7 @@
       catch (error) {
 
         console.error(
-          "Error loading user:",
+          "User loading error:",
           error
         );
 
@@ -845,9 +960,9 @@
     }
 
 
-    /* ========================= */
+    /* ========================== */
     /* LOAD TASKS */
-    /* ========================= */
+    /* ========================== */
 
     async function loadTasks() {
 
@@ -873,15 +988,6 @@
           );
 
 
-        /*
-          IMPORTANT:
-          We are NOT using where()
-          or orderBy() here.
-
-          This avoids Firestore
-          composite-index problems.
-        */
-
         const snapshot =
           await getDocs(
             tasksRef
@@ -898,12 +1004,6 @@
               taskDoc.data();
 
 
-            /*
-              Only show:
-              - active tasks
-              - cycle 1 tasks
-            */
-
             if (
               task.active === true &&
               Number(task.cycle) === 1
@@ -914,7 +1014,20 @@
                 id:
                   taskDoc.id,
 
-                ...task
+                title:
+                  task.title || "GameMine Task",
+
+                description:
+                  task.description || "",
+
+                reward:
+                  Number(task.reward || 0),
+
+                task_number:
+                  Number(task.task_number || 0),
+
+                type:
+                  task.type || "normal"
 
               });
 
@@ -924,24 +1037,10 @@
         );
 
 
-        /*
-          Sort tasks locally:
-          1 → 2 → 3 → ... → 7
-        */
-
         tasks.sort(
-          (a, b) => {
-
-            return (
-              Number(
-                a.task_number || 0
-              ) -
-              Number(
-                b.task_number || 0
-              )
-            );
-
-          }
+          (a, b) =>
+            a.task_number -
+            b.task_number
         );
 
 
@@ -977,47 +1076,10 @@
         }
 
 
+        /* CREATE TASK CARDS */
+
         tasks.forEach(
           (task) => {
-
-            const taskNumber =
-              task.task_number || 0;
-
-
-            const title =
-              task.title ||
-              "GameMine Task";
-
-
-            const description =
-              task.description ||
-              "";
-
-
-            const reward =
-              Number(
-                task.reward || 0
-              );
-
-
-            const type =
-              task.type ||
-              "normal";
-
-
-            let adBadge = "";
-
-
-            if (
-              type ===
-              "rewarded_ad"
-            ) {
-
-              adBadge =
-                `<span class="ad-badge">AD</span>`;
-
-            }
-
 
             const card =
               document.createElement(
@@ -1029,196 +1091,124 @@
               "task-card";
 
 
-            card.innerHTML = `
+            const number =
+              document.createElement(
+                "div"
+              );
 
-              <div class="task-number">
-                ${taskNumber}
-              </div>
+            number.className =
+              "task-number";
 
-              <div class="task-info">
-
-                <div class="task-title">
-
-                  ${escapeHTML(title)}
-
-                  ${adBadge}
-
-                </div>
-
-                <div class="task-description">
-
-                  ${escapeHTML(description)}
-
-                </div>
-
-                <div class="task-reward">
-
-                  +${reward.toLocaleString()} 🪙
-
-                </div>
-
-              </div>
-
-              <button
-                class="task-button"
-                onclick="startTask(
-                  '${task.id}',
-                  '${escapeHTML(title)}'
-                )"
-              >
-                START
-              </button>
-
-            `;
+            number.textContent =
+              task.task_number;
 
 
-            container.appendChild(
-              card
+            const info =
+              document.createElement(
+                "div"
+              );
+
+            info.className =
+              "task-info";
+
+
+            const title =
+              document.createElement(
+                "div"
+              );
+
+            title.className =
+              "task-title";
+
+            title.textContent =
+              task.title;
+
+
+            if (
+              task.type ===
+              "rewarded_ad"
+            ) {
+
+              const badge =
+                document.createElement(
+                  "span"
+                );
+
+              badge.className =
+                "ad-badge";
+
+              badge.textContent =
+                "AD";
+
+              title.appendChild(
+                badge
+              );
+
+            }
+
+
+            const description =
+              document.createElement(
+                "div"
+              );
+
+            description.className =
+              "task-description";
+
+            description.textContent =
+              task.description;
+
+
+            const reward =
+              document.createElement(
+                "div"
+              );
+
+            reward.className =
+              "task-reward";
+
+            reward.textContent =
+              "+" +
+              task.reward.toLocaleString() +
+              " 🪙";
+
+
+            info.appendChild(
+              title
             );
 
-          }
-        );
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "FIRESTORE TASK ERROR:",
-          error
-        );
-
-
-        /*
-          Show the actual error
-          category on screen so
-          we can diagnose it.
-        */
-
-        let errorMessage =
-          "Unable to load tasks right now.";
-
-
-        if (
-          error &&
-          error.code
-        ) {
-
-          errorMessage +=
-            "<br><br>Error: " +
-            escapeHTML(
-              error.code
+            info.appendChild(
+              description
             );
 
-        }
+            info.appendChild(
+              reward
+            );
 
 
-        container.innerHTML = `
+            /* START BUTTON */
 
-          <div class="error">
+            const button =
+              document.createElement(
+                "button"
+              );
 
-            ${errorMessage}
+            button.className =
+              "task-button";
 
-            <br><br>
+            button.type =
+              "button";
 
-            Please try again.
-
-          </div>
-
-        `;
-
-      }
-
-    }
+            button.textContent =
+              "START";
 
 
-    /* ========================= */
-    /* HTML ESCAPE */
-    /* ========================= */
+            /*
+              IMPORTANT:
+              Direct event listener.
+              No inline onclick.
+            */
 
-    function escapeHTML(
-      value
-    ) {
-
-      return String(value)
-
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-
-        .replace(
-          /</g,
-          "&lt;"
-        )
-
-        .replace(
-          />/g,
-          "&gt;"
-        )
-
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
-
-
-    /* ========================= */
-    /* TASK BUTTON */
-    /* ========================= */
-
-    window.startTask =
-      function(
-        taskId,
-        taskTitle
-      ) {
-
-        alert(
-          "Task selected: " +
-          taskTitle +
-          "\n\nReward claiming will be connected in the next step."
-        );
-
-      };
-
-
-    /* ========================= */
-    /* MINING */
-    /* ========================= */
-
-    let miningActive =
-      false;
-
-
-    window.startMining =
-      function() {
-
-        if (
-          miningActive
-        ) {
-
-          return;
-
-        }
-
-
-        miningActive =
-          true;
-
-
-        const button =
-          document.getElementById(
-            "mineButton"
-          );
-
-
-        const status =
-          document.getElementById(
-            "miningStatus
+            button.addEventListener(
+              "click",
+  
