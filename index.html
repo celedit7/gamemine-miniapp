@@ -1,243 +1,1441 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>GameMine Test</title>
+<title>GameMine</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      background: #0b0d12;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
 
-    h1 {
-      color: #ffd400;
-    }
+body{
+  background:#0b0d12;
+  color:#fff;
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  padding-bottom:85px;
+}
 
-    .task {
-      background: #171b24;
-      border: 1px solid #292f3b;
-      border-radius: 15px;
-      padding: 15px;
-      margin-bottom: 12px;
-    }
+button{
+  font-family:inherit;
+  touch-action:manipulation;
+}
 
-    .task-title {
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
+.app{
+  max-width:500px;
+  margin:auto;
+  padding:18px;
+}
 
-    .task-description {
-      color: #9ba3b2;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
+/* HEADER */
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #ffd400;
-      color: #111;
-      font-weight: bold;
-      font-size: 15px;
-    }
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:25px;
+}
 
-    #status {
-      color: #9ba3b2;
-      margin-bottom: 20px;
-    }
-  </style>
+.logo{
+  font-size:24px;
+  font-weight:800;
+}
+
+.logo span{
+  color:#ffd400;
+}
+
+.level{
+  background:#171b24;
+  border:1px solid #292f3b;
+  padding:8px 12px;
+  border-radius:20px;
+  font-size:13px;
+  color:#ffd400;
+}
+
+/* PAGES */
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.page-title{
+  font-size:25px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.page-subtitle{
+  color:#8e96a6;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+/* BALANCE */
+
+.balance-card{
+  background:linear-gradient(145deg,#171b24,#10131a);
+  border:1px solid #292f3b;
+  border-radius:24px;
+  padding:25px 20px;
+  text-align:center;
+  margin-bottom:15px;
+}
+
+.coin-icon{
+  font-size:55px;
+  margin-bottom:8px;
+}
+
+.balance-label{
+  color:#8e96a6;
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.balance{
+  font-size:38px;
+  font-weight:900;
+}
+
+.coin-name{
+  color:#ffd400;
+  font-size:14px;
+  margin-top:5px;
+  font-weight:700;
+}
+
+/* MINING */
+
+.mining-card{
+  background:#151820;
+  border:1px solid #292f3b;
+  border-radius:22px;
+  padding:20px;
+  margin-bottom:15px;
+}
+
+.mining-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.mining-title{
+  font-size:18px;
+  font-weight:800;
+}
+
+.mining-rate{
+  color:#ffd400;
+  font-size:13px;
+}
+
+.mine-button{
+  width:100%;
+  border:none;
+  border-radius:17px;
+  padding:17px;
+  background:#ffd400;
+  color:#111;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.mine-button:active{
+  transform:scale(.98);
+}
+
+.mining-status{
+  text-align:center;
+  margin-top:12px;
+  color:#8e96a6;
+  font-size:13px;
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.stat-card{
+  background:#151820;
+  border:1px solid #292f3b;
+  border-radius:18px;
+  padding:17px;
+}
+
+.stat-label{
+  color:#8e96a6;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.stat-value{
+  font-size:19px;
+  font-weight:800;
+}
+
+/* TASKS */
+
+.tasks-container{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.task-card{
+  background:#151820;
+  border:1px solid #292f3b;
+  border-radius:18px;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.task-number{
+  min-width:42px;
+  height:42px;
+  border-radius:14px;
+  background:#202530;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  color:#ffd400;
+}
+
+.task-info{
+  flex:1;
+  min-width:0;
+}
+
+.task-title{
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+
+.task-description{
+  color:#8e96a6;
+  font-size:12px;
+  line-height:1.4;
+}
+
+.task-reward{
+  color:#ffd400;
+  font-size:13px;
+  font-weight:800;
+  margin-top:6px;
+}
+
+.task-button{
+  border:none;
+  background:#ffd400;
+  color:#111;
+  font-size:12px;
+  font-weight:900;
+  border-radius:12px;
+  padding:12px 15px;
+  white-space:nowrap;
+  cursor:pointer;
+  position:relative;
+  z-index:5;
+  pointer-events:auto;
+}
+
+.task-button:active{
+  transform:scale(.94);
+}
+
+.task-button:disabled{
+  opacity:.6;
+}
+
+.ad-badge{
+  display:inline-block;
+  font-size:9px;
+  color:#8e96a6;
+  border:1px solid #363d4b;
+  padding:3px 6px;
+  border-radius:6px;
+  margin-left:4px;
+}
+
+.loading{
+  text-align:center;
+  color:#8e96a6;
+  padding:30px 10px;
+}
+
+.error{
+  background:#21171a;
+  border:1px solid #4a252b;
+  color:#ff9ca7;
+  border-radius:15px;
+  padding:15px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+/* TASK MODAL */
+
+.task-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.78);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:1000;
+}
+
+.task-modal.show{
+  display:flex;
+}
+
+.task-modal-box{
+  width:100%;
+  max-width:500px;
+  background:#151820;
+  border:1px solid #292f3b;
+  border-radius:25px 25px 0 0;
+  padding:25px 20px 30px;
+}
+
+.modal-icon{
+  font-size:42px;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.modal-title{
+  text-align:center;
+  font-size:21px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.modal-description{
+  text-align:center;
+  color:#8e96a6;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:20px;
+}
+
+.modal-reward{
+  text-align:center;
+  color:#ffd400;
+  font-size:15px;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+.modal-close{
+  width:100%;
+  border:none;
+  border-radius:15px;
+  padding:15px;
+  background:#252a35;
+  color:#fff;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+}
+
+/* OTHER PAGES */
+
+.coming-card{
+  background:#151820;
+  border:1px solid #292f3b;
+  border-radius:20px;
+  padding:25px 20px;
+  text-align:center;
+  color:#8e96a6;
+}
+
+.coming-icon{
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.coming-title{
+  color:#fff;
+  font-size:19px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+/* NAV */
+
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(13,15,21,.97);
+  border-top:1px solid #292f3b;
+  height:73px;
+  display:flex;
+  justify-content:center;
+  z-index:100;
+}
+
+.nav-inner{
+  width:100%;
+  max-width:500px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.nav-button{
+  border:none;
+  background:transparent;
+  color:#737b8b;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:4px;
+  font-size:11px;
+  cursor:pointer;
+}
+
+.nav-icon{
+  font-size:21px;
+}
+
+.nav-button.active{
+  color:#ffd400;
+}
+</style>
 </head>
 
 <body>
 
-  <h1>GameMine</h1>
+<div class="app">
 
-  <div id="status">
-    Loading tasks...
+<!-- HEADER -->
+
+<div class="header">
+
+  <div class="logo">
+    Game<span>Mine</span>
   </div>
 
-  <div id="tasks"></div>
+  <div class="level" id="level">
+    Level 1
+  </div>
+
+</div>
 
 
-  <script type="module">
+<!-- MINE -->
 
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+<div class="page active" id="minePage">
 
-    import {
-      getFirestore,
-      collection,
-      getDocs
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  <div class="balance-card">
 
+    <div class="coin-icon">🪙</div>
 
-    const firebaseConfig = {
+    <div class="balance-label">
+      Balance
+    </div>
 
-      apiKey:
-        "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+    <div class="balance" id="balance">
+      0
+    </div>
 
-      authDomain:
-        "gamemine-5d7ee.firebaseapp.com",
+    <div class="coin-name">
+      GameMine Coins
+    </div>
 
-      projectId:
-        "gamemine-5d7ee",
-
-      storageBucket:
-        "gamemine-5d7ee.firebasestorage.app",
-
-      messagingSenderId:
-        "524612369793",
-
-      appId:
-        "1:524612369793:web:e425affa42cf1cb3e2bc80"
-
-    };
+  </div>
 
 
-    const app =
-      initializeApp(firebaseConfig);
+  <div class="mining-card">
 
-    const db =
-      getFirestore(app);
+    <div class="mining-top">
 
+      <div class="mining-title">
+        Mining
+      </div>
 
-    async function loadTasks() {
+      <div class="mining-rate" id="miningRate">
+        +0.05 coins/min
+      </div>
 
-      const status =
-        document.getElementById("status");
+    </div>
 
-      const container =
-        document.getElementById("tasks");
+    <button class="mine-button" id="mineButton">
+      START MINING ⛏️
+    </button>
 
+    <div class="mining-status" id="miningStatus">
+      ⚪ Mining is stopped
+    </div>
 
-      try {
-
-        const snapshot =
-          await getDocs(
-            collection(db, "tasks")
-          );
-
-
-        container.innerHTML = "";
+  </div>
 
 
-        let count = 0;
+  <div class="stats">
+
+    <div class="stat-card">
+
+      <div class="stat-label">
+        Today's Mining
+      </div>
+
+      <div class="stat-value">
+        <span id="todayMining">0</span>/100
+      </div>
+
+    </div>
 
 
-        snapshot.forEach((docSnap) => {
+    <div class="stat-card">
 
-          const task =
-            docSnap.data();
+      <div class="stat-label">
+        Referrals
+      </div>
 
+      <div class="stat-value" id="referrals">
+        0
+      </div>
 
-          if (
-            task.active === true &&
-            Number(task.cycle) === 1
-          ) {
+    </div>
 
-            count++;
+  </div>
 
-
-            const card =
-              document.createElement("div");
-
-            card.className =
-              "task";
+</div>
 
 
-            const title =
-              document.createElement("div");
+<!-- TASKS -->
 
-            title.className =
-              "task-title";
+<div class="page" id="tasksPage">
 
-            title.textContent =
-              task.title || "GameMine Task";
+  <div class="page-title">
+    Tasks
+  </div>
 
+  <div class="page-subtitle">
+    Complete tasks and earn GameMine Coins.
+  </div>
 
-            const description =
-              document.createElement("div");
+  <div id="tasksContainer" class="tasks-container">
 
-            description.className =
-              "task-description";
+    <div class="loading">
+      Loading tasks...
+    </div>
 
-            description.textContent =
-              task.description || "";
+  </div>
 
-
-            const button =
-              document.createElement("button");
-
-            button.textContent =
-              "START";
+</div>
 
 
-            button.addEventListener(
-              "click",
-              () => {
+<!-- REFER -->
 
-                alert(
-                  "START BUTTON WORKS! 🚀\n\n" +
-                  "Task: " +
-                  (task.title || "GameMine Task")
-                );
+<div class="page" id="referPage">
 
-              }
-            );
+  <div class="page-title">
+    Refer
+  </div>
+
+  <div class="page-subtitle">
+    Invite friends and earn coins.
+  </div>
+
+  <div class="coming-card">
+
+    <div class="coming-icon">
+      👥
+    </div>
+
+    <div class="coming-title">
+      Referral System
+    </div>
+
+    <div>
+      Your referral system will be connected next.
+    </div>
+
+  </div>
+
+</div>
 
 
-            card.appendChild(title);
-            card.appendChild(description);
-            card.appendChild(button);
+<!-- WITHDRAW -->
+
+<div class="page" id="withdrawPage">
+
+  <div class="page-title">
+    Withdraw
+  </div>
+
+  <div class="page-subtitle">
+    Redeem your coins for available gaming rewards.
+  </div>
 
 
-            container.appendChild(card);
+  <div class="coming-card">
 
-          }
+    <div class="coming-icon">
+      🎁
+    </div>
 
-        });
+    <div class="coming-title">
+      Free Fire
+    </div>
+
+    <div style="color:#72e6a4;margin-bottom:10px;">
+      ● Available
+    </div>
+
+    <div>
+      Withdrawal system is being prepared.
+    </div>
+
+  </div>
+
+  <br>
+
+  <div class="coming-card">
+
+    <div class="coming-icon">
+      🎯
+    </div>
+
+    <div class="coming-title">
+      COD Mobile
+    </div>
+
+    <div>
+      Coming Soon
+    </div>
+
+  </div>
+
+  <br>
+
+  <div class="coming-card">
+
+    <div class="coming-icon">
+      🪖
+    </div>
+
+    <div class="coming-title">
+      PUBG Mobile
+    </div>
+
+    <div>
+      Coming Soon
+    </div>
+
+  </div>
+
+</div>
+
+</div>
 
 
-        if (count === 0) {
+<!-- TASK MODAL -->
 
-          status.textContent =
-            "No active tasks found.";
+<div class="task-modal" id="taskModal">
 
-        } else {
+  <div class="task-modal-box">
 
-          status.textContent =
-            count +
-            " tasks loaded successfully.";
+    <div class="modal-icon" id="modalIcon">
+      📋
+    </div>
+
+    <div class="modal-title" id="modalTitle">
+      Task
+    </div>
+
+    <div class="modal-description" id="modalDescription">
+      Task description
+    </div>
+
+    <div class="modal-reward" id="modalReward">
+      +20 🪙
+    </div>
+
+    <button class="modal-close" id="modalClose">
+      CLOSE
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- NAV -->
+
+<div class="bottom-nav">
+
+<div class="nav-inner">
+
+<button class="nav-button active" id="navMine">
+  <div class="nav-icon">⛏️</div>
+  Mine
+</button>
+
+<button class="nav-button" id="navTasks">
+  <div class="nav-icon">📋</div>
+  Tasks
+</button>
+
+<button class="nav-button" id="navRefer">
+  <div class="nav-icon">👥</div>
+  Refer
+</button>
+
+<button class="nav-button" id="navWithdraw">
+  <div class="nav-icon">🎁</div>
+  Withdraw
+</button>
+
+</div>
+</div>
+
+
+<script type="module">
+
+/* FIREBASE */
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+
+  authDomain:
+    "gamemine-5d7ee.firebaseapp.com",
+
+  projectId:
+    "gamemine-5d7ee",
+
+  storageBucket:
+    "gamemine-5d7ee.firebasestorage.app",
+
+  messagingSenderId:
+    "524612369793",
+
+  appId:
+    "1:524612369793:web:e425affa42cf1cb3e2bc80"
+
+};
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
+
+
+/* TEST USER */
+
+const telegramUserId =
+  "test_user";
+
+
+/* ========================= */
+/* USER */
+/* ========================= */
+
+async function loadUser(){
+
+  try{
+
+    const userSnap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          telegramUserId
+        )
+      );
+
+
+    if(!userSnap.exists()){
+      return;
+    }
+
+
+    const user =
+      userSnap.data();
+
+
+    document.getElementById("balance")
+      .textContent =
+      Number(user.balance || 0)
+      .toLocaleString();
+
+
+    document.getElementById("todayMining")
+      .textContent =
+      Number(user.mining_today || 0)
+      .toLocaleString();
+
+
+    document.getElementById("referrals")
+      .textContent =
+      Number(user.referral_count || 0)
+      .toLocaleString();
+
+
+    document.getElementById("level")
+      .textContent =
+      "Level " +
+      Number(user.level || 1);
+
+
+    const speed =
+      Number(user.mining_speed || 0.05);
+
+
+    document.getElementById("miningRate")
+      .textContent =
+      "+" +
+      speed.toFixed(2) +
+      " coins/min";
+
+  }
+  catch(error){
+
+    console.error(
+      "User error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ========================= */
+/* TASKS */
+/* ========================= */
+
+async function loadTasks(){
+
+  const container =
+    document.getElementById(
+      "tasksContainer"
+    );
+
+
+  container.innerHTML =
+    `<div class="loading">Loading tasks...</div>`;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "tasks"
+        )
+      );
+
+
+    const tasks = [];
+
+
+    snapshot.forEach(
+      function(taskDoc){
+
+        const data =
+          taskDoc.data();
+
+
+        if(
+          data.active === true &&
+          Number(data.cycle) === 1
+        ){
+
+          tasks.push({
+
+            id:taskDoc.id,
+
+            title:
+              data.title ||
+              "GameMine Task",
+
+            description:
+              data.description ||
+              "",
+
+            reward:
+              Number(data.reward || 0),
+
+            task_number:
+              Number(
+                data.task_number || 0
+              ),
+
+            type:
+              data.type ||
+              "normal"
+
+          });
 
         }
 
       }
+    );
 
-      catch (error) {
 
-        console.error(error);
+    tasks.sort(
+      function(a,b){
 
-        status.innerHTML =
-          "❌ Firebase error:<br>" +
-          error.message;
+        return (
+          a.task_number -
+          b.task_number
+        );
 
       }
+    );
+
+
+    container.innerHTML = "";
+
+
+    if(tasks.length === 0){
+
+      container.innerHTML = `
+        <div class="coming-card">
+
+          <div class="coming-icon">
+            📋
+          </div>
+
+          <div class="coming-title">
+            No Tasks Available
+          </div>
+
+          <div>
+            Check back later for new tasks.
+          </div>
+
+        </div>
+      `;
+
+      return;
 
     }
 
 
+    /* CREATE CARDS */
+
+    tasks.forEach(
+      function(task){
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+        card.className =
+          "task-card";
+
+
+        /* NUMBER */
+
+        const number =
+          document.createElement(
+            "div"
+          );
+
+        number.className =
+          "task-number";
+
+        number.textContent =
+          task.task_number;
+
+
+        /* INFO */
+
+        const info =
+          document.createElement(
+            "div"
+          );
+
+        info.className =
+          "task-info";
+
+
+        const title =
+          document.createElement(
+            "div"
+          );
+
+        title.className =
+          "task-title";
+
+        title.textContent =
+          task.title;
+
+
+        if(
+          task.type ===
+          "rewarded_ad"
+        ){
+
+          const badge =
+            document.createElement(
+              "span"
+            );
+
+          badge.className =
+            "ad-badge";
+
+          badge.textContent =
+            "AD";
+
+          title.appendChild(
+            badge
+          );
+
+        }
+
+
+        const description =
+          document.createElement(
+            "div"
+          );
+
+        description.className =
+          "task-description";
+
+        description.textContent =
+          task.description;
+
+
+        const reward =
+          document.createElement(
+            "div"
+          );
+
+        reward.className =
+          "task-reward";
+
+        reward.textContent =
+          "+" +
+          task.reward.toLocaleString() +
+          " 🪙";
+
+
+        info.appendChild(title);
+        info.appendChild(description);
+        info.appendChild(reward);
+
+
+        /* BUTTON */
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.type =
+          "button";
+
+        button.className =
+          "task-button";
+
+        button.textContent =
+          "START";
+
+
+        /*
+          The listener is attached
+          directly to this button.
+        */
+
+        button.addEventListener(
+          "click",
+          function(){
+
+            openTask(
+              task
+            );
+
+          },
+          false
+        );
+
+
+        card.appendChild(number);
+        card.appendChild(info);
+        card.appendChild(button);
+
+
+        container.appendChild(card);
+
+      }
+    );
+
+  }
+  catch(error){
+
+    console.error(
+      "Tasks error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="error">
+
+        ❌ Unable to load tasks.
+
+        <br><br>
+
+        ${error.message}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* ========================= */
+/* OPEN TASK */
+/* ========================= */
+
+function openTask(task){
+
+  document.getElementById(
+    "modalIcon"
+  ).textContent =
+    task.type === "rewarded_ad"
+      ? "🎬"
+      : "📋";
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    task.title;
+
+
+  document.getElementById(
+    "modalDescription"
+  ).textContent =
+    task.description;
+
+
+  document.getElementById(
+    "modalReward"
+  ).textContent =
+    "+" +
+    task.reward.toLocaleString() +
+    " 🪙";
+
+
+  document.getElementById(
+    "taskModal"
+  ).classList.add(
+    "show"
+  );
+
+}
+
+
+/* CLOSE MODAL */
+
+document.getElementById(
+  "modalClose"
+).addEventListener(
+  "click",
+  function(){
+
+    document.getElementById(
+      "taskModal"
+    ).classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* CLOSE OUTSIDE */
+
+document.getElementById(
+  "taskModal"
+).addEventListener(
+  "click",
+  function(event){
+
+    if(
+      event.target === this
+    ){
+
+      this.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+);
+
+
+/* ========================= */
+/* MINING BUTTON */
+/* ========================= */
+
+let miningActive =
+  false;
+
+
+document.getElementById(
+  "mineButton"
+).addEventListener(
+  "click",
+  function(){
+
+    if(miningActive){
+      return;
+    }
+
+
+    miningActive =
+      true;
+
+
+    this.textContent =
+      "MINING... ⛏️";
+
+
+    this.disabled =
+      true;
+
+
+    this.style.opacity =
+      "0.7";
+
+
+    document.getElementById(
+      "miningStatus"
+    ).textContent =
+      "🟡 Mining is active";
+
+  }
+);
+
+
+/* ========================= */
+/* NAVIGATION */
+/* ========================= */
+
+function showPage(
+  pageName
+){
+
+  const pages = {
+
+    mine:
+      document.getElementById(
+        "minePage"
+      ),
+
+    tasks:
+      document.getElementById(
+        "tasksPage"
+      ),
+
+    refer:
+      document.getElementById(
+        "referPage"
+      ),
+
+    withdraw:
+      document.getElementById(
+        "withdrawPage"
+      )
+
+  };
+
+
+  Object.values(
+    pages
+  ).forEach(
+    function(page){
+
+      page.classList.remove(
+        "active"
+      );
+
+    }
+  );
+
+
+  pages[pageName]
+    .classList.add(
+      "active"
+    );
+
+
+  document.querySelectorAll(
+    ".nav-button"
+  ).forEach(
+    function(button){
+
+      button.classList.remove(
+        "active"
+      );
+
+    }
+  );
+
+
+  if(
+    pageName === "mine"
+  ){
+
+    document.getElementById(
+      "navMine"
+    ).classList.add(
+      "active"
+    );
+
+  }
+
+  if(
+    pageName === "tasks"
+  ){
+
+    document.getElementById(
+      "navTasks"
+    ).classList.add(
+      "active"
+    );
+
     loadTasks();
 
-  </script>
+  }
+
+  if(
+    pageName === "refer"
+  ){
+
+    document.getElementById(
+      "navRefer"
+    ).classList.add(
+      "active"
+    );
+
+  }
+
+  if(
+    pageName === "withdraw"
+  ){
+
+    document.getElementById(
+      "navWithdraw"
+    ).classList.add(
+      "active"
+    );
+
+  }
+
+}
+
+
+/* NAV BUTTONS */
+
+document.getElementById(
+  "navMine"
+).addEventListener(
+  "click",
+  function(){
+
+    showPage("mine");
+
+  }
+);
+
+
+document.getElementById(
+  "navTasks"
+).addEventListener(
+  "click",
+  function(){
+
+    showPage("tasks");
+
+  }
+);
+
+
+document.getElementById(
+  "navRefer"
+).addEventListener(
+  "click",
+  function(){
+
+    showPage("refer");
+
+  }
+);
+
+
+document.getElementById(
+  "navWithdraw"
+).addEventListener(
+  "click",
+  function(){
+
+    showPage("withdraw");
+
+  }
+);
+
+
+/* START */
+
+loadUser();
+
+</script>
 
 </body>
-</html>
+  </html>
