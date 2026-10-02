@@ -1,1122 +1,671 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>GameMine</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<style>
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #070b12;
-  color: #ffffff;
-  font-family: Arial, Helvetica, sans-serif;
-  min-height: 100%;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-button,
-input,
-select {
-  font-family: inherit;
-}
-
-button {
-  cursor: pointer;
-  border: 0;
-}
-
-.app {
-  width: 100%;
-  max-width: 520px;
-  margin: auto;
-  min-height: 100vh;
-  padding-bottom: 90px;
-}
-
-.topbar {
-  height: 70px;
-  padding: 16px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  font-size: 23px;
-  font-weight: 900;
-}
-
-.logo span {
-  color: #f5c542;
-}
-
-.level {
-  padding: 8px 12px;
-  border-radius: 20px;
-  background: #141b28;
-  border: 1px solid #283448;
-  color: #f5c542;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.page {
-  display: none;
-  padding: 5px 18px 20px;
-}
-
-.page.active {
-  display: block;
-}
-
-.welcome {
-  margin-top: 5px;
-  color: #8996a8;
-  font-size: 14px;
-}
-
-.welcome strong {
-  color: #ffffff;
-}
-
-.balance-card {
-  margin-top: 18px;
-  padding: 28px 20px;
-  text-align: center;
-  border-radius: 24px;
-  background: linear-gradient(145deg, #151e2d, #0d131d);
-  border: 1px solid #273348;
-}
-
-.coin {
-  width: 82px;
-  height: 82px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #f5c542;
-  font-size: 40px;
-  box-shadow: 0 0 35px rgba(245,197,66,.18);
-}
-
-.balance-label {
-  margin-top: 15px;
-  color: #8592a5;
-  font-size: 12px;
-}
-
-.balance {
-  margin-top: 3px;
-  font-size: 37px;
-  font-weight: 900;
-}
-
-.balance-type {
-  color: #f5c542;
-  font-size: 12px;
-  margin-top: 3px;
-}
-
-.card {
-  margin-top: 14px;
-  padding: 18px;
-  border-radius: 20px;
-  background: #101722;
-  border: 1px solid #202d40;
-}
-
-.card-title {
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.card-subtitle {
-  margin-top: 6px;
-  color: #8794a7;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.rate-row {
-  margin-top: 17px;
-  padding: 13px;
-  border-radius: 13px;
-  background: #080e17;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-}
-
-.rate {
-  color: #f5c542;
-  font-weight: 800;
-}
-
-.primary {
-  width: 100%;
-  margin-top: 13px;
-  padding: 15px;
-  border-radius: 14px;
-  background: #f5c542;
-  color: #171208;
-  font-size: 15px;
-  font-weight: 900;
-}
-
-.primary:active,
-.secondary:active,
-.task-button:active,
-.nav-button:active,
-.game-button:active {
-  transform: scale(.98);
-}
-
-.secondary {
-  width: 100%;
-  margin-top: 10px;
-  padding: 14px;
-  border-radius: 14px;
-  background: #1a2535;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.stats {
-  margin-top: 14px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.stat {
-  padding: 16px;
-  border-radius: 17px;
-  background: #101722;
-  border: 1px solid #202d40;
-}
-
-.stat-label {
-  color: #8190a4;
-  font-size: 11px;
-}
-
-.stat-value {
-  margin-top: 7px;
-  font-size: 19px;
-  font-weight: 900;
-}
-
-.section-title {
-  margin-top: 7px;
-  font-size: 25px;
-  font-weight: 900;
-}
-
-.section-subtitle {
-  margin-top: 5px;
-  color: #8996a8;
-  font-size: 13px;
-}
-
-.task {
-  margin-top: 12px;
-  padding: 16px;
-  border-radius: 18px;
-  background: #101722;
-  border: 1px solid #202d40;
-}
-
-.task-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.task-info {
-  min-width: 0;
-  flex: 1;
-}
-
-.task-title {
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.task-description {
-  margin-top: 5px;
-  color: #8794a7;
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.task-reward {
-  white-space: nowrap;
-  color: #f5c542;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.task-button {
-  width: 100%;
-  margin-top: 13px;
-  padding: 12px;
-  border-radius: 12px;
-  background: #1b2738;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.task-button.completed {
-  background: #163521;
-  color: #70dc8d;
-}
-
-.task-button.ad {
-  background: #342b12;
-  color: #f5c542;
-}
-
-.empty {
-  margin-top: 15px;
-  padding: 35px 15px;
-  text-align: center;
-  border-radius: 18px;
-  background: #101722;
-  border: 1px solid #202d40;
-  color: #8592a5;
-}
-
-.empty-icon {
-  font-size: 38px;
-  margin-bottom: 10px;
-}
-
-.info-grid {
-  margin-top: 14px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.info-box {
-  padding: 14px;
-  border-radius: 13px;
-  background: #080e17;
-}
-
-.info-box small {
-  color: #8190a4;
-  font-size: 11px;
-}
-
-.info-box strong {
-  display: block;
-  margin-top: 6px;
-  font-size: 14px;
-}
-
-.referral-card {
-  text-align: center;
-}
-
-.referral-icon {
-  font-size: 55px;
-}
-
-.referral-number {
-  margin-top: 5px;
-  font-size: 36px;
-  font-weight: 900;
-}
-
-.referral-label {
-  color: #8794a7;
-  font-size: 12px;
-}
-
-.referral-name {
-  margin-top: 18px;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 800;
-}
-
-.referral-link {
-  margin-top: 15px;
-  padding: 12px;
-  border-radius: 12px;
-  background: #080e17;
-  border: 1px solid #263349;
-  color: #b5c0cf;
-  font-size: 11px;
-  line-height: 1.5;
-  word-break: break-all;
-}
-
-.notice {
-  margin-top: 13px;
-  padding: 13px;
-  border-radius: 14px;
-  background: #111a27;
-  border: 1px solid #253248;
-  color: #8996a8;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.game-card {
-  margin-top: 12px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-radius: 18px;
-  background: #101722;
-  border: 1px solid #202d40;
-}
-
-.game-icon {
-  width: 50px;
-  height: 50px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 14px;
-  background: #1a2535;
-  font-size: 24px;
-}
-
-.game-info {
-  flex: 1;
-}
-
-.game-name {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.game-status {
-  margin-top: 4px;
-  color: #6edc8d;
-  font-size: 11px;
-}
-
-.game-status.soon {
-  color: #7e899a;
-}
-
-.game-button {
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: #f5c542;
-  color: #171208;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.game-button.disabled {
-  background: #202a39;
-  color: #758195;
-}
-
-.bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 520px;
-  height: 72px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: rgba(8,13,21,.98);
-  border-top: 1px solid #202d40;
-  z-index: 50;
-}
-
-.nav-button {
-  background: transparent;
-  color: #69778b;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.nav-icon {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 21px;
-}
-
-.nav-button.active {
-  color: #f5c542;
-}
-
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: none;
-  align-items: flex-end;
-  background: rgba(0,0,0,.75);
-}
-
-.modal.show {
-  display: flex;
-}
-
-.modal-box {
-  width: 100%;
-  max-width: 520px;
-  margin: auto;
-  padding: 22px;
-  border-radius: 25px 25px 0 0;
-  background: #101722;
-  border: 1px solid #29364a;
-}
-
-.modal-title {
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.input {
-  width: 100%;
-  margin-top: 12px;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #29364a;
-  background: #080e17;
-  color: white;
-  outline: none;
-}
-
-.close-button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 14px;
-  border-radius: 12px;
-  background: #1b2738;
-  color: white;
-  font-weight: 800;
-}
-
-.toast {
-  position: fixed;
-  left: 50%;
-  bottom: 86px;
-  transform: translateX(-50%);
-  width: calc(100% - 35px);
-  max-width: 480px;
-  padding: 13px 15px;
-  border-radius: 13px;
-  background: #1b2636;
-  border: 1px solid #2c3b51;
-  color: white;
-  text-align: center;
-  font-size: 12px;
-  z-index: 200;
-  display: none;
-}
-
-.toast.show {
-  display: block;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GameMine</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0f19;
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      margin: auto;
+      padding: 18px 16px 95px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .level {
+      background: #182235;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #182235, #111827);
+      border-radius: 22px;
+      padding: 25px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .balance-label {
+      color: #9ca8ba;
+      font-size: 14px;
+    }
+
+    .balance {
+      font-size: 38px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+
+    .coin {
+      font-size: 18px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+    }
+
+    .muted {
+      color: #8995a8;
+      font-size: 14px;
+    }
+
+    .primary {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 15px;
+      margin-top: 14px;
+      background: #35c759;
+      color: #07100a;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .primary:active {
+      transform: scale(.98);
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+    .task-info {
+      min-width: 0;
+    }
+
+    .task-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .task-reward {
+      color: #f5c542;
+      font-size: 13px;
+    }
+
+    .task-btn {
+      flex-shrink: 0;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: #26344b;
+      color: white;
+      font-weight: 700;
+    }
+
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: #101622;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 520px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .nav-btn {
+      border: 0;
+      background: transparent;
+      color: #7f8ba0;
+      padding: 13px 4px;
+      font-size: 12px;
+      min-height: 64px;
+    }
+
+    .nav-btn.active {
+      color: #35c759;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 4px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #26344b;
+      background: #0b1220;
+      color: white;
+      outline: none;
+      margin-top: 10px;
+    }
+
+    .reward {
+      background: #182235;
+      padding: 14px;
+      border-radius: 13px;
+      margin-top: 10px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .reward.selected {
+      border: 2px solid #35c759;
+    }
+
+    .status {
+      text-align: center;
+      color: #9ca8ba;
+      font-size: 13px;
+      margin-top: 12px;
+      min-height: 18px;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <!-- HEADER -->
-  <header class="topbar">
-    <div class="logo">Game<span>Mine</span></div>
-    <div class="level" id="levelBadge">Level 1</div>
-  </header>
+  <div class="header">
+    <div class="logo">⛏️ GameMine</div>
+    <div class="level">Level <span id="level">1</span></div>
+  </div>
 
   <!-- MINE -->
-  <section class="page active" id="minePage">
-
-    <div class="welcome">
-      Welcome, <strong id="userName">Gamer</strong> 👋
-    </div>
+  <section id="mine" class="page active">
 
     <div class="balance-card">
-
-      <div class="coin">🪙</div>
-
       <div class="balance-label">Your Balance</div>
-
-      <div class="balance" id="balance">0</div>
-
-      <div class="balance-type">
-        GameMine Coins
+      <div class="balance">
+        <span id="balance">0</span>
       </div>
-
+      <div class="coin">🪙 GameMine Coins</div>
     </div>
 
     <div class="card">
-
-      <div class="card-title">⛏️ Mining</div>
-
-      <div class="card-subtitle">
-        Earn GameMine Coins through your daily mining session.
+      <h3>⛏️ Mining</h3>
+      <div class="muted">
+        Mine GameMine Coins over time.
       </div>
 
-      <div class="rate-row">
-        <span>Mining rate</span>
-        <span class="rate" id="miningRate">+0.05/min</span>
-      </div>
-
-      <button class="primary" id="mineButton">
+      <button type="button" class="primary" id="mineBtn">
         Start Mining
       </button>
 
+      <div class="status" id="mineStatus"></div>
     </div>
 
-    <div class="stats">
-
-      <div class="stat">
-        <div class="stat-label">Today's Mining</div>
-        <div class="stat-value">
-          <span id="todayMining">0</span>/100
-        </div>
+    <div class="card">
+      <h3>📊 Today's Mining</h3>
+      <div class="muted">
+        <span id="todayMining">0</span> / 100 coins
       </div>
-
-      <div class="stat">
-        <div class="stat-label">Referrals</div>
-        <div class="stat-value" id="referralCount">
-          0
-        </div>
-      </div>
-
     </div>
 
   </section>
 
+
   <!-- TASKS -->
-  <section class="page" id="tasksPage">
+  <section id="tasks" class="page">
 
-    <div class="section-title">Tasks</div>
+    <h2>📋 Tasks</h2>
+    <p class="muted">Complete tasks and earn GameMine Coins.</p>
 
-    <div class="section-subtitle">
-      Complete tasks and earn GameMine Coins.
+    <div class="task">
+      <div class="task-info">
+        <div class="task-title">Join GameMine Telegram</div>
+        <div class="task-reward">+20 🪙</div>
+      </div>
+      <button type="button" class="task-btn" data-task="1">START</button>
     </div>
 
-    <div id="taskList">
-
-      <div class="empty">
-        <div class="empty-icon">⏳</div>
-        Loading tasks...
+    <div class="task">
+      <div class="task-info">
+        <div class="task-title">Follow GameMine Updates</div>
+        <div class="task-reward">+20 🪙</div>
       </div>
+      <button type="button" class="task-btn" data-task="2">START</button>
+    </div>
+
+    <div class="task">
+      <div class="task-info">
+        <div class="task-title">Watch Rewarded Ad</div>
+        <div class="task-reward">+20 🪙</div>
+      </div>
+      <button type="button" class="task-btn" data-task="3">START</button>
+    </div>
+
+    <div class="task">
+      <div class="task-info">
+        <div class="task-title">Visit GameMine Website</div>
+        <div class="task-reward">+20 🪙</div>
+      </div>
+      <button type="button" class="task-btn" data-task="4">START</button>
+    </div>
+
+    <div class="task">
+      <div class="task-info">
+        <div class="task-title">Watch Rewarded Ad</div>
+        <div class="task-reward">+20 🪙</div>
+      </div>
+      <button type="button" class="task-btn" data-task="5">START</button>
+    </div>
+
+    <div class="task">
+      <div class="task-info">
+        <div class="task-title">Check GameMine Updates</div>
+        <div class="task-reward">+20 🪙</div>
+      </div>
+      <button type="button" class="task-btn" data-task="6">START</button>
+    </div>
+
+    <div class="task">
+      <div class="task-info">
+        <div class="task-title">Explore GameMine</div>
+        <div class="task-reward">+20 🪙</div>
+      </div>
+      <button type="button" class="task-btn" data-task="7">START</button>
+    </div>
+
+    <div class="status" id="taskStatus"></div>
+
+  </section>
+
+
+  <!-- REFER -->
+  <section id="refer" class="page">
+
+    <h2>👥 Refer & Earn</h2>
+
+    <div class="card">
+      <h3>Invite Friends</h3>
+
+      <p class="muted">
+        Invite friends to GameMine and earn 100 coins when they become qualified.
+      </p>
+
+      <div class="balance-card">
+        <div class="balance-label">Your Referral Name</div>
+        <div id="userName" style="font-size:20px;font-weight:700;margin-top:6px;">
+          Telegram User
+        </div>
+      </div>
+
+      <button type="button" class="primary" id="shareBtn">
+        🔗 Share Referral
+      </button>
+
+      <div class="status" id="referStatus"></div>
+    </div>
+
+  </section>
+
+
+  <!-- WITHDRAW -->
+  <section id="withdraw" class="page">
+
+    <h2>🎁 Withdraw</h2>
+    <p class="muted">Redeem your GameMine Coins for available gaming rewards.</p>
+
+    <div class="card">
+
+      <h3>🔥 Free Fire</h3>
+      <div class="muted">Available</div>
+
+      <div class="reward" data-reward="100_diamonds" data-coins="10000">
+        💎 100 Diamonds — 10,000 🪙
+      </div>
+
+      <div class="reward" data-reward="310_diamonds" data-coins="30000">
+        💎 310 Diamonds — 30,000 🪙
+      </div>
+
+      <div class="reward" data-reward="520_diamonds" data-coins="50000">
+        💎 520 Diamonds — 50,000 🪙
+      </div>
+
+      <input
+        id="playerUid"
+        class="input"
+        type="text"
+        inputmode="numeric"
+        placeholder="Enter Free Fire Player UID"
+      >
+
+      <button type="button" class="primary" id="withdrawBtn">
+        Request Withdrawal
+      </button>
+
+      <div class="status" id="withdrawStatus"></div>
 
     </div>
 
     <div class="card">
-
-      <div class="card-title">📊 Task Cycle</div>
-
-      <div class="info-grid">
-
-        <div class="info-box">
-          <small>Tasks per cycle</small>
-          <strong id="tasksPerCycle">7</strong>
-        </div>
-
-        <div class="info-box">
-          <small>Reward per task</small>
-          <strong id="taskReward">20 coins</strong>
-        </div>
-
-        <div class="info-box">
-          <small>Full cycle reward</small>
-          <strong id="cycleReward">140 coins</strong>
-        </div>
-
-        <div class="info-box">
-          <small>Cooldown</small>
-          <strong id="cooldown">2 hours</strong>
-        </div>
-
-      </div>
-
+      <h3>🎯 COD Mobile</h3>
+      <div class="muted">Coming Soon</div>
     </div>
 
-  </section>
-
-  <!-- REFER -->
-  <section class="page" id="referPage">
-
-    <div class="section-title">Refer & Earn</div>
-
-    <div class="section-subtitle">
-      Invite friends and earn GameMine Coins.
-    </div>
-
-    <div class="card referral-card">
-
-      <div class="referral-icon">👥</div>
-
-      <div class="referral-number" id="referPageCount">
-        0
-      </div>
-
-      <div class="referral-label">
-        Qualified referrals
-      </div>
-
-      <div class="referral-name" id="referralName">
-        Gamer
-      </div>
-
-      <div class="info-grid">
-
-        <div class="info-box">
-          <small>Reward per qualified referral</small>
-          <strong id="referralReward">
-            100 coins
-          </strong>
-        </div>
-
-        <div class="info-box">
-          <small>Referral status</small>
-          <strong>Active</strong>
-        </div>
-
-      </div>
-
-      <div class="referral-link" id="referralLink">
-        Loading referral link...
-      </div>
-
-      <button class="primary" id="copyReferral">
-        📋 Copy Referral Link
-      </button>
-
-      <button class="secondary" id="shareReferral">
-        📤 Share Referral Link
-      </button>
-
-    </div>
-
-    <div class="notice">
-      Your friend must join through your referral link and complete
-      the required GameMine activity before the referral becomes qualified.
-      Duplicate and suspicious referrals are not rewarded.
-    </div>
-
-  </section>
-
-  <!-- WITHDRAW -->
-  <section class="page" id="withdrawPage">
-
-    <div class="section-title">Withdraw</div>
-
-    <div class="section-subtitle">
-      Redeem GameMine Coins for gaming rewards.
-    </div>
-
-    <!-- FREE FIRE -->
-    <div class="game-card">
-
-      <div class="game-icon">🔥</div>
-
-      <div class="game-info">
-        <div class="game-name">Free Fire</div>
-        <div class="game-status">Available</div>
-      </div>
-
-      <button class="game-button" id="freeFireButton">
-        Withdraw
-      </button>
-
-    </div>
-
-    <!-- CODM -->
-    <div class="game-card">
-
-      <div class="game-icon">🎯</div>
-
-      <div class="game-info">
-        <div class="game-name">Call of Duty Mobile</div>
-        <div class="game-status soon">Coming Soon</div>
-      </div>
-
-      <button class="game-button disabled">
-        Soon
-      </button>
-
-    </div>
-
-    <!-- PUBG -->
-    <div class="game-card">
-
-      <div class="game-icon">🪖</div>
-
-      <div class="game-info">
-        <div class="game-name">PUBG Mobile</div>
-        <div class="game-status soon">Coming Soon</div>
-      </div>
-
-      <button class="game-button disabled">
-        Soon
-      </button>
-
-    </div>
-
-    <div class="notice">
-      Only your public game Player UID/ID is required.
-      Never submit your game password, OTP, Telegram code,
-      Facebook login, Google login, or recovery code.
+    <div class="card">
+      <h3>🪖 PUBG Mobile</h3>
+      <div class="muted">Coming Soon</div>
     </div>
 
   </section>
 
 </div>
 
-<!-- WITHDRAW MODAL -->
-<div class="modal" id="withdrawModal">
 
-  <div class="modal-box">
+<!-- BOTTOM NAV -->
+<nav class="nav">
 
-    <div class="modal-title">
-      🔥 Free Fire Withdrawal
-    </div>
+  <div class="nav-inner">
 
-    <div class="card-subtitle">
-      Select a reward and enter your public Free Fire Player UID.
-    </div>
-
-    <select class="input" id="rewardSelect">
-
-      <option value="100_diamonds" data-coins="10000">
-        100 Diamonds — 10,000 Coins
-      </option>
-
-      <option value="310_diamonds" data-coins="30000">
-        310 Diamonds — 30,000 Coins
-      </option>
-
-      <option value="520_diamonds" data-coins="50000">
-        520 Diamonds — 50,000 Coins
-      </option>
-
-    </select>
-
-    <input
-      class="input"
-      id="playerUid"
-      type="text"
-      inputmode="numeric"
-      placeholder="Free Fire Player UID"
-    >
-
-    <button class="primary" id="confirmWithdraw">
-      Submit Withdrawal
+    <button type="button" class="nav-btn active" data-page="mine">
+      <span class="nav-icon">⛏️</span>
+      Mine
     </button>
 
-    <button class="close-button" id="closeWithdraw">
-      Close
+    <button type="button" class="nav-btn" data-page="tasks">
+      <span class="nav-icon">📋</span>
+      Tasks
+    </button>
+
+    <button type="button" class="nav-btn" data-page="refer">
+      <span class="nav-icon">👥</span>
+      Refer
+    </button>
+
+    <button type="button" class="nav-btn" data-page="withdraw">
+      <span class="nav-icon">🎁</span>
+      Withdraw
     </button>
 
   </div>
 
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- NAVIGATION -->
-<nav class="bottom-nav">
-
-  <button class="nav-button active" data-page="minePage">
-    <span class="nav-icon">⛏️</span>
-    Mine
-  </button>
-
-  <button class="nav-button" data-page="tasksPage">
-    <span class="nav-icon">📋</span>
-    Tasks
-  </button>
-
-  <button class="nav-button" data-page="referPage">
-    <span class="nav-icon">👥</span>
-    Refer
-  </button>
-
-  <button class="nav-button" data-page="withdrawPage">
-    <span class="nav-icon">🎁</span>
-    Withdraw
-  </button>
-
 </nav>
 
+
 <script>
-/* =========================================================
-   GAMEMINE CONFIGURATION
-   ========================================================= */
+(function () {
 
-const BOT_USERNAME = "GamecoinRewards_bot";
+  "use strict";
 
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
-  authDomain: "gamemine-5d7ee.firebaseapp.com",
-  projectId: "gamemine-5d7ee",
-  storageBucket: "gamemine-5d7ee.firebasestorage.app",
-  messagingSenderId: "524612369793",
-  appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
-};
+  const tg = window.Telegram && window.Telegram.WebApp
+    ? window.Telegram.WebApp
+    : null;
 
-/* =========================================================
-   STATE
-   ========================================================= */
+  if (tg) {
+    try {
+      tg.ready();
+      tg.expand();
+    } catch (error) {
+      console.log("Telegram initialization:", error);
+    }
+  }
 
-const state = {
-  telegramId: "",
-  firstName: "Gamer",
-  lastName: "",
-  username: "",
-  balance: 0,
-  miningToday: 0,
-  level: 1,
-  miningSpeed: 0.05,
-  referralCount: 0,
-  referralReward: 100,
-  taskReward: 20,
-  tasksPerCycle: 7,
-  cooldownHours: 2,
-  miningActive: false,
-  tasks: []
-};
-
-let db = null;
-let firebaseLoaded = false;
-
-/* =========================================================
-   SAFE TOAST
-   ========================================================= */
-
-function toast(message) {
-
-  const box = document.getElementById("toast");
-
-  box.textContent = message;
-  box.classList.add("show");
-
-  clearTimeout(window.toastTimer);
-
-  window.toastTimer = setTimeout(function() {
-    box.classList.remove("show");
-  }, 2800);
-}
-
-/* =========================================================
-   TELEGRAM
-   ========================================================= */
-
-function initTelegram() {
-
-  try {
+  function getUserName() {
 
     if (
-      window.Telegram &&
-      window.Telegram.WebApp
+      tg &&
+      tg.initDataUnsafe &&
+      tg.initDataUnsafe.user
     ) {
 
-      const tg = window.Telegram.WebApp;
+      const user = tg.initDataUnsafe.user;
 
-      tg.ready();
+      const fullName = [
+        user.first_name || "",
+        user.last_name || ""
+      ].join(" ").trim();
 
-      if (typeof tg.expand === "function") {
-        tg.expand();
+      if (fullName) {
+        return fullName;
       }
 
-      const user =
-        tg.initDataUnsafe &&
-        tg.initDataUnsafe.user
-          ? tg.initDataUnsafe.user
-          : null;
+      if (user.username) {
+        return "@" + user.username;
+      }
+    }
 
-      if (user) {
+    return "Telegram User";
+  }
 
-        state.telegramId =
-          String(user.id || "");
 
-        state.firstName =
-          user.first_name ||
-          "Gamer";
+  /* PAGE NAVIGATION */
 
-        state.lastName =
-          user.last_name ||
-          "";
+  const navButtons = document.querySelectorAll(".nav-btn");
+  const pages = document.querySelectorAll(".page");
 
-        state.username =
-          user.username ||
-          "";
+  navButtons.forEach(function (button) {
 
+    button.addEventListener("click", function () {
+
+      const pageName = button.getAttribute("data-page");
+
+      pages.forEach(function (page) {
+        page.classList.remove("active");
+      });
+
+      navButtons.forEach(function (item) {
+        item.classList.remove("active");
+      });
+
+      const selectedPage = document.getElementById(pageName);
+
+      if (selectedPage) {
+        selectedPage.classList.add("active");
+      }
+
+      button.classList.add("active");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    });
+
+  });
+
+
+  /* USER NAME */
+
+  document.getElementById("userName").textContent = getUserName();
+
+
+  /* MINING BUTTON */
+
+  document.getElementById("mineBtn").addEventListener("click", function () {
+
+    const status = document.getElementById("mineStatus");
+
+    status.textContent = "⛏️ Mining started!";
+
+  });
+
+
+  /* TASK BUTTONS */
+
+  document.querySelectorAll(".task-btn").forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      const taskNumber = button.getAttribute("data-task");
+
+      const status = document.getElementById("taskStatus");
+
+      status.textContent =
+        "Task " + taskNumber + " selected.";
+
+    });
+
+  });
+
+
+  /* REFERRAL */
+
+  document.getElementById("shareBtn").addEventListener("click", function () {
+
+    const status = document.getElementById("referStatus");
+
+    let link = "";
+
+    if (
+      tg &&
+      tg.initDataUnsafe &&
+      tg.initDataUnsafe.user
+    ) {
+
+      const userId = tg.initDataUnsafe.user.id;
+
+      link =
+        "https://t.me/YOUR_BOT_USERNAME?start=ref_" +
+        userId;
+
+    }
+
+    if (tg && typeof tg.openTelegramLink === "function" && link) {
+
+      try {
+        tg.openTelegramLink(
+          "https://t.me/share/url?url=" +
+          encodeURIComponent(link)
+        );
+
+        status.textContent = "Referral link opened.";
+
+        return;
+
+      } catch (error) {
+        console.log(error);
       }
 
     }
 
-  } catch (error) {
+    status.textContent =
+      "Your referral link will be available after the bot username is connected.";
 
-    console.log("Telegram:", error);
+  });
 
-  }
 
-}
+  /* REWARD SELECTION */
 
-/* =========================================================
-   USER NAME
-   ========================================================= */
+  let selectedReward = null;
 
-function getDisplayName() {
+  document.querySelectorAll(".reward").forEach(function (reward) {
 
-  if (state.firstName) {
-    return state.firstName;
-  }
+    reward.addEventListener("click", function () {
 
-  if (state.username) {
-    return "@" + state.username;
-  }
+      document.querySelectorAll(".reward").forEach(function (item) {
+        item.classList.remove("selected");
+      });
 
-  return "Gamer";
-}
+      reward.classList.add("selected");
 
-/* =========================================================
-   REFERRAL LINK
-   ========================================================= */
+      selectedReward = {
+        reward: reward.getAttribute("data-reward"),
+        coins: Number(reward.getAttribute("data-coins"))
+      };
 
-function getReferralCode() {
+      document.getElementById("withdrawStatus").textContent =
+        "Selected: " + selectedReward.reward;
 
-  if (state.telegramId) {
-    return state.telegramId;
-  }
-
-  return "guest";
-}
-
-function updateReferralLink() {
-
-  const code = getReferralCode();
-
-  const link =
-    "https://t.me/" +
-    BOT_USERNAME +
-    "?start=ref_" +
-    encodeURIComponent(code);
-
-  document.getElementById("referralLink").textContent = link;
-
-  return link;
-}
-
-/* =========================================================
-   UI UPDATE
-   ========================================================= */
-
-function updateUI() {
-
-  document.getElementById("userName").textContent =
-    getDisplayName();
-
-  document.getElementById("referralName").textContent =
-    getDisplayName();
-
-  document.getElementById("balance").textContent =
-    Math.floor(state.balance);
-
-  document.getElementById("todayMining").textContent =
-    Math.floor(state.miningToday);
-
-  document.getElementById("referralCount").textContent =
-    state.referralCount;
-
-  document.getElementById("referPageCount").textContent =
-    state.referralCount;
-
-  document.getElementById("levelBadge").textContent =
-    "Level " + state.level;
-
-  document.getElementById("miningRate").textContent =
-    "+" + Number(state.miningSpeed).toFixed(2) + "/min";
-
-  document.getElementById("taskReward").textContent =
-    state.taskReward + " coins";
-
-  document.getElementById("tasksPerCycle").textContent =
-    state.tasksPerCycle;
-
-  document.getElementById("cycleReward").textContent =
-    (state.taskReward * state.tasksPerCycle) +
-    " coins";
-
-  document.getElementById("cooldown").textContent =
-    state.cooldownHours + " hours";
-
-  document.getElementById("referralReward").textContent =
-    state.referralReward + " coins";
-
-  document.getElementById("mineButton").textContent =
-    state.miningActive
-      ? "Mining Active ⛏️"
-      : "Start Mining";
-
-  updateReferralLink();
-
-}
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-function showPage(pageId) {
-
-  document.querySelectorAll(".page")
-    .forEach(function(page) {
-      page.classList.remove("active");
     });
 
-  const target =
-    document.getElementById(pageId);
+  });
 
-  if (target) {
-    target.classList.add("active");
-  }
 
-  document.querySelectorAll(".nav-button")
-    .forEach(function(button) {
-      button.classList.remove("active");
-    });
+  /* WITHDRAW */
 
-  const activeButton =
-    document.querySelector(
-      '.nav-button[data-page="' +
-      pageId +
-      '"]'
-    );
+  document.getElementById("withdrawBtn").addEventListener("click", function () {
 
-  if (activeButton) {
-    activeButton.classList.add("active");
-  }
+    const status = document.getElementById("withdrawStatus");
+    const uid = document.getElementById("playerUid").value.trim();
 
-  windo
+    if (!selectedReward) {
+      status.textContent = "Please select a reward first.";
+      return;
+    }
+
+    if (!uid) {
+      status.textContent = "Please enter your Free Fire Player UID.";
+      return;
+    }
+
+    status.textContent =
+      "Withdrawal request ready. Backend connection comes next.";
+
+  });
+
+
+})();
+</script>
+
+</body>
+</html>
