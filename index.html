@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>GameMine v3</title>
+<title>GameMine v4</title>
 
 <style>
 *{
@@ -14,17 +14,24 @@
   -webkit-tap-highlight-color:transparent;
 }
 
+html,body{
+  width:100%;
+  min-height:100%;
+}
+
 body{
   background:#0b0d12;
   color:#fff;
   font-family:Arial,sans-serif;
   min-height:100vh;
-  padding-bottom:85px;
+  padding-bottom:90px;
 }
 
 button{
-  font-family:inherit;
+  font-family:Arial,sans-serif;
   touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
 }
 
 .app{
@@ -32,6 +39,8 @@ button{
   margin:auto;
   padding:18px;
 }
+
+/* HEADER */
 
 .header{
   display:flex;
@@ -58,6 +67,8 @@ button{
   color:#ffd400;
 }
 
+/* PAGES */
+
 .page{
   display:none;
 }
@@ -65,6 +76,8 @@ button{
 .page.active{
   display:block;
 }
+
+/* TEXT */
 
 .page-title{
   font-size:25px;
@@ -77,6 +90,8 @@ button{
   font-size:14px;
   margin-bottom:20px;
 }
+
+/* BALANCE */
 
 .balance-card{
   background:linear-gradient(145deg,#171b24,#10131a);
@@ -109,6 +124,8 @@ button{
   margin-top:5px;
   font-weight:700;
 }
+
+/* MINING */
 
 .mining-card{
   background:#151820;
@@ -145,6 +162,9 @@ button{
   font-size:17px;
   font-weight:900;
   cursor:pointer;
+  display:block;
+  position:relative;
+  z-index:20;
 }
 
 .mine-button:active{
@@ -157,6 +177,8 @@ button{
   color:#8e96a6;
   font-size:13px;
 }
+
+/* STATS */
 
 .stats{
   display:grid;
@@ -181,6 +203,8 @@ button{
   font-size:19px;
   font-weight:800;
 }
+
+/* TASKS */
 
 .tasks-container{
   display:flex;
@@ -244,13 +268,19 @@ button{
   padding:12px 15px;
   white-space:nowrap;
   cursor:pointer;
+  display:block;
   position:relative;
-  z-index:5;
+  z-index:30;
   pointer-events:auto;
+  min-width:65px;
 }
 
 .task-button:active{
   transform:scale(.94);
+}
+
+.task-button:disabled{
+  opacity:.6;
 }
 
 .ad-badge{
@@ -289,6 +319,8 @@ button{
   font-size:13px;
   line-height:1.5;
 }
+
+/* MODAL */
 
 .task-modal{
   position:fixed;
@@ -352,7 +384,11 @@ button{
   font-weight:800;
   font-size:15px;
   cursor:pointer;
+  position:relative;
+  z-index:1100;
 }
+
+/* OTHER */
 
 .coming-card{
   background:#151820;
@@ -375,17 +411,19 @@ button{
   margin-bottom:8px;
 }
 
+/* NAV */
+
 .bottom-nav{
   position:fixed;
   left:0;
   right:0;
   bottom:0;
-  background:rgba(13,15,21,.97);
+  background:rgba(13,15,21,.98);
   border-top:1px solid #292f3b;
-  height:73px;
+  height:75px;
   display:flex;
   justify-content:center;
-  z-index:100;
+  z-index:5000;
 }
 
 .nav-inner{
@@ -406,6 +444,9 @@ button{
   gap:4px;
   font-size:11px;
   cursor:pointer;
+  position:relative;
+  z-index:5001;
+  pointer-events:auto;
 }
 
 .nav-icon{
@@ -422,7 +463,10 @@ button{
 
 <div class="app">
 
+<!-- HEADER -->
+
 <div class="header">
+
   <div class="logo">
     Game<span>Mine</span>
   </div>
@@ -430,6 +474,7 @@ button{
   <div class="level" id="level">
     Level 1
   </div>
+
 </div>
 
 
@@ -470,7 +515,10 @@ button{
 
     </div>
 
-    <button class="mine-button" id="mineButton">
+    <button
+      type="button"
+      class="mine-button"
+      id="mineButton">
       START MINING ⛏️
     </button>
 
@@ -526,7 +574,7 @@ button{
   </div>
 
   <div id="firebaseTest" class="test-box">
-    Firebase connection test will appear here.
+    Firebase connection test...
   </div>
 
   <div id="tasksContainer" class="tasks-container">
@@ -666,7 +714,10 @@ button{
       +20 🪙
     </div>
 
-    <button class="modal-close" id="modalClose">
+    <button
+      type="button"
+      class="modal-close"
+      id="modalClose">
       CLOSE
     </button>
 
@@ -675,41 +726,310 @@ button{
 </div>
 
 
-<!-- NAV -->
+<!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
 
-<div class="nav-inner">
+  <div class="nav-inner">
 
-<button class="nav-button active" id="navMine">
-  <div class="nav-icon">⛏️</div>
-  Mine
-</button>
+    <button
+      type="button"
+      class="nav-button active"
+      id="navMine">
 
-<button class="nav-button" id="navTasks">
-  <div class="nav-icon">📋</div>
-  Tasks
-</button>
+      <div class="nav-icon">⛏️</div>
+      Mine
 
-<button class="nav-button" id="navRefer">
-  <div class="nav-icon">👥</div>
-  Refer
-</button>
+    </button>
 
-<button class="nav-button" id="navWithdraw">
-  <div class="nav-icon">🎁</div>
-  Withdraw
-</button>
+
+    <button
+      type="button"
+      class="nav-button"
+      id="navTasks">
+
+      <div class="nav-icon">📋</div>
+      Tasks
+
+    </button>
+
+
+    <button
+      type="button"
+      class="nav-button"
+      id="navRefer">
+
+      <div class="nav-icon">👥</div>
+      Refer
+
+    </button>
+
+
+    <button
+      type="button"
+      class="nav-button"
+      id="navWithdraw">
+
+      <div class="nav-icon">🎁</div>
+      Withdraw
+
+    </button>
+
+  </div>
 
 </div>
-</div>
 
+
+<!--
+====================================================
+NORMAL JAVASCRIPT
+This is intentionally NOT dependent on Firebase.
+So navigation/buttons continue working even if
+Firebase has an error.
+====================================================
+-->
+
+<script>
+
+(function(){
+
+  "use strict";
+
+
+  function get(id){
+    return document.getElementById(id);
+  }
+
+
+  /* =========================
+     PAGE NAVIGATION
+  ========================= */
+
+  function showPage(name){
+
+    var pages = [
+      "minePage",
+      "tasksPage",
+      "referPage",
+      "withdrawPage"
+    ];
+
+    pages.forEach(function(id){
+
+      var page = get(id);
+
+      if(page){
+        page.classList.remove("active");
+      }
+
+    });
+
+
+    var selected = get(name + "Page");
+
+    if(selected){
+      selected.classList.add("active");
+    }
+
+
+    var buttons = [
+      "navMine",
+      "navTasks",
+      "navRefer",
+      "navWithdraw"
+    ];
+
+    buttons.forEach(function(id){
+
+      var button = get(id);
+
+      if(button){
+        button.classList.remove("active");
+      }
+
+    });
+
+
+    var activeButton = get(
+      "nav" +
+      name.charAt(0).toUpperCase() +
+      name.slice(1)
+    );
+
+    if(activeButton){
+      activeButton.classList.add("active");
+    }
+
+
+    /* Ask Firebase script to load tasks */
+
+    if(
+      name === "tasks" &&
+      typeof window.loadGameMineTasks === "function"
+    ){
+
+      window.loadGameMineTasks();
+
+    }
+
+  }
+
+
+  /* NAV BUTTONS */
+
+  get("navMine").onclick = function(){
+    showPage("mine");
+  };
+
+
+  get("navTasks").onclick = function(){
+    showPage("tasks");
+  };
+
+
+  get("navRefer").onclick = function(){
+    showPage("refer");
+  };
+
+
+  get("navWithdraw").onclick = function(){
+    showPage("withdraw");
+  };
+
+
+  /* =========================
+     MINING BUTTON
+  ========================= */
+
+  var miningActive = false;
+
+
+  get("mineButton").onclick = function(){
+
+    if(miningActive){
+      return;
+    }
+
+
+    miningActive = true;
+
+
+    this.textContent =
+      "MINING... ⛏️";
+
+
+    this.disabled = true;
+
+
+    get("miningStatus").textContent =
+      "🟡 Mining is active";
+
+  };
+
+
+  /* =========================
+     MODAL CLOSE
+  ========================= */
+
+  get("modalClose").onclick = function(){
+
+    get("taskModal").classList.remove("show");
+
+  };
+
+
+  get("taskModal").onclick = function(event){
+
+    if(event.target === get("taskModal")){
+
+      get("taskModal").classList.remove("show");
+
+    }
+
+  };
+
+
+  /* =========================
+     TASK BUTTON DELEGATION
+  ========================= */
+
+  get("tasksContainer").onclick = function(event){
+
+    var button =
+      event.target.closest(".task-button");
+
+
+    if(!button){
+      return;
+    }
+
+
+    var taskData =
+      button.getAttribute("data-task");
+
+
+    if(!taskData){
+      return;
+    }
+
+
+    try{
+
+      var task =
+        JSON.parse(
+          decodeURIComponent(taskData)
+        );
+
+
+      get("modalIcon").textContent =
+        task.type === "rewarded_ad"
+          ? "🎬"
+          : "📋";
+
+
+      get("modalTitle").textContent =
+        task.title;
+
+
+      get("modalDescription").textContent =
+        task.description;
+
+
+      get("modalReward").textContent =
+        "+" +
+        Number(task.reward || 0)
+          .toLocaleString() +
+        " 🪙";
+
+
+      get("taskModal")
+        .classList.add("show");
+
+    }
+    catch(error){
+
+      console.error(
+        "Task button error:",
+        error
+      );
+
+    }
+
+  };
+
+
+})();
+
+</script>
+
+
+<!--
+====================================================
+FIREBASE
+====================================================
+-->
 
 <script type="module">
-
-/* ========================= */
-/* FIREBASE */
-/* ========================= */
 
 import {
   initializeApp
@@ -750,57 +1070,61 @@ const firebaseConfig = {
 const app =
   initializeApp(firebaseConfig);
 
+
 const db =
   getFirestore(app);
 
 
-const telegramUserId =
-  "test_user";
-
-
-/* ========================= */
-/* USER */
-/* ========================= */
+/* =========================
+   LOAD USER
+========================= */
 
 async function loadUser(){
 
   try{
 
-    const userSnap =
+    const snap =
       await getDoc(
         doc(
           db,
           "users",
-          telegramUserId
+          "test_user"
         )
       );
 
 
-    if(!userSnap.exists()){
+    if(!snap.exists()){
       return;
     }
 
 
     const user =
-      userSnap.data();
+      snap.data();
 
+
+    /*
+      IMPORTANT:
+      Balance remains whatever is
+      already in Firestore.
+      We are NOT changing it.
+    */
 
     document.getElementById("balance")
       .textContent =
       Number(user.balance || 0)
-      .toLocaleString();
+        .toLocaleString();
 
 
     document.getElementById("todayMining")
       .textContent =
       Number(user.mining_today || 0)
-      .toLocaleString();
+        .toLocaleString();
 
 
     document.getElementById("referrals")
       .textContent =
       Number(user.referral_count || 0)
-      .toLocaleString();
+        .toLocaleString();
 
 
     document.getElementById("level")
@@ -809,8 +1133,10 @@ async function loadUser(){
       Number(user.level || 1);
 
 
-    const speed =
-      Number(user.mining_speed || 0.05);
+    var speed =
+      Number(
+        user.mining_speed || 0.05
+      );
 
 
     document.getElementById("miningRate")
@@ -823,7 +1149,7 @@ async function loadUser(){
   catch(error){
 
     console.error(
-      "User error:",
+      "User Firebase error:",
       error
     );
 
@@ -832,36 +1158,37 @@ async function loadUser(){
 }
 
 
-/* ========================= */
-/* TASKS + DIRECT TEST */
-/* ========================= */
+/* =========================
+   LOAD TASKS
+========================= */
 
 async function loadTasks(){
 
-  const container =
+  var container =
     document.getElementById(
       "tasksContainer"
     );
 
-  const testBox =
+
+  var testBox =
     document.getElementById(
       "firebaseTest"
     );
 
 
   container.innerHTML =
-    `<div class="loading">Loading tasks...</div>`;
+    '<div class="loading">Loading tasks...</div>';
 
 
-  testBox.innerHTML =
-    "🔄 Testing Firebase...";
+  testBox.textContent =
+    "🔄 Connecting to Firebase...";
 
 
   try{
 
-    /* DIRECT TEST OF task_1 */
+    /* DIRECT task_1 TEST */
 
-    const directTask =
+    var task1 =
       await getDoc(
         doc(
           db,
@@ -871,33 +1198,33 @@ async function loadTasks(){
       );
 
 
-    if(directTask.exists()){
+    if(task1.exists()){
 
-      const data =
-        directTask.data();
+      var first =
+        task1.data();
 
 
       testBox.innerHTML =
-        "✅ Firebase can read task_1.<br>" +
+        "✅ Firebase can read task_1<br>" +
         "Title: " +
-        (data.title || "No title") +
+        (first.title || "No title") +
         "<br>" +
         "Reward: " +
-        Number(data.reward || 0) +
+        Number(first.reward || 0) +
         " coins";
 
     }
     else{
 
       testBox.innerHTML =
-        "❌ Firebase connected, but task_1 was NOT found.";
+        "❌ Firebase connected, but task_1 was not found.";
 
     }
 
 
     /* GET ALL TASKS */
 
-    const snapshot =
+    var snapshot =
       await getDocs(
         collection(
           db,
@@ -907,7 +1234,7 @@ async function loadTasks(){
 
 
     console.log(
-      "Task documents found:",
+      "GameMine tasks:",
       snapshot.size
     );
 
@@ -918,13 +1245,12 @@ async function loadTasks(){
 
         <div class="error">
 
-          ❌ Firebase returned 0 documents
-          from the <b>tasks</b> collection.
+          ❌ Firebase returned 0 task documents.
 
           <br><br>
 
-          Direct task_1 test:
-          ${directTask.exists() ? "FOUND" : "NOT FOUND"}
+          Direct task_1:
+          ${task1.exists() ? "FOUND" : "NOT FOUND"}
 
         </div>
 
@@ -935,521 +1261,178 @@ async function loadTasks(){
     }
 
 
-    const tasks = [];
+    var tasks = [];
 
 
-    snapshot.forEach(
-      function(taskDoc){
+    snapshot.forEach(function(taskDoc){
 
-        const data =
-          taskDoc.data();
-
-
-        /* NO ACTIVE/CYCLE FILTER */
-
-        tasks.push({
-
-          id:
-            taskDoc.id,
-
-          title:
-            data.title ||
-            "GameMine Task",
-
-          description:
-            data.description ||
-            "",
-
-          reward:
-            Number(data.reward || 0),
-
-          task_number:
-            Number(
-              data.task_number || 0
-            ),
-
-          type:
-            data.type ||
-            "normal"
-
-        });
-
-      }
-    );
+      var data =
+        taskDoc.data();
 
 
-    tasks.sort(
-      function(a,b){
+      /*
+        No active/cycle filter here.
+        We first confirm that Firebase
+        can actually send the documents.
+      */
 
-        return (
-          a.task_number -
-          b.task_number
-        );
+      tasks.push({
 
-      }
-    );
+        id:
+          taskDoc.id,
+
+        title:
+          data.title ||
+          "GameMine Task",
+
+        description:
+          data.description ||
+          "",
+
+        reward:
+          Number(data.reward || 0),
+
+        task_number:
+          Number(
+            data.task_number || 0
+          ),
+
+        type:
+          data.type ||
+          "normal"
+
+      });
+
+    });
+
+
+    tasks.sort(function(a,b){
+
+      return (
+        a.task_number -
+        b.task_number
+      );
+
+    });
 
 
     container.innerHTML = "";
 
 
-    tasks.forEach(
-      function(task){
+    tasks.forEach(function(task){
 
-        const card =
-          document.createElement(
-            "div"
-          );
-
-        card.className =
-          "task-card";
+      var card =
+        document.createElement("div");
 
 
-        const number =
-          document.createElement(
-            "div"
-          );
-
-        number.className =
-          "task-number";
-
-        number.textContent =
-          task.task_number;
+      card.className =
+        "task-card";
 
 
-        const info =
-          document.createElement(
-            "div"
-          );
-
-        info.className =
-          "task-info";
+      var number =
+        document.createElement("div");
 
 
-        const title =
-          document.createElement(
-            "div"
-          );
-
-        title.className =
-          "task-title";
-
-        title.textContent =
-          task.title;
+      number.className =
+        "task-number";
 
 
-        if(
-          task.type ===
-          "rewarded_ad"
-        ){
-
-          const badge =
-            document.createElement(
-              "span"
-            );
-
-          badge.className =
-            "ad-badge";
-
-          badge.textContent =
-            "AD";
-
-          title.appendChild(
-            badge
-          );
-
-        }
+      number.textContent =
+        task.task_number;
 
 
-        const description =
-          document.createElement(
-            "div"
-          );
-
-        description.className =
-          "task-description";
-
-        description.textContent =
-          task.description;
+      var info =
+        document.createElement("div");
 
 
-        const reward =
-          document.createElement(
-            "div"
-          );
-
-        reward.className =
-          "task-reward";
-
-        reward.textContent =
-          "+" +
-          task.reward.toLocaleString() +
-          " 🪙";
+      info.className =
+        "task-info";
 
 
-        info.appendChild(
-          title
-        );
-
-        info.appendChild(
-          description
-        );
-
-        info.appendChild(
-          reward
-        );
+      var title =
+        document.createElement("div");
 
 
-        const button =
-          document.createElement(
-            "button"
-          );
-
-        button.type =
-          "button";
-
-        button.className =
-          "task-button";
-
-        button.textContent =
-          "START";
+      title.className =
+        "task-title";
 
 
-        button.addEventListener(
-          "click",
-          function(){
-
-            openTask(
-              task
-            );
-
-          }
-        );
+      title.textContent =
+        task.title;
 
 
-        card.appendChild(
-          number
-        );
+      if(
+        task.type ===
+        "rewarded_ad"
+      ){
 
-        card.appendChild(
-          info
-        );
-
-        card.appendChild(
-          button
-        );
+        var badge =
+          document.createElement("span");
 
 
-        container.appendChild(
-          card
+        badge.className =
+          "ad-badge";
+
+
+        badge.textContent =
+          "AD";
+
+
+        title.appendChild(
+          badge
         );
 
       }
-    );
 
-  }
-  catch(error){
 
-    console.error(
-      "Tasks error:",
-      error
-    );
+      var description =
+        document.createElement("div");
 
 
-    document.getElementById(
-      "firebaseTest"
-    ).innerHTML =
-      "❌ Firebase error: " +
-      error.message;
+      description.className =
+        "task-description";
 
 
-    container.innerHTML = `
+      description.textContent =
+        task.description;
 
-      <div class="error">
 
-        ❌ Unable to load tasks.
+      var reward =
+        document.createElement("div");
 
-        <br><br>
 
-        ${error.message}
+      reward.className =
+        "task-reward";
 
-      </div>
 
-    `;
+      reward.textContent =
+        "+" +
+        task.reward.toLocaleString() +
+        " 🪙";
 
-  }
 
-}
+      info.appendChild(title);
+      info.appendChild(description);
+      info.appendChild(reward);
 
 
-/* ========================= */
-/* OPEN TASK */
-/* ========================= */
+      var button =
+        document.createElement("button");
 
-function openTask(task){
 
-  document.getElementById(
-    "modalIcon"
-  ).textContent =
-    task.type === "rewarded_ad"
-      ? "🎬"
-      : "📋";
+      button.type =
+        "button";
 
 
-  document.getElementById(
-    "modalTitle"
-  ).textContent =
-    task.title;
+      button.className =
+        "task-button";
 
 
-  document.getElementById(
-    "modalDescription"
-  ).textContent =
-    task.description;
+      button.textContent =
+        "START";
 
 
-  document.getElementById(
-    "modalReward"
-  ).textContent =
-    "+" +
-    task.reward.toLocaleString() +
-    " 🪙";
-
-
-  document.getElementById(
-    "taskModal"
-  ).classList.add(
-    "show"
-  );
-
-}
-
-
-/* ========================= */
-/* MODAL */
-/* ========================= */
-
-document.getElementById(
-  "modalClose"
-).addEventListener(
-  "click",
-  function(){
-
-    document.getElementById(
-      "taskModal"
-    ).classList.remove(
-      "show"
-    );
-
-  }
-);
-
-
-document.getElementById(
-  "taskModal"
-).addEventListener(
-  "click",
-  function(event){
-
-    if(
-      event.target === this
-    ){
-
-      this.classList.remove(
-        "show"
-      );
-
-    }
-
-  }
-);
-
-
-/* ========================= */
-/* MINING */
-/* ========================= */
-
-let miningActive =
-  false;
-
-
-document.getElementById(
-  "mineButton"
-).addEventListener(
-  "click",
-  function(){
-
-    if(miningActive){
-      return;
-    }
-
-
-    miningActive =
-      true;
-
-
-    this.textContent =
-      "MINING... ⛏️";
-
-
-    this.disabled =
-      true;
-
-
-    this.style.opacity =
-      "0.7";
-
-
-    document.getElementById(
-      "miningStatus"
-    ).textContent =
-      "🟡 Mining is active";
-
-  }
-);
-
-
-/* ========================= */
-/* NAVIGATION */
-/* ========================= */
-
-function showPage(
-  pageName
-){
-
-  const pages = {
-
-    mine:
-      document.getElementById(
-        "minePage"
-      ),
-
-    tasks:
-      document.getElementById(
-        "tasksPage"
-      ),
-
-    refer:
-      document.getElementById(
-        "referPage"
-      ),
-
-    withdraw:
-      document.getElementById(
-        "withdrawPage"
-      )
-
-  };
-
-
-  Object.values(
-    pages
-  ).forEach(
-    function(page){
-
-      page.classList.remove(
-        "active"
-      );
-
-    }
-  );
-
-
-  pages[pageName]
-    .classList.add(
-      "active"
-    );
-
-
-  document.querySelectorAll(
-    ".nav-button"
-  ).forEach(
-    function(button){
-
-      button.classList.remove(
-        "active"
-      );
-
-    }
-  );
-
-
-  if(pageName === "mine"){
-
-    document.getElementById(
-      "navMine"
-    ).classList.add(
-      "active"
-    );
-
-  }
-
-
-  if(pageName === "tasks"){
-
-    document.getElementById(
-      "navTasks"
-    ).classList.add(
-      "active"
-    );
-
-    loadTasks();
-
-  }
-
-
-  if(pageName === "refer"){
-
-    document.getElementById(
-      "navRefer"
-    ).classList.add(
-      "active"
-    );
-
-  }
-
-
-  if(pageName === "withdraw"){
-
-    document.getElementById(
-      "navWithdraw"
-    ).classList.add(
-      "active"
-    );
-
-  }
-
-}
-
-
-/* ========================= */
-/* NAV BUTTONS */
-/* ========================= */
-
-document.getElementById(
-  "navMine"
-).addEventListener(
-  "click",
-  function(){
-
-    showPage("mine");
-
-  }
-);
-
-
-document.getElementById(
-  "navTasks"
-).addEventListener(
-  "click",
-  function(){
-
-    showPage("tasks");
-
-  }
-);
-
-
-document.getElementById(
-  "navRefer"
-).ad
+      /*
+        Store the task directly on the button.
+        The normal JavaScript above handles
+        the c
