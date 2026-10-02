@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#08090d">
-  <title>GameMine</title>
+  <title>GameMine Firebase Test</title>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-compat.js"></script>
 
@@ -19,24 +18,16 @@
     body {
       margin: 0;
       background: #08090d;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      min-height: 100vh;
-    }
-
-    button,
-    input,
-    select {
-      font: inherit;
+      color: white;
+      font-family: Arial, sans-serif;
     }
 
     button {
+      font: inherit;
       cursor: pointer;
-      border: 0;
     }
 
     .app {
-      width: 100%;
       max-width: 520px;
       margin: auto;
       min-height: 100vh;
@@ -44,14 +35,14 @@
     }
 
     .header {
-      padding: 18px 18px 10px;
+      padding: 18px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
     .logo {
-      font-size: 22px;
+      font-size: 23px;
       font-weight: 800;
     }
 
@@ -62,10 +53,9 @@
     .level {
       background: #171922;
       border: 1px solid #292c38;
-      padding: 8px 12px;
       border-radius: 20px;
+      padding: 8px 12px;
       font-size: 13px;
-      color: #ddd;
     }
 
     .page {
@@ -89,31 +79,39 @@
       margin-bottom: 20px;
     }
 
+    .card,
+    .balance-card,
+    .task,
+    .game-option,
+    .ref-box {
+      background: #111218;
+      border: 1px solid #292c36;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
     .balance-card {
-      background: linear-gradient(145deg, #171922, #101117);
-      border: 1px solid #292c38;
-      border-radius: 24px;
-      padding: 28px 20px;
       text-align: center;
-      margin-bottom: 15px;
+      padding: 28px 20px;
     }
 
     .coin {
-      width: 82px;
-      height: 82px;
-      margin: 0 auto 14px;
+      width: 80px;
+      height: 80px;
+      margin: auto auto 14px;
       border-radius: 50%;
       background: #ffd84d;
+      color: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #171717;
       font-size: 38px;
-      box-shadow: 0 0 30px rgba(255,216,77,.18);
     }
 
-    .balance-label {
-      color: #90939e;
+    .balance-label,
+    .muted {
+      color: #8d919d;
       font-size: 13px;
     }
 
@@ -125,58 +123,40 @@
 
     .unit {
       color: #ffd84d;
-      font-size: 15px;
-      margin-left: 3px;
-    }
-
-    .card {
-      background: #111218;
-      border: 1px solid #252832;
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 14px;
+      font-size: 14px;
     }
 
     .card-title {
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
-    .muted {
-      color: #8d919d;
-      font-size: 13px;
-    }
-
-    .mining-rate {
+    .rate {
       font-size: 24px;
       font-weight: 800;
       margin: 12px 0;
     }
 
-    .primary-btn {
+    .primary-btn,
+    .secondary-btn {
       width: 100%;
-      background: #ffd84d;
-      color: #101010;
-      padding: 14px;
-      border-radius: 14px;
-      font-weight: 800;
+      padding: 13px;
+      border-radius: 13px;
       margin-top: 8px;
+      font-weight: 800;
     }
 
-    .primary-btn:active {
-      transform: scale(.98);
+    .primary-btn {
+      background: #ffd84d;
+      color: #111;
+      border: none;
     }
 
     .secondary-btn {
-      width: 100%;
       background: #1b1d25;
-      color: #fff;
+      color: white;
       border: 1px solid #30333e;
-      padding: 13px;
-      border-radius: 14px;
-      font-weight: 700;
-      margin-top: 8px;
     }
 
     .stats {
@@ -187,7 +167,7 @@
 
     .stat {
       background: #111218;
-      border: 1px solid #252832;
+      border: 1px solid #292c36;
       border-radius: 18px;
       padding: 16px;
     }
@@ -203,12 +183,16 @@
       margin-top: 7px;
     }
 
-    .task {
-      background: #111218;
-      border: 1px solid #282b35;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 12px;
+    .firebase-status {
+      background: #101820;
+      border: 1px solid #294052;
+      color: #a9d5ee;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+      word-break: break-word;
     }
 
     .task-top {
@@ -220,13 +204,13 @@
     .task-number {
       color: #ffd84d;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 5px;
     }
 
     .task-title {
-      font-size: 15px;
       font-weight: 800;
+      font-size: 15px;
     }
 
     .task-description {
@@ -237,42 +221,29 @@
     }
 
     .reward {
-      white-space: nowrap;
       color: #ffd84d;
-      font-size: 13px;
       font-weight: 800;
+      white-space: nowrap;
     }
 
     .task-btn {
       width: 100%;
-      background: #1b1d25;
-      border: 1px solid #30333e;
-      color: #fff;
+      margin-top: 13px;
       padding: 11px;
       border-radius: 12px;
-      margin-top: 13px;
-      font-weight: 700;
-    }
-
-    .task-btn.done {
-      background: #15251c;
-      border-color: #31563d;
-      color: #78d99a;
-    }
-
-    .task-btn.ad {
-      background: #242018;
-      border-color: #51462a;
-      color: #ffd84d;
+      background: #1b1d25;
+      border: 1px solid #30333e;
+      color: white;
+      font-weight: 800;
     }
 
     .empty {
       text-align: center;
-      padding: 45px 20px;
-      color: #8d919d;
+      padding: 40px 20px;
       background: #111218;
-      border: 1px solid #252832;
+      border: 1px solid #292c36;
       border-radius: 20px;
+      color: #8d919d;
     }
 
     .empty-icon {
@@ -280,50 +251,31 @@
       margin-bottom: 10px;
     }
 
-    .ref-box {
-      background: linear-gradient(145deg, #181a23, #101117);
-      border: 1px solid #2a2d39;
-      border-radius: 20px;
-      padding: 20px;
-    }
-
-    .ref-link {
-      margin-top: 14px;
-      background: #090a0e;
-      border: 1px solid #30333d;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 12px;
-      color: #bbbfc9;
-      word-break: break-all;
-    }
-
     .reward-info {
       display: flex;
       justify-content: space-between;
-      padding: 13px 0;
+      padding: 12px 0;
       border-bottom: 1px solid #252832;
+      font-size: 13px;
     }
 
     .reward-info:last-child {
       border-bottom: 0;
     }
 
-    .game-option {
-      background: #111218;
-      border: 1px solid #292c36;
-      border-radius: 18px;
-      padding: 17px;
-      margin-bottom: 12px;
+    .ref-link {
+      background: #090a0e;
+      border: 1px solid #30333e;
+      padding: 12px;
+      border-radius: 12px;
+      word-break: break-all;
+      color: #bbb;
+      font-size: 12px;
+      margin-top: 14px;
     }
 
     .game-option.disabled {
-      opacity: .55;
-    }
-
-    .game-name {
-      font-weight: 800;
-      font-size: 16px;
+      opacity: .5;
     }
 
     .available {
@@ -333,7 +285,7 @@
     }
 
     .coming {
-      color: #888d98;
+      color: #888;
       font-size: 12px;
       margin-top: 5px;
     }
@@ -349,47 +301,42 @@
 
     label {
       display: block;
-      color: #aaaeb9;
+      color: #aaa;
       font-size: 12px;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
     }
 
     input,
     select {
       width: 100%;
-      background: #0a0b0f;
-      color: #fff;
+      background: #090a0e;
+      color: white;
       border: 1px solid #30333e;
       border-radius: 12px;
       padding: 13px;
+      margin-bottom: 12px;
       outline: none;
-      margin-bottom: 13px;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #ffd84d;
     }
 
     .notice {
       background: #171922;
-      border: 1px solid #292c37;
-      border-radius: 14px;
-      padding: 13px;
-      color: #9da1ac;
+      border: 1px solid #292c36;
+      border-radius: 13px;
+      padding: 12px;
+      color: #999;
       font-size: 12px;
       line-height: 1.5;
       margin-bottom: 14px;
     }
 
     .status {
-      margin: 12px 0;
-      padding: 12px;
-      border-radius: 12px;
-      background: #14161d;
-      color: #aaaeb9;
-      font-size: 12px;
       display: none;
+      background: #171922;
+      border-radius: 12px;
+      padding: 12px;
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 12px;
     }
 
     .status.show {
@@ -403,21 +350,21 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 520px;
-      background: rgba(10,11,15,.96);
+      background: rgba(10,11,15,.97);
       border-top: 1px solid #252832;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      padding: 8px 6px 10px;
-      z-index: 50;
-      backdrop-filter: blur(10px);
+      padding: 8px 5px 10px;
+      z-index: 20;
     }
 
     .nav-btn {
       background: transparent;
+      border: none;
       color: #777c89;
-      padding: 8px 3px;
       font-size: 11px;
       font-weight: 700;
+      padding: 7px 2px;
     }
 
     .nav-icon {
@@ -433,10 +380,9 @@
     .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.72);
+      background: rgba(0,0,0,.75);
       display: none;
       align-items: flex-end;
-      justify-content: center;
       z-index: 100;
     }
 
@@ -451,37 +397,17 @@
       border: 1px solid #292c36;
       border-radius: 24px 24px 0 0;
       padding: 22px;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-
-    .modal h2 {
-      margin: 0 0 8px;
-      font-size: 21px;
     }
 
     .close {
       float: right;
-      background: #20222b;
-      color: #fff;
+      background: #22242d;
+      color: white;
+      border: none;
       border-radius: 50%;
       width: 34px;
       height: 34px;
-    }
-
-    .firebase-status {
-      background: #101820;
-      border: 1px solid #253746;
-      color: #9dc7e5;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 11px;
-      margin-bottom: 14px;
-      word-break: break-word;
-    }
-
-    .hidden {
-      display: none !important;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -492,28 +418,49 @@
 
   <header class="header">
     <div class="logo">Game<span>Mine</span></div>
-    <div class="level">Level <span id="level">1</span></div>
+    <div class="level">
+      Level <span id="level">1</span>
+    </div>
   </header>
 
-  <!-- ================= MINE ================= -->
+
+  <!-- MINE -->
+
   <section id="minePage" class="page active">
 
     <div class="title">Mining</div>
-    <div class="subtitle">Earn GameMine Coins while you're away.</div>
+
+    <div class="subtitle">
+      Earn GameMine Coins while you're away.
+    </div>
 
     <div class="balance-card">
+
       <div class="coin">🪙</div>
-      <div class="balance-label">Your Balance</div>
+
+      <div class="balance-label">
+        Your Balance
+      </div>
+
       <div class="balance">
         <span id="balance">0</span>
         <span class="unit">coins</span>
       </div>
+
     </div>
 
+
     <div class="card">
-      <div class="card-title">⛏️ Mining</div>
-      <div class="muted">Current mining speed</div>
-      <div class="mining-rate">
+
+      <div class="card-title">
+        ⛏️ Mining
+      </div>
+
+      <div class="muted">
+        Current mining speed
+      </div>
+
+      <div class="rate">
         +<span id="miningRate">0.05</span>
         <span class="unit">coins/min</span>
       </div>
@@ -526,29 +473,45 @@
       <button id="mineButton" class="primary-btn">
         Start Mining
       </button>
+
     </div>
 
+
     <div class="stats">
+
       <div class="stat">
-        <div class="stat-label">Today's Mining</div>
+        <div class="stat-label">
+          Today's Mining
+        </div>
+
         <div class="stat-value">
           <span id="statMining">0</span>/100
         </div>
       </div>
 
       <div class="stat">
-        <div class="stat-label">Referrals</div>
-        <div class="stat-value" id="referralCount">0</div>
+        <div class="stat-label">
+          Referrals
+        </div>
+
+        <div class="stat-value" id="referralCount">
+          0
+        </div>
       </div>
+
     </div>
 
   </section>
 
 
-  <!-- ================= TASKS ================= -->
+  <!-- TASKS -->
+
   <section id="tasksPage" class="page">
 
-    <div class="title">Tasks</div>
+    <div class="title">
+      Tasks
+    </div>
+
     <div class="subtitle">
       Complete tasks and earn GameMine Coins.
     </div>
@@ -557,7 +520,9 @@
       Firebase connection: waiting...
     </div>
 
+
     <div class="card">
+
       <div class="reward-info">
         <span>Tasks per cycle</span>
         <strong id="tasksPerCycle">7</strong>
@@ -577,31 +542,39 @@
         <span>Cooldown</span>
         <strong>2 hours</strong>
       </div>
+
     </div>
 
-    <div id="taskCooldown" class="notice hidden"></div>
 
     <div id="tasksContainer">
+
       <div class="empty">
         <div class="empty-icon">⏳</div>
         Loading tasks...
       </div>
+
     </div>
 
   </section>
 
 
-  <!-- ================= REFERRAL ================= -->
+  <!-- REFERRAL -->
+
   <section id="referPage" class="page">
 
-    <div class="title">Refer & Earn</div>
+    <div class="title">
+      Refer & Earn
+    </div>
+
     <div class="subtitle">
       Invite friends and earn GameMine Coins.
     </div>
 
     <div class="ref-box">
 
-      <div class="card-title">👥 Your Referrals</div>
+      <div class="card-title">
+        👥 Your Referrals
+      </div>
 
       <div class="balance" style="font-size:32px;">
         <span id="referralBig">0</span>
@@ -616,7 +589,7 @@
         <strong>100 coins</strong>
       </div>
 
-      <div class="ref-link" id="referralLink">
+      <div id="referralLink" class="ref-link">
         Loading referral link...
       </div>
 
@@ -630,50 +603,71 @@
 
     </div>
 
-    <div class="notice" style="margin-top:14px;">
+    <div class="notice">
       A referral becomes qualified after the invited user starts using
-      GameMine and completes the required activity. Duplicate and suspicious
-      referrals are not rewarded.
+      GameMine and completes the required activity.
     </div>
 
   </section>
 
 
-  <!-- ================= WITHDRAW ================= -->
+  <!-- WITHDRAW -->
+
   <section id="withdrawPage" class="page">
 
-    <div class="title">Withdraw</div>
+    <div class="title">
+      Withdraw
+    </div>
+
     <div class="subtitle">
       Redeem your GameMine Coins for gaming rewards.
     </div>
 
+
     <div class="balance-card">
-      <div class="balance-label">Available Balance</div>
+
+      <div class="balance-label">
+        Available Balance
+      </div>
+
       <div class="balance">
         <span id="withdrawBalance">0</span>
         <span class="unit">coins</span>
       </div>
+
     </div>
+
 
     <div class="notice">
       GameMine only requires your public game Player UID/ID.
-      Never enter your game password, OTP, Google/Facebook password,
-      Telegram code, or recovery code.
+      Never enter your game password, OTP, Telegram code,
+      or recovery code.
     </div>
 
-    <div class="game-option" id="freeFireOption">
-      <div class="game-name">🔥 Free Fire</div>
-      <div class="available">Available</div>
+
+    <div class="game-option">
+
+      <div class="card-title">
+        🔥 Free Fire
+      </div>
+
+      <div class="available">
+        Available
+      </div>
 
       <button id="selectFreeFire" class="primary-btn">
         Select Free Fire
       </button>
 
+
       <div id="freeFireForm" class="withdraw-form">
 
-        <label>Reward</label>
+        <label>
+          Reward
+        </label>
 
         <select id="ffReward">
+
           <option value="100_diamonds" data-cost="10000">
             100 Diamonds — 10,000 coins
           </option>
@@ -685,9 +679,13 @@
           <option value="520_diamonds" data-cost="50000">
             520 Diamonds — 50,000 coins
           </option>
+
         </select>
 
-        <label>Free Fire Player UID</label>
+
+        <label>
+          Free Fire Player UID
+        </label>
 
         <input
           id="ffUid"
@@ -695,6 +693,7 @@
           inputmode="numeric"
           placeholder="Enter your Player UID"
         >
+
 
         <button id="submitWithdrawal" class="primary-btn">
           Submit Withdrawal
@@ -707,17 +706,33 @@
         <div id="withdrawStatus" class="status"></div>
 
       </div>
+
     </div>
 
 
     <div class="game-option disabled">
-      <div class="game-name">🎯 COD Mobile</div>
-      <div class="coming">Coming Soon</div>
+
+      <div class="card-title">
+        🎯 COD Mobile
+      </div>
+
+      <div class="coming">
+        Coming Soon
+      </div>
+
     </div>
 
+
     <div class="game-option disabled">
-      <div class="game-name">🪖 PUBG Mobile</div>
-      <div class="coming">Coming Soon</div>
+
+      <div class="card-title">
+        🪖 PUBG Mobile
+      </div>
+
+      <div class="coming">
+        Coming Soon
+      </div>
+
     </div>
 
   </section>
@@ -725,15 +740,19 @@
 </div>
 
 
-<!-- ================= TASK MODAL ================= -->
+<!-- TASK MODAL -->
 
 <div id="taskModal" class="modal-bg">
 
   <div class="modal">
 
-    <button id="closeModal" class="close">×</button>
+    <button id="closeModal" class="close">
+      ×
+    </button>
 
-    <h2 id="modalTitle">Task</h2>
+    <h2 id="modalTitle">
+      Task
+    </h2>
 
     <p id="modalDescription" class="muted">
       Task information
@@ -741,11 +760,13 @@
 
     <div class="reward-info">
       <span>Reward</span>
-      <strong id="modalReward">20 coins</strong>
+      <strong id="modalReward">
+        20 coins
+      </strong>
     </div>
 
-    <div id="modalNotice" class="notice" style="margin-top:14px;">
-      Complete the task according to its instructions.
+    <div id="modalNotice" class="notice">
+      Complete this task.
     </div>
 
     <button id="modalAction" class="primary-btn">
@@ -757,7 +778,7 @@
 </div>
 
 
-<!-- ================= NAVIGATION ================= -->
+<!-- NAVIGATION -->
 
 <nav class="bottom-nav">
 
@@ -786,61 +807,51 @@
 
 <script>
 
-  /* =========================================================
-     BASIC APP STATE
-  ========================================================= */
+  /* =====================================================
+     GAME MINE STATE
+  ===================================================== */
 
   const APP_USER_ID = "test_user";
 
+  let db = null;
   let currentUser = null;
   let settings = null;
   let tasks = [];
   let selectedTask = null;
-
   let mining = false;
   let miningTimer = null;
 
 
-  /* =========================================================
+  /* =====================================================
      FIREBASE CONFIG
-  ========================================================= */
+  ===================================================== */
 
   const firebaseConfig = {
-    apiKey: "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
-    authDomain: "gamemine-5d7ee.firebaseapp.com",
-    projectId: "gamemine-5d7ee",
-    storageBucket: "gamemine-5d7ee.firebasestorage.app",
-    messagingSenderId: "524612369793",
-    appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
+
+    apiKey:
+      "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+
+    authDomain:
+      "gamemine-5d7ee.firebaseapp.com",
+
+    projectId:
+      "gamemine-5d7ee",
+
+    storageBucket:
+      "gamemine-5d7ee.firebasestorage.app",
+
+    messagingSenderId:
+      "524612369793",
+
+    appId:
+      "1:524612369793:web:e425affa42cf1cb3e2bc80"
+
   };
 
 
-  /* =========================================================
-     START FIREBASE
-  ========================================================= */
-
-  let db = null;
-
-  try {
-
-    firebase.initializeApp(firebaseConfig);
-
-    db = firebase.firestore();
-
-    document.getElementById("firebaseStatus").textContent =
-      "Firebase connected. Loading GameMine data...";
-
-  } catch (error) {
-
-    document.getElementById("firebaseStatus").textContent =
-      "Firebase startup error: " + error.message;
-
-  }
-
-
-  /* =========================================================
+  /* =====================================================
      HELPERS
-  ========================================================= */
+  ===================================================== */
 
   function $(id) {
     return document.getElementById(id);
@@ -851,79 +862,132 @@
 
     const n = Number(value);
 
-    return Number.isFinite(n) ? n : fallback;
+    return Number.isFinite(n)
+      ? n
+      : fallback;
+
   }
 
 
   function escapeHTML(value) {
 
     return String(value ?? "")
+
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+
   }
 
 
-  /* =========================================================
+  /* =====================================================
+     INITIALIZE FIREBASE
+  ===================================================== */
+
+  try {
+
+    firebase.initializeApp(firebaseConfig);
+
+    db = firebase.firestore();
+
+    $("firebaseStatus").textContent =
+      "Firebase connected. Ready to test tasks/task_1.";
+
+  } catch (error) {
+
+    $("firebaseStatus").textContent =
+      "❌ Firebase startup error: " +
+      error.message;
+
+  }
+
+
+  /* =====================================================
      NAVIGATION
-  ========================================================= */
+  ===================================================== */
+
+  document.querySelectorAll(".nav-btn")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        showPage(button.dataset.page);
+
+      });
+
+    });
+
 
   function showPage(pageName) {
 
-    document.querySelectorAll(".page").forEach(page => {
-      page.classList.remove("active");
-    });
+    document.querySelectorAll(".page")
+      .forEach(page => {
 
-    document.querySelectorAll(".nav-btn").forEach(button => {
-      button.classList.remove("active");
-    });
+        page.classList.remove("active");
 
-    const page = $(pageName + "Page");
+      });
+
+
+    document.querySelectorAll(".nav-btn")
+      .forEach(button => {
+
+        button.classList.remove("active");
+
+      });
+
+
+    const page =
+      $(pageName + "Page");
 
     if (page) {
+
       page.classList.add("active");
+
     }
 
-    const nav = document.querySelector(
-      '.nav-btn[data-page="' + pageName + '"]'
-    );
+
+    const nav =
+      document.querySelector(
+        '.nav-btn[data-page="' +
+        pageName +
+        '"]'
+      );
 
     if (nav) {
+
       nav.classList.add("active");
+
     }
+
 
     if (pageName === "tasks") {
+
       loadTasks();
+
     }
+
 
     if (pageName === "refer") {
+
       updateReferralUI();
+
     }
 
+
     if (pageName === "withdraw") {
+
       updateWithdrawUI();
+
     }
+
   }
 
 
-  document.querySelectorAll(".nav-btn").forEach(button => {
-
-    button.addEventListener("click", () => {
-
-      const page = button.dataset.page;
-
-      showPage(page);
-
-    });
-
-  });
-
-
-  /* =========================================================
+  /* =====================================================
      LOAD SETTINGS
-  ========================================================= */
+  ===================================================== */
 
   async function loadSettings() {
 
@@ -932,29 +996,40 @@
     try {
 
       const snapshot =
-        await db.collection("settings").doc("game").get();
+        await db
+          .collection("settings")
+          .doc("game")
+          .get();
+
 
       if (snapshot.exists) {
 
-        settings = snapshot.data();
+        settings =
+          snapshot.data();
 
         $("tasksPerCycle").textContent =
-          number(settings.tasks_per_cycle, 7);
+          number(
+            settings.tasks_per_cycle,
+            7
+          );
 
       }
 
     } catch (error) {
 
-      console.error("Settings error:", error);
+      console.error(
+        "SETTINGS ERROR:",
+        error
+      );
 
     }
 
   }
 
 
-  /* =========================================================
+  /* =====================================================
      LOAD USER
-  ========================================================= */
+  ===================================================== */
 
   async function loadUser() {
 
@@ -963,7 +1038,11 @@
     try {
 
       const snapshot =
-        await db.collection("users").doc(APP_USER_ID).get();
+        await db
+          .collection("users")
+          .doc(APP_USER_ID)
+          .get();
+
 
       if (!snapshot.exists) {
 
@@ -974,13 +1053,99 @@
 
       }
 
-      currentUser = snapshot.data();
+
+      currentUser =
+        snapshot.data();
 
       updateUserUI();
 
     } catch (error) {
 
-      console.error("User error:", error);
+      console.error(
+        "USER ERROR:",
+        error
+      );
 
-      $("firebaseStatus").textContent =
-      
+    }
+
+  }
+
+
+  /* =====================================================
+     USER UI
+  ===================================================== */
+
+  function updateUserUI() {
+
+    if (!currentUser) return;
+
+
+    $("balance").textContent =
+      number(
+        currentUser.balance,
+        0
+      ).toLocaleString();
+
+
+    $("withdrawBalance").textContent =
+      number(
+        currentUser.balance,
+        0
+      ).toLocaleString();
+
+
+    $("level").textContent =
+      number(
+        currentUser.level,
+        1
+      );
+
+
+    $("miningRate").textContent =
+      number(
+        currentUser.mining_speed,
+        0.05
+      ).toFixed(2);
+
+
+    $("todayMining").textContent =
+      Math.floor(
+        number(
+          currentUser.mining_today,
+          0
+        )
+      );
+
+
+    $("statMining").textContent =
+      Math.floor(
+        number(
+          currentUser.mining_today,
+          0
+        )
+      );
+
+
+    $("referralCount").textContent =
+      number(
+        currentUser.referral_count,
+        0
+      );
+
+
+    $("referralBig").textContent =
+      number(
+        currentUser.referral_count,
+        0
+      );
+
+  }
+
+
+  /* =====================================================
+     TASK LOADER — DIRECT FIREBASE TEST
+  ===================================================== */
+
+  async function loadTasks() {
+
+    const contain
