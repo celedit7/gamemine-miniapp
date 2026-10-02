@@ -1,1438 +1,986 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>GameMine v4</title>
-
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-  width:100%;
-  min-height:100%;
-}
-
-body{
-  background:#0b0d12;
-  color:#fff;
-  font-family:Arial,sans-serif;
-  min-height:100vh;
-  padding-bottom:90px;
-}
-
-button{
-  font-family:Arial,sans-serif;
-  touch-action:manipulation;
-  -webkit-user-select:none;
-  user-select:none;
-}
-
-.app{
-  max-width:500px;
-  margin:auto;
-  padding:18px;
-}
-
-/* HEADER */
-
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:25px;
-}
-
-.logo{
-  font-size:24px;
-  font-weight:800;
-}
-
-.logo span{
-  color:#ffd400;
-}
-
-.level{
-  background:#171b24;
-  border:1px solid #292f3b;
-  padding:8px 12px;
-  border-radius:20px;
-  font-size:13px;
-  color:#ffd400;
-}
-
-/* PAGES */
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-/* TEXT */
-
-.page-title{
-  font-size:25px;
-  font-weight:800;
-  margin-bottom:7px;
-}
-
-.page-subtitle{
-  color:#8e96a6;
-  font-size:14px;
-  margin-bottom:20px;
-}
-
-/* BALANCE */
-
-.balance-card{
-  background:linear-gradient(145deg,#171b24,#10131a);
-  border:1px solid #292f3b;
-  border-radius:24px;
-  padding:25px 20px;
-  text-align:center;
-  margin-bottom:15px;
-}
-
-.coin-icon{
-  font-size:55px;
-  margin-bottom:8px;
-}
-
-.balance-label{
-  color:#8e96a6;
-  font-size:13px;
-  margin-bottom:7px;
-}
-
-.balance{
-  font-size:38px;
-  font-weight:900;
-}
-
-.coin-name{
-  color:#ffd400;
-  font-size:14px;
-  margin-top:5px;
-  font-weight:700;
-}
-
-/* MINING */
-
-.mining-card{
-  background:#151820;
-  border:1px solid #292f3b;
-  border-radius:22px;
-  padding:20px;
-  margin-bottom:15px;
-}
-
-.mining-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.mining-title{
-  font-size:18px;
-  font-weight:800;
-}
-
-.mining-rate{
-  color:#ffd400;
-  font-size:13px;
-}
-
-.mine-button{
-  width:100%;
-  border:none;
-  border-radius:17px;
-  padding:17px;
-  background:#ffd400;
-  color:#111;
-  font-size:17px;
-  font-weight:900;
-  cursor:pointer;
-  display:block;
-  position:relative;
-  z-index:20;
-}
-
-.mine-button:active{
-  transform:scale(.98);
-}
-
-.mining-status{
-  text-align:center;
-  margin-top:12px;
-  color:#8e96a6;
-  font-size:13px;
-}
-
-/* STATS */
-
-.stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.stat-card{
-  background:#151820;
-  border:1px solid #292f3b;
-  border-radius:18px;
-  padding:17px;
-}
-
-.stat-label{
-  color:#8e96a6;
-  font-size:12px;
-  margin-bottom:7px;
-}
-
-.stat-value{
-  font-size:19px;
-  font-weight:800;
-}
-
-/* TASKS */
-
-.tasks-container{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.task-card{
-  background:#151820;
-  border:1px solid #292f3b;
-  border-radius:18px;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.task-number{
-  min-width:42px;
-  height:42px;
-  border-radius:14px;
-  background:#202530;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  color:#ffd400;
-}
-
-.task-info{
-  flex:1;
-  min-width:0;
-}
-
-.task-title{
-  font-size:14px;
-  font-weight:800;
-  margin-bottom:5px;
-}
-
-.task-description{
-  color:#8e96a6;
-  font-size:12px;
-  line-height:1.4;
-}
-
-.task-reward{
-  color:#ffd400;
-  font-size:13px;
-  font-weight:800;
-  margin-top:6px;
-}
-
-.task-button{
-  border:none;
-  background:#ffd400;
-  color:#111;
-  font-size:12px;
-  font-weight:900;
-  border-radius:12px;
-  padding:12px 15px;
-  white-space:nowrap;
-  cursor:pointer;
-  display:block;
-  position:relative;
-  z-index:30;
-  pointer-events:auto;
-  min-width:65px;
-}
-
-.task-button:active{
-  transform:scale(.94);
-}
-
-.task-button:disabled{
-  opacity:.6;
-}
-
-.ad-badge{
-  display:inline-block;
-  font-size:9px;
-  color:#8e96a6;
-  border:1px solid #363d4b;
-  padding:3px 6px;
-  border-radius:6px;
-  margin-left:4px;
-}
-
-.loading{
-  text-align:center;
-  color:#8e96a6;
-  padding:30px 10px;
-}
-
-.error{
-  background:#21171a;
-  border:1px solid #4a252b;
-  color:#ff9ca7;
-  border-radius:15px;
-  padding:15px;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.test-box{
-  background:#111923;
-  border:1px solid #293f55;
-  color:#9fd7ff;
-  border-radius:15px;
-  padding:15px;
-  margin-bottom:12px;
-  font-size:13px;
-  line-height:1.5;
-}
-
-/* MODAL */
-
-.task-modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.78);
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  z-index:1000;
-}
-
-.task-modal.show{
-  display:flex;
-}
-
-.task-modal-box{
-  width:100%;
-  max-width:500px;
-  background:#151820;
-  border:1px solid #292f3b;
-  border-radius:25px 25px 0 0;
-  padding:25px 20px 30px;
-}
-
-.modal-icon{
-  font-size:42px;
-  text-align:center;
-  margin-bottom:10px;
-}
-
-.modal-title{
-  text-align:center;
-  font-size:21px;
-  font-weight:900;
-  margin-bottom:8px;
-}
-
-.modal-description{
-  text-align:center;
-  color:#8e96a6;
-  font-size:14px;
-  line-height:1.5;
-  margin-bottom:20px;
-}
-
-.modal-reward{
-  text-align:center;
-  color:#ffd400;
-  font-size:15px;
-  font-weight:800;
-  margin-bottom:20px;
-}
-
-.modal-close{
-  width:100%;
-  border:none;
-  border-radius:15px;
-  padding:15px;
-  background:#252a35;
-  color:#fff;
-  font-weight:800;
-  font-size:15px;
-  cursor:pointer;
-  position:relative;
-  z-index:1100;
-}
-
-/* OTHER */
-
-.coming-card{
-  background:#151820;
-  border:1px solid #292f3b;
-  border-radius:20px;
-  padding:25px 20px;
-  text-align:center;
-  color:#8e96a6;
-}
-
-.coming-icon{
-  font-size:42px;
-  margin-bottom:12px;
-}
-
-.coming-title{
-  color:#fff;
-  font-size:19px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-
-/* NAV */
-
-.bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:rgba(13,15,21,.98);
-  border-top:1px solid #292f3b;
-  height:75px;
-  display:flex;
-  justify-content:center;
-  z-index:5000;
-}
-
-.nav-inner{
-  width:100%;
-  max-width:500px;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-}
-
-.nav-button{
-  border:none;
-  background:transparent;
-  color:#737b8b;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:4px;
-  font-size:11px;
-  cursor:pointer;
-  position:relative;
-  z-index:5001;
-  pointer-events:auto;
-}
-
-.nav-icon{
-  font-size:21px;
-}
-
-.nav-button.active{
-  color:#ffd400;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#08090d">
+  <title>GameMine</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      background: #08090d;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      margin: auto;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    .header {
+      padding: 18px 18px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #ffd84d;
+    }
+
+    .level {
+      background: #171922;
+      border: 1px solid #292c38;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #ddd;
+    }
+
+    .page {
+      display: none;
+      padding: 12px 16px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .title {
+      font-size: 27px;
+      font-weight: 800;
+      margin: 10px 0 5px;
+    }
+
+    .subtitle {
+      color: #8e929f;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .balance-card {
+      background: linear-gradient(145deg, #171922, #101117);
+      border: 1px solid #292c38;
+      border-radius: 24px;
+      padding: 28px 20px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .coin {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: #ffd84d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #171717;
+      font-size: 38px;
+      box-shadow: 0 0 30px rgba(255,216,77,.18);
+    }
+
+    .balance-label {
+      color: #90939e;
+      font-size: 13px;
+    }
+
+    .balance {
+      font-size: 38px;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    .unit {
+      color: #ffd84d;
+      font-size: 15px;
+      margin-left: 3px;
+    }
+
+    .card {
+      background: #111218;
+      border: 1px solid #252832;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .muted {
+      color: #8d919d;
+      font-size: 13px;
+    }
+
+    .mining-rate {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 12px 0;
+    }
+
+    .primary-btn {
+      width: 100%;
+      background: #ffd84d;
+      color: #101010;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .primary-btn:active {
+      transform: scale(.98);
+    }
+
+    .secondary-btn {
+      width: 100%;
+      background: #1b1d25;
+      color: #fff;
+      border: 1px solid #30333e;
+      padding: 13px;
+      border-radius: 14px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat {
+      background: #111218;
+      border: 1px solid #252832;
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .stat-label {
+      color: #8d919d;
+      font-size: 12px;
+    }
+
+    .stat-value {
+      font-size: 19px;
+      font-weight: 800;
+      margin-top: 7px;
+    }
+
+    .task {
+      background: #111218;
+      border: 1px solid #282b35;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .task-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .task-number {
+      color: #ffd84d;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .task-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .task-description {
+      color: #8d919d;
+      font-size: 12px;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .reward {
+      white-space: nowrap;
+      color: #ffd84d;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .task-btn {
+      width: 100%;
+      background: #1b1d25;
+      border: 1px solid #30333e;
+      color: #fff;
+      padding: 11px;
+      border-radius: 12px;
+      margin-top: 13px;
+      font-weight: 700;
+    }
+
+    .task-btn.done {
+      background: #15251c;
+      border-color: #31563d;
+      color: #78d99a;
+    }
+
+    .task-btn.ad {
+      background: #242018;
+      border-color: #51462a;
+      color: #ffd84d;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+      color: #8d919d;
+      background: #111218;
+      border: 1px solid #252832;
+      border-radius: 20px;
+    }
+
+    .empty-icon {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    .ref-box {
+      background: linear-gradient(145deg, #181a23, #101117);
+      border: 1px solid #2a2d39;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .ref-link {
+      margin-top: 14px;
+      background: #090a0e;
+      border: 1px solid #30333d;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      color: #bbbfc9;
+      word-break: break-all;
+    }
+
+    .reward-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid #252832;
+    }
+
+    .reward-info:last-child {
+      border-bottom: 0;
+    }
+
+    .game-option {
+      background: #111218;
+      border: 1px solid #292c36;
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 12px;
+    }
+
+    .game-option.disabled {
+      opacity: .55;
+    }
+
+    .game-name {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .available {
+      color: #72db95;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .coming {
+      color: #888d98;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .withdraw-form {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .withdraw-form.show {
+      display: block;
+    }
+
+    label {
+      display: block;
+      color: #aaaeb9;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      background: #0a0b0f;
+      color: #fff;
+      border: 1px solid #30333e;
+      border-radius: 12px;
+      padding: 13px;
+      outline: none;
+      margin-bottom: 13px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #ffd84d;
+    }
+
+    .notice {
+      background: #171922;
+      border: 1px solid #292c37;
+      border-radius: 14px;
+      padding: 13px;
+      color: #9da1ac;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .status {
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 12px;
+      background: #14161d;
+      color: #aaaeb9;
+      font-size: 12px;
+      display: none;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 520px;
+      background: rgba(10,11,15,.96);
+      border-top: 1px solid #252832;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 8px 6px 10px;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: #777c89;
+      padding: 8px 3px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .nav-btn.active {
+      color: #ffd84d;
+    }
+
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-bg.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 520px;
+      background: #111218;
+      border: 1px solid #292c36;
+      border-radius: 24px 24px 0 0;
+      padding: 22px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal h2 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .close {
+      float: right;
+      background: #20222b;
+      color: #fff;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+    }
+
+    .firebase-status {
+      background: #101820;
+      border: 1px solid #253746;
+      color: #9dc7e5;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="app">
 
-<!-- HEADER -->
+  <header class="header">
+    <div class="logo">Game<span>Mine</span></div>
+    <div class="level">Level <span id="level">1</span></div>
+  </header>
 
-<div class="header">
+  <!-- ================= MINE ================= -->
+  <section id="minePage" class="page active">
 
-  <div class="logo">
-    Game<span>Mine</span>
-  </div>
+    <div class="title">Mining</div>
+    <div class="subtitle">Earn GameMine Coins while you're away.</div>
 
-  <div class="level" id="level">
-    Level 1
-  </div>
+    <div class="balance-card">
+      <div class="coin">🪙</div>
+      <div class="balance-label">Your Balance</div>
+      <div class="balance">
+        <span id="balance">0</span>
+        <span class="unit">coins</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⛏️ Mining</div>
+      <div class="muted">Current mining speed</div>
+      <div class="mining-rate">
+        +<span id="miningRate">0.05</span>
+        <span class="unit">coins/min</span>
+      </div>
+
+      <div class="muted">
+        Today's Mining:
+        <strong id="todayMining">0</strong>/100
+      </div>
+
+      <button id="mineButton" class="primary-btn">
+        Start Mining
+      </button>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Today's Mining</div>
+        <div class="stat-value">
+          <span id="statMining">0</span>/100
+        </div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Referrals</div>
+        <div class="stat-value" id="referralCount">0</div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ================= TASKS ================= -->
+  <section id="tasksPage" class="page">
+
+    <div class="title">Tasks</div>
+    <div class="subtitle">
+      Complete tasks and earn GameMine Coins.
+    </div>
+
+    <div id="firebaseStatus" class="firebase-status">
+      Firebase connection: waiting...
+    </div>
+
+    <div class="card">
+      <div class="reward-info">
+        <span>Tasks per cycle</span>
+        <strong id="tasksPerCycle">7</strong>
+      </div>
+
+      <div class="reward-info">
+        <span>Reward per task</span>
+        <strong>20 coins</strong>
+      </div>
+
+      <div class="reward-info">
+        <span>Full cycle reward</span>
+        <strong>140 coins</strong>
+      </div>
+
+      <div class="reward-info">
+        <span>Cooldown</span>
+        <strong>2 hours</strong>
+      </div>
+    </div>
+
+    <div id="taskCooldown" class="notice hidden"></div>
+
+    <div id="tasksContainer">
+      <div class="empty">
+        <div class="empty-icon">⏳</div>
+        Loading tasks...
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ================= REFERRAL ================= -->
+  <section id="referPage" class="page">
+
+    <div class="title">Refer & Earn</div>
+    <div class="subtitle">
+      Invite friends and earn GameMine Coins.
+    </div>
+
+    <div class="ref-box">
+
+      <div class="card-title">👥 Your Referrals</div>
+
+      <div class="balance" style="font-size:32px;">
+        <span id="referralBig">0</span>
+      </div>
+
+      <div class="muted">
+        Qualified referrals
+      </div>
+
+      <div class="reward-info" style="margin-top:15px;">
+        <span>Reward per qualified referral</span>
+        <strong>100 coins</strong>
+      </div>
+
+      <div class="ref-link" id="referralLink">
+        Loading referral link...
+      </div>
+
+      <button id="copyReferral" class="primary-btn">
+        Copy Referral Link
+      </button>
+
+      <button id="shareReferral" class="secondary-btn">
+        Share Referral Link
+      </button>
+
+    </div>
+
+    <div class="notice" style="margin-top:14px;">
+      A referral becomes qualified after the invited user starts using
+      GameMine and completes the required activity. Duplicate and suspicious
+      referrals are not rewarded.
+    </div>
+
+  </section>
+
+
+  <!-- ================= WITHDRAW ================= -->
+  <section id="withdrawPage" class="page">
+
+    <div class="title">Withdraw</div>
+    <div class="subtitle">
+      Redeem your GameMine Coins for gaming rewards.
+    </div>
+
+    <div class="balance-card">
+      <div class="balance-label">Available Balance</div>
+      <div class="balance">
+        <span id="withdrawBalance">0</span>
+        <span class="unit">coins</span>
+      </div>
+    </div>
+
+    <div class="notice">
+      GameMine only requires your public game Player UID/ID.
+      Never enter your game password, OTP, Google/Facebook password,
+      Telegram code, or recovery code.
+    </div>
+
+    <div class="game-option" id="freeFireOption">
+      <div class="game-name">🔥 Free Fire</div>
+      <div class="available">Available</div>
+
+      <button id="selectFreeFire" class="primary-btn">
+        Select Free Fire
+      </button>
+
+      <div id="freeFireForm" class="withdraw-form">
+
+        <label>Reward</label>
+
+        <select id="ffReward">
+          <option value="100_diamonds" data-cost="10000">
+            100 Diamonds — 10,000 coins
+          </option>
+
+          <option value="310_diamonds" data-cost="30000">
+            310 Diamonds — 30,000 coins
+          </option>
+
+          <option value="520_diamonds" data-cost="50000">
+            520 Diamonds — 50,000 coins
+          </option>
+        </select>
+
+        <label>Free Fire Player UID</label>
+
+        <input
+          id="ffUid"
+          type="text"
+          inputmode="numeric"
+          placeholder="Enter your Player UID"
+        >
+
+        <button id="submitWithdrawal" class="primary-btn">
+          Submit Withdrawal
+        </button>
+
+        <button id="cancelWithdrawal" class="secondary-btn">
+          Cancel
+        </button>
+
+        <div id="withdrawStatus" class="status"></div>
+
+      </div>
+    </div>
+
+
+    <div class="game-option disabled">
+      <div class="game-name">🎯 COD Mobile</div>
+      <div class="coming">Coming Soon</div>
+    </div>
+
+    <div class="game-option disabled">
+      <div class="game-name">🪖 PUBG Mobile</div>
+      <div class="coming">Coming Soon</div>
+    </div>
+
+  </section>
 
 </div>
 
 
-<!-- MINE -->
+<!-- ================= TASK MODAL ================= -->
 
-<div class="page active" id="minePage">
+<div id="taskModal" class="modal-bg">
 
-  <div class="balance-card">
+  <div class="modal">
 
-    <div class="coin-icon">🪙</div>
+    <button id="closeModal" class="close">×</button>
 
-    <div class="balance-label">
-      Balance
+    <h2 id="modalTitle">Task</h2>
+
+    <p id="modalDescription" class="muted">
+      Task information
+    </p>
+
+    <div class="reward-info">
+      <span>Reward</span>
+      <strong id="modalReward">20 coins</strong>
     </div>
 
-    <div class="balance" id="balance">
-      0
+    <div id="modalNotice" class="notice" style="margin-top:14px;">
+      Complete the task according to its instructions.
     </div>
 
-    <div class="coin-name">
-      GameMine Coins
-    </div>
-
-  </div>
-
-
-  <div class="mining-card">
-
-    <div class="mining-top">
-
-      <div class="mining-title">
-        Mining
-      </div>
-
-      <div class="mining-rate" id="miningRate">
-        +0.05 coins/min
-      </div>
-
-    </div>
-
-    <button
-      type="button"
-      class="mine-button"
-      id="mineButton">
-      START MINING ⛏️
+    <button id="modalAction" class="primary-btn">
+      Continue
     </button>
 
-    <div class="mining-status" id="miningStatus">
-      ⚪ Mining is stopped
-    </div>
-
-  </div>
-
-
-  <div class="stats">
-
-    <div class="stat-card">
-
-      <div class="stat-label">
-        Today's Mining
-      </div>
-
-      <div class="stat-value">
-        <span id="todayMining">0</span>/100
-      </div>
-
-    </div>
-
-
-    <div class="stat-card">
-
-      <div class="stat-label">
-        Referrals
-      </div>
-
-      <div class="stat-value" id="referrals">
-        0
-      </div>
-
-    </div>
-
   </div>
 
 </div>
 
 
-<!-- TASKS -->
+<!-- ================= NAVIGATION ================= -->
 
-<div class="page" id="tasksPage">
+<nav class="bottom-nav">
 
-  <div class="page-title">
+  <button class="nav-btn active" data-page="mine">
+    <span class="nav-icon">⛏️</span>
+    Mine
+  </button>
+
+  <button class="nav-btn" data-page="tasks">
+    <span class="nav-icon">📋</span>
     Tasks
-  </div>
+  </button>
 
-  <div class="page-subtitle">
-    Complete tasks and earn GameMine Coins.
-  </div>
-
-  <div id="firebaseTest" class="test-box">
-    Firebase connection test...
-  </div>
-
-  <div id="tasksContainer" class="tasks-container">
-
-    <div class="loading">
-      Loading tasks...
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- REFER -->
-
-<div class="page" id="referPage">
-
-  <div class="page-title">
+  <button class="nav-btn" data-page="refer">
+    <span class="nav-icon">👥</span>
     Refer
-  </div>
+  </button>
 
-  <div class="page-subtitle">
-    Invite friends and earn coins.
-  </div>
-
-  <div class="coming-card">
-
-    <div class="coming-icon">
-      👥
-    </div>
-
-    <div class="coming-title">
-      Referral System
-    </div>
-
-    <div>
-      Your referral system will be connected next.
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- WITHDRAW -->
-
-<div class="page" id="withdrawPage">
-
-  <div class="page-title">
+  <button class="nav-btn" data-page="withdraw">
+    <span class="nav-icon">🎁</span>
     Withdraw
-  </div>
+  </button>
 
-  <div class="page-subtitle">
-    Redeem your coins for available gaming rewards.
-  </div>
+</nav>
 
-  <div class="coming-card">
-
-    <div class="coming-icon">
-      🎁
-    </div>
-
-    <div class="coming-title">
-      Free Fire
-    </div>
-
-    <div style="color:#72e6a4;margin-bottom:10px;">
-      ● Available
-    </div>
-
-    <div>
-      Withdrawal system is being prepared.
-    </div>
-
-  </div>
-
-  <br>
-
-  <div class="coming-card">
-
-    <div class="coming-icon">
-      🎯
-    </div>
-
-    <div class="coming-title">
-      COD Mobile
-    </div>
-
-    <div>
-      Coming Soon
-    </div>
-
-  </div>
-
-  <br>
-
-  <div class="coming-card">
-
-    <div class="coming-icon">
-      🪖
-    </div>
-
-    <div class="coming-title">
-      PUBG Mobile
-    </div>
-
-    <div>
-      Coming Soon
-    </div>
-
-  </div>
-
-</div>
-
-</div>
-
-
-<!-- TASK MODAL -->
-
-<div class="task-modal" id="taskModal">
-
-  <div class="task-modal-box">
-
-    <div class="modal-icon" id="modalIcon">
-      📋
-    </div>
-
-    <div class="modal-title" id="modalTitle">
-      Task
-    </div>
-
-    <div class="modal-description" id="modalDescription">
-      Task description
-    </div>
-
-    <div class="modal-reward" id="modalReward">
-      +20 🪙
-    </div>
-
-    <button
-      type="button"
-      class="modal-close"
-      id="modalClose">
-      CLOSE
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- BOTTOM NAV -->
-
-<div class="bottom-nav">
-
-  <div class="nav-inner">
-
-    <button
-      type="button"
-      class="nav-button active"
-      id="navMine">
-
-      <div class="nav-icon">⛏️</div>
-      Mine
-
-    </button>
-
-
-    <button
-      type="button"
-      class="nav-button"
-      id="navTasks">
-
-      <div class="nav-icon">📋</div>
-      Tasks
-
-    </button>
-
-
-    <button
-      type="button"
-      class="nav-button"
-      id="navRefer">
-
-      <div class="nav-icon">👥</div>
-      Refer
-
-    </button>
-
-
-    <button
-      type="button"
-      class="nav-button"
-      id="navWithdraw">
-
-      <div class="nav-icon">🎁</div>
-      Withdraw
-
-    </button>
-
-  </div>
-
-</div>
-
-
-<!--
-====================================================
-NORMAL JAVASCRIPT
-This is intentionally NOT dependent on Firebase.
-So navigation/buttons continue working even if
-Firebase has an error.
-====================================================
--->
 
 <script>
 
-(function(){
+  /* =========================================================
+     BASIC APP STATE
+  ========================================================= */
 
-  "use strict";
+  const APP_USER_ID = "test_user";
+
+  let currentUser = null;
+  let settings = null;
+  let tasks = [];
+  let selectedTask = null;
+
+  let mining = false;
+  let miningTimer = null;
 
 
-  function get(id){
+  /* =========================================================
+     FIREBASE CONFIG
+  ========================================================= */
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+    authDomain: "gamemine-5d7ee.firebaseapp.com",
+    projectId: "gamemine-5d7ee",
+    storageBucket: "gamemine-5d7ee.firebasestorage.app",
+    messagingSenderId: "524612369793",
+    appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
+  };
+
+
+  /* =========================================================
+     START FIREBASE
+  ========================================================= */
+
+  let db = null;
+
+  try {
+
+    firebase.initializeApp(firebaseConfig);
+
+    db = firebase.firestore();
+
+    document.getElementById("firebaseStatus").textContent =
+      "Firebase connected. Loading GameMine data...";
+
+  } catch (error) {
+
+    document.getElementById("firebaseStatus").textContent =
+      "Firebase startup error: " + error.message;
+
+  }
+
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  function $(id) {
     return document.getElementById(id);
   }
 
 
-  /* =========================
-     PAGE NAVIGATION
-  ========================= */
+  function number(value, fallback = 0) {
 
-  function showPage(name){
+    const n = Number(value);
 
-    var pages = [
-      "minePage",
-      "tasksPage",
-      "referPage",
-      "withdrawPage"
-    ];
+    return Number.isFinite(n) ? n : fallback;
+  }
 
-    pages.forEach(function(id){
 
-      var page = get(id);
+  function escapeHTML(value) {
 
-      if(page){
-        page.classList.remove("active");
-      }
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
+
+  /* =========================================================
+     NAVIGATION
+  ========================================================= */
+
+  function showPage(pageName) {
+
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.remove("active");
     });
 
+    document.querySelectorAll(".nav-btn").forEach(button => {
+      button.classList.remove("active");
+    });
 
-    var selected = get(name + "Page");
+    const page = $(pageName + "Page");
 
-    if(selected){
-      selected.classList.add("active");
+    if (page) {
+      page.classList.add("active");
     }
 
-
-    var buttons = [
-      "navMine",
-      "navTasks",
-      "navRefer",
-      "navWithdraw"
-    ];
-
-    buttons.forEach(function(id){
-
-      var button = get(id);
-
-      if(button){
-        button.classList.remove("active");
-      }
-
-    });
-
-
-    var activeButton = get(
-      "nav" +
-      name.charAt(0).toUpperCase() +
-      name.slice(1)
+    const nav = document.querySelector(
+      '.nav-btn[data-page="' + pageName + '"]'
     );
 
-    if(activeButton){
-      activeButton.classList.add("active");
+    if (nav) {
+      nav.classList.add("active");
     }
 
+    if (pageName === "tasks") {
+      loadTasks();
+    }
 
-    /* Ask Firebase script to load tasks */
+    if (pageName === "refer") {
+      updateReferralUI();
+    }
 
-    if(
-      name === "tasks" &&
-      typeof window.loadGameMineTasks === "function"
-    ){
+    if (pageName === "withdraw") {
+      updateWithdrawUI();
+    }
+  }
 
-      window.loadGameMineTasks();
+
+  document.querySelectorAll(".nav-btn").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const page = button.dataset.page;
+
+      showPage(page);
+
+    });
+
+  });
+
+
+  /* =========================================================
+     LOAD SETTINGS
+  ========================================================= */
+
+  async function loadSettings() {
+
+    if (!db) return;
+
+    try {
+
+      const snapshot =
+        await db.collection("settings").doc("game").get();
+
+      if (snapshot.exists) {
+
+        settings = snapshot.data();
+
+        $("tasksPerCycle").textContent =
+          number(settings.tasks_per_cycle, 7);
+
+      }
+
+    } catch (error) {
+
+      console.error("Settings error:", error);
 
     }
 
   }
 
 
-  /* NAV BUTTONS */
+  /* =========================================================
+     LOAD USER
+  ========================================================= */
 
-  get("navMine").onclick = function(){
-    showPage("mine");
-  };
+  async function loadUser() {
 
+    if (!db) return;
 
-  get("navTasks").onclick = function(){
-    showPage("tasks");
-  };
+    try {
 
+      const snapshot =
+        await db.collection("users").doc(APP_USER_ID).get();
 
-  get("navRefer").onclick = function(){
-    showPage("refer");
-  };
+      if (!snapshot.exists) {
 
+        $("firebaseStatus").textContent =
+          "Firebase connected, but test_user was not found.";
 
-  get("navWithdraw").onclick = function(){
-    showPage("withdraw");
-  };
-
-
-  /* =========================
-     MINING BUTTON
-  ========================= */
-
-  var miningActive = false;
-
-
-  get("mineButton").onclick = function(){
-
-    if(miningActive){
-      return;
-    }
-
-
-    miningActive = true;
-
-
-    this.textContent =
-      "MINING... ⛏️";
-
-
-    this.disabled = true;
-
-
-    get("miningStatus").textContent =
-      "🟡 Mining is active";
-
-  };
-
-
-  /* =========================
-     MODAL CLOSE
-  ========================= */
-
-  get("modalClose").onclick = function(){
-
-    get("taskModal").classList.remove("show");
-
-  };
-
-
-  get("taskModal").onclick = function(event){
-
-    if(event.target === get("taskModal")){
-
-      get("taskModal").classList.remove("show");
-
-    }
-
-  };
-
-
-  /* =========================
-     TASK BUTTON DELEGATION
-  ========================= */
-
-  get("tasksContainer").onclick = function(event){
-
-    var button =
-      event.target.closest(".task-button");
-
-
-    if(!button){
-      return;
-    }
-
-
-    var taskData =
-      button.getAttribute("data-task");
-
-
-    if(!taskData){
-      return;
-    }
-
-
-    try{
-
-      var task =
-        JSON.parse(
-          decodeURIComponent(taskData)
-        );
-
-
-      get("modalIcon").textContent =
-        task.type === "rewarded_ad"
-          ? "🎬"
-          : "📋";
-
-
-      get("modalTitle").textContent =
-        task.title;
-
-
-      get("modalDescription").textContent =
-        task.description;
-
-
-      get("modalReward").textContent =
-        "+" +
-        Number(task.reward || 0)
-          .toLocaleString() +
-        " 🪙";
-
-
-      get("taskModal")
-        .classList.add("show");
-
-    }
-    catch(error){
-
-      console.error(
-        "Task button error:",
-        error
-      );
-
-    }
-
-  };
-
-
-})();
-
-</script>
-
-
-<!--
-====================================================
-FIREBASE
-====================================================
--->
-
-<script type="module">
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
-
-  authDomain:
-    "gamemine-5d7ee.firebaseapp.com",
-
-  projectId:
-    "gamemine-5d7ee",
-
-  storageBucket:
-    "gamemine-5d7ee.firebasestorage.app",
-
-  messagingSenderId:
-    "524612369793",
-
-  appId:
-    "1:524612369793:web:e425affa42cf1cb3e2bc80"
-
-};
-
-
-const app =
-  initializeApp(firebaseConfig);
-
-
-const db =
-  getFirestore(app);
-
-
-/* =========================
-   LOAD USER
-========================= */
-
-async function loadUser(){
-
-  try{
-
-    const snap =
-      await getDoc(
-        doc(
-          db,
-          "users",
-          "test_user"
-        )
-      );
-
-
-    if(!snap.exists()){
-      return;
-    }
-
-
-    const user =
-      snap.data();
-
-
-    /*
-      IMPORTANT:
-      Balance remains whatever is
-      already in Firestore.
-      We are NOT changing it.
-    */
-
-    document.getElementById("balance")
-      .textContent =
-      Number(user.balance || 0)
-        .toLocaleString();
-
-
-    document.getElementById("todayMining")
-      .textContent =
-      Number(user.mining_today || 0)
-        .toLocaleString();
-
-
-    document.getElementById("referrals")
-      .textContent =
-      Number(user.referral_count || 0)
-        .toLocaleString();
-
-
-    document.getElementById("level")
-      .textContent =
-      "Level " +
-      Number(user.level || 1);
-
-
-    var speed =
-      Number(
-        user.mining_speed || 0.05
-      );
-
-
-    document.getElementById("miningRate")
-      .textContent =
-      "+" +
-      speed.toFixed(2) +
-      " coins/min";
-
-  }
-  catch(error){
-
-    console.error(
-      "User Firebase error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================
-   LOAD TASKS
-========================= */
-
-async function loadTasks(){
-
-  var container =
-    document.getElementById(
-      "tasksContainer"
-    );
-
-
-  var testBox =
-    document.getElementById(
-      "firebaseTest"
-    );
-
-
-  container.innerHTML =
-    '<div class="loading">Loading tasks...</div>';
-
-
-  testBox.textContent =
-    "🔄 Connecting to Firebase...";
-
-
-  try{
-
-    /* DIRECT task_1 TEST */
-
-    var task1 =
-      await getDoc(
-        doc(
-          db,
-          "tasks",
-          "task_1"
-        )
-      );
-
-
-    if(task1.exists()){
-
-      var first =
-        task1.data();
-
-
-      testBox.innerHTML =
-        "✅ Firebase can read task_1<br>" +
-        "Title: " +
-        (first.title || "No title") +
-        "<br>" +
-        "Reward: " +
-        Number(first.reward || 0) +
-        " coins";
-
-    }
-    else{
-
-      testBox.innerHTML =
-        "❌ Firebase connected, but task_1 was not found.";
-
-    }
-
-
-    /* GET ALL TASKS */
-
-    var snapshot =
-      await getDocs(
-        collection(
-          db,
-          "tasks"
-        )
-      );
-
-
-    console.log(
-      "GameMine tasks:",
-      snapshot.size
-    );
-
-
-    if(snapshot.empty){
-
-      container.innerHTML = `
-
-        <div class="error">
-
-          ❌ Firebase returned 0 task documents.
-
-          <br><br>
-
-          Direct task_1:
-          ${task1.exists() ? "FOUND" : "NOT FOUND"}
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    var tasks = [];
-
-
-    snapshot.forEach(function(taskDoc){
-
-      var data =
-        taskDoc.data();
-
-
-      /*
-        No active/cycle filter here.
-        We first confirm that Firebase
-        can actually send the documents.
-      */
-
-      tasks.push({
-
-        id:
-          taskDoc.id,
-
-        title:
-          data.title ||
-          "GameMine Task",
-
-        description:
-          data.description ||
-          "",
-
-        reward:
-          Number(data.reward || 0),
-
-        task_number:
-          Number(
-            data.task_number || 0
-          ),
-
-        type:
-          data.type ||
-          "normal"
-
-      });
-
-    });
-
-
-    tasks.sort(function(a,b){
-
-      return (
-        a.task_number -
-        b.task_number
-      );
-
-    });
-
-
-    container.innerHTML = "";
-
-
-    tasks.forEach(function(task){
-
-      var card =
-        document.createElement("div");
-
-
-      card.className =
-        "task-card";
-
-
-      var number =
-        document.createElement("div");
-
-
-      number.className =
-        "task-number";
-
-
-      number.textContent =
-        task.task_number;
-
-
-      var info =
-        document.createElement("div");
-
-
-      info.className =
-        "task-info";
-
-
-      var title =
-        document.createElement("div");
-
-
-      title.className =
-        "task-title";
-
-
-      title.textContent =
-        task.title;
-
-
-      if(
-        task.type ===
-        "rewarded_ad"
-      ){
-
-        var badge =
-          document.createElement("span");
-
-
-        badge.className =
-          "ad-badge";
-
-
-        badge.textContent =
-          "AD";
-
-
-        title.appendChild(
-          badge
-        );
+        return;
 
       }
 
+      currentUser = snapshot.data();
 
-      var description =
-        document.createElement("div");
+      updateUserUI();
 
+    } catch (error) {
 
-      description.className =
-        "task-description";
+      console.error("User error:", error);
 
-
-      description.textContent =
-        task.description;
-
-
-      var reward =
-        document.createElement("div");
-
-
-      reward.className =
-        "task-reward";
-
-
-      reward.textContent =
-        "+" +
-        task.reward.toLocaleString() +
-        " 🪙";
-
-
-      info.appendChild(title);
-      info.appendChild(description);
-      info.appendChild(reward);
-
-
-      var button =
-        document.createElement("button");
-
-
-      button.type =
-        "button";
-
-
-      button.className =
-        "task-button";
-
-
-      button.textContent =
-        "START";
-
-
-      /*
-        Store the task directly on the button.
-        The normal JavaScript above handles
-        the c
+      $("firebaseStatus").textContent =
+      
