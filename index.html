@@ -32,8 +32,6 @@
       padding: 18px;
     }
 
-    /* HEADER */
-
     .header {
       display: flex;
       align-items: center;
@@ -59,8 +57,6 @@
       font-size: 13px;
       color: #ffd400;
     }
-
-    /* PAGES */
 
     .page {
       display: none;
@@ -262,6 +258,10 @@
       white-space: nowrap;
     }
 
+    .task-button:active {
+      transform: scale(0.96);
+    }
+
     .ad-badge {
       display: inline-block;
       font-size: 10px;
@@ -354,8 +354,6 @@
       color: #ffd400;
     }
 
-    /* SMALL SCREENS */
-
     @media (max-width: 360px) {
       .app {
         padding: 14px;
@@ -383,8 +381,15 @@
     <!-- HEADER -->
 
     <div class="header">
-      <div class="logo">Game<span>Mine</span></div>
-      <div class="level" id="level">Level 1</div>
+
+      <div class="logo">
+        Game<span>Mine</span>
+      </div>
+
+      <div class="level" id="level">
+        Level 1
+      </div>
+
     </div>
 
 
@@ -395,7 +400,10 @@
     <div class="page active" id="minePage">
 
       <div class="balance-card">
-        <div class="coin-icon">🪙</div>
+
+        <div class="coin-icon">
+          🪙
+        </div>
 
         <div class="balance-label">
           Balance
@@ -408,6 +416,7 @@
         <div class="coin-name">
           GameMine Coins
         </div>
+
       </div>
 
 
@@ -425,6 +434,7 @@
 
         </div>
 
+
         <button
           class="mine-button"
           id="mineButton"
@@ -432,6 +442,7 @@
         >
           START MINING ⛏️
         </button>
+
 
         <div class="mining-status" id="miningStatus">
           ⚪ Mining is stopped
@@ -443,6 +454,7 @@
       <div class="stats">
 
         <div class="stat-card">
+
           <div class="stat-label">
             Today's Mining
           </div>
@@ -450,10 +462,12 @@
           <div class="stat-value">
             <span id="todayMining">0</span>/100
           </div>
+
         </div>
 
 
         <div class="stat-card">
+
           <div class="stat-label">
             Referrals
           </div>
@@ -461,6 +475,7 @@
           <div class="stat-value" id="referrals">
             0
           </div>
+
         </div>
 
       </div>
@@ -540,6 +555,7 @@
         Redeem your coins for available gaming rewards.
       </div>
 
+
       <div class="coming-card">
 
         <div class="coming-icon">
@@ -560,7 +576,9 @@
 
       </div>
 
+
       <br>
+
 
       <div class="coming-card">
 
@@ -578,7 +596,9 @@
 
       </div>
 
+
       <br>
+
 
       <div class="coming-card">
 
@@ -614,7 +634,9 @@
         id="navMine"
         onclick="showPage('mine')"
       >
-        <div class="nav-icon">⛏️</div>
+        <div class="nav-icon">
+          ⛏️
+        </div>
         Mine
       </button>
 
@@ -624,7 +646,9 @@
         id="navTasks"
         onclick="showPage('tasks')"
       >
-        <div class="nav-icon">📋</div>
+        <div class="nav-icon">
+          📋
+        </div>
         Tasks
       </button>
 
@@ -634,7 +658,9 @@
         id="navRefer"
         onclick="showPage('refer')"
       >
-        <div class="nav-icon">👥</div>
+        <div class="nav-icon">
+          👥
+        </div>
         Refer
       </button>
 
@@ -644,7 +670,9 @@
         id="navWithdraw"
         onclick="showPage('withdraw')"
       >
-        <div class="nav-icon">🎁</div>
+        <div class="nav-icon">
+          🎁
+        </div>
         Withdraw
       </button>
 
@@ -667,9 +695,6 @@
       doc,
       getDoc,
       collection,
-      query,
-      where,
-      orderBy,
       getDocs
     }
     from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -678,85 +703,133 @@
     /* FIREBASE CONFIG */
 
     const firebaseConfig = {
-      apiKey: "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
-      authDomain: "gamemine-5d7ee.firebaseapp.com",
-      projectId: "gamemine-5d7ee",
-      storageBucket: "gamemine-5d7ee.firebasestorage.app",
-      messagingSenderId: "524612369793",
-      appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
+
+      apiKey:
+        "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+
+      authDomain:
+        "gamemine-5d7ee.firebaseapp.com",
+
+      projectId:
+        "gamemine-5d7ee",
+
+      storageBucket:
+        "gamemine-5d7ee.firebasestorage.app",
+
+      messagingSenderId:
+        "524612369793",
+
+      appId:
+        "1:524612369793:web:e425affa42cf1cb3e2bc80"
+
     };
 
 
     /* INITIALIZE FIREBASE */
 
-    const app = initializeApp(firebaseConfig);
+    const app =
+      initializeApp(firebaseConfig);
 
-    const db = getFirestore(app);
+    const db =
+      getFirestore(app);
 
 
     /* TEST USER FOR NOW */
 
-    const telegramUserId = "test_user";
+    const telegramUserId =
+      "test_user";
 
 
+    /* ========================= */
     /* LOAD USER */
+    /* ========================= */
 
     async function loadUser() {
 
       try {
 
-        const userRef = doc(
-          db,
-          "users",
-          telegramUserId
-        );
+        const userRef =
+          doc(
+            db,
+            "users",
+            telegramUserId
+          );
 
-        const userSnap = await getDoc(userRef);
+
+        const userSnap =
+          await getDoc(userRef);
 
 
         if (!userSnap.exists()) {
 
-          console.log("User document does not exist.");
+          console.log(
+            "User document does not exist."
+          );
 
           return;
 
         }
 
 
-        const userData = userSnap.data();
+        const userData =
+          userSnap.data();
 
 
         /* BALANCE */
 
-        document.getElementById("balance").textContent =
-          Number(userData.balance || 0).toLocaleString();
+        document
+          .getElementById("balance")
+          .textContent =
+          Number(
+            userData.balance || 0
+          ).toLocaleString();
 
 
         /* TODAY'S MINING */
 
-        document.getElementById("todayMining").textContent =
-          Number(userData.mining_today || 0).toLocaleString();
+        document
+          .getElementById("todayMining")
+          .textContent =
+          Number(
+            userData.mining_today || 0
+          ).toLocaleString();
 
 
         /* REFERRALS */
 
-        document.getElementById("referrals").textContent =
-          Number(userData.referral_count || 0).toLocaleString();
+        document
+          .getElementById("referrals")
+          .textContent =
+          Number(
+            userData.referral_count || 0
+          ).toLocaleString();
 
 
         /* LEVEL */
 
-        document.getElementById("level").textContent =
-          "Level " + Number(userData.level || 1);
+        document
+          .getElementById("level")
+          .textContent =
+          "Level " +
+          Number(
+            userData.level || 1
+          );
 
 
         /* MINING RATE */
 
         const speed =
-          Number(userData.mining_speed || 0.05);
+          Number(
+            userData.mining_speed || 0.05
+          );
 
-        document.getElementById("miningRate").textContent =
-          "+" + speed.toFixed(2) + " coins/min";
+
+        document
+          .getElementById("miningRate")
+          .textContent =
+          "+" +
+          speed.toFixed(2) +
+          " coins/min";
 
       }
 
@@ -772,47 +845,131 @@
     }
 
 
-    /* LOAD TASKS FROM FIRESTORE */
+    /* ========================= */
+    /* LOAD TASKS */
+    /* ========================= */
 
     async function loadTasks() {
 
       const container =
-        document.getElementById("tasksContainer");
+        document.getElementById(
+          "tasksContainer"
+        );
+
+
+      container.innerHTML = `
+        <div class="loading">
+          Loading tasks...
+        </div>
+      `;
 
 
       try {
 
         const tasksRef =
-          collection(db, "tasks");
+          collection(
+            db,
+            "tasks"
+          );
 
 
-        const tasksQuery = query(
-          tasksRef,
-          where("active", "==", true),
-          where("cycle", "==", 1),
-          orderBy("task_number", "asc")
+        /*
+          IMPORTANT:
+          We are NOT using where()
+          or orderBy() here.
+
+          This avoids Firestore
+          composite-index problems.
+        */
+
+        const snapshot =
+          await getDocs(
+            tasksRef
+          );
+
+
+        const tasks = [];
+
+
+        snapshot.forEach(
+          (taskDoc) => {
+
+            const task =
+              taskDoc.data();
+
+
+            /*
+              Only show:
+              - active tasks
+              - cycle 1 tasks
+            */
+
+            if (
+              task.active === true &&
+              Number(task.cycle) === 1
+            ) {
+
+              tasks.push({
+
+                id:
+                  taskDoc.id,
+
+                ...task
+
+              });
+
+            }
+
+          }
         );
 
 
-        const snapshot =
-          await getDocs(tasksQuery);
+        /*
+          Sort tasks locally:
+          1 → 2 → 3 → ... → 7
+        */
+
+        tasks.sort(
+          (a, b) => {
+
+            return (
+              Number(
+                a.task_number || 0
+              ) -
+              Number(
+                b.task_number || 0
+              )
+            );
+
+          }
+        );
 
 
         container.innerHTML = "";
 
 
-        if (snapshot.empty) {
+        if (
+          tasks.length === 0
+        ) {
 
           container.innerHTML = `
+
             <div class="coming-card">
-              <div class="coming-icon">📋</div>
+
+              <div class="coming-icon">
+                📋
+              </div>
+
               <div class="coming-title">
                 No Tasks Available
               </div>
+
               <div>
                 Check back later for new tasks.
               </div>
+
             </div>
+
           `;
 
           return;
@@ -820,108 +977,151 @@
         }
 
 
-        snapshot.forEach((taskDoc) => {
+        tasks.forEach(
+          (task) => {
 
-          const task =
-            taskDoc.data();
-
-
-          const taskNumber =
-            task.task_number || 0;
+            const taskNumber =
+              task.task_number || 0;
 
 
-          const title =
-            task.title || "GameMine Task";
+            const title =
+              task.title ||
+              "GameMine Task";
 
 
-          const description =
-            task.description || "";
+            const description =
+              task.description ||
+              "";
 
 
-          const reward =
-            Number(task.reward || 0);
+            const reward =
+              Number(
+                task.reward || 0
+              );
 
 
-          const type =
-            task.type || "normal";
+            const type =
+              task.type ||
+              "normal";
 
 
-          let adBadge = "";
+            let adBadge = "";
 
 
-          if (type === "rewarded_ad") {
+            if (
+              type ===
+              "rewarded_ad"
+            ) {
 
-            adBadge =
-              `<span class="ad-badge">AD</span>`;
+              adBadge =
+                `<span class="ad-badge">AD</span>`;
+
+            }
+
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+
+            card.className =
+              "task-card";
+
+
+            card.innerHTML = `
+
+              <div class="task-number">
+                ${taskNumber}
+              </div>
+
+              <div class="task-info">
+
+                <div class="task-title">
+
+                  ${escapeHTML(title)}
+
+                  ${adBadge}
+
+                </div>
+
+                <div class="task-description">
+
+                  ${escapeHTML(description)}
+
+                </div>
+
+                <div class="task-reward">
+
+                  +${reward.toLocaleString()} 🪙
+
+                </div>
+
+              </div>
+
+              <button
+                class="task-button"
+                onclick="startTask(
+                  '${task.id}',
+                  '${escapeHTML(title)}'
+                )"
+              >
+                START
+              </button>
+
+            `;
+
+
+            container.appendChild(
+              card
+            );
 
           }
-
-
-          const card =
-            document.createElement("div");
-
-
-          card.className =
-            "task-card";
-
-
-          card.innerHTML = `
-
-            <div class="task-number">
-              ${taskNumber}
-            </div>
-
-            <div class="task-info">
-
-              <div class="task-title">
-                ${escapeHTML(title)}
-                ${adBadge}
-              </div>
-
-              <div class="task-description">
-                ${escapeHTML(description)}
-              </div>
-
-              <div class="task-reward">
-                +${reward.toLocaleString()} 🪙
-              </div>
-
-            </div>
-
-            <button
-              class="task-button"
-              onclick="startTask('${taskDoc.id}', '${escapeHTML(title)}')"
-            >
-              START
-            </button>
-
-          `;
-
-
-          container.appendChild(card);
-
-        });
+        );
 
       }
 
       catch (error) {
 
         console.error(
-          "Error loading tasks:",
+          "FIRESTORE TASK ERROR:",
           error
         );
+
+
+        /*
+          Show the actual error
+          category on screen so
+          we can diagnose it.
+        */
+
+        let errorMessage =
+          "Unable to load tasks right now.";
+
+
+        if (
+          error &&
+          error.code
+        ) {
+
+          errorMessage +=
+            "<br><br>Error: " +
+            escapeHTML(
+              error.code
+            );
+
+        }
 
 
         container.innerHTML = `
 
           <div class="error">
 
-            Unable to load tasks right now.
+            ${errorMessage}
 
             <br><br>
 
-            Please check your internet connection
-            and try again.
+            Please try again.
 
           </div>
 
@@ -932,29 +1132,53 @@
     }
 
 
-    /* BASIC HTML ESCAPE */
+    /* ========================= */
+    /* HTML ESCAPE */
+    /* ========================= */
 
-    function escapeHTML(value) {
+    function escapeHTML(
+      value
+    ) {
 
       return String(value)
 
-        .replace(/&/g, "&amp;")
+        .replace(
+          /&/g,
+          "&amp;"
+        )
 
-        .replace(/</g, "&lt;")
+        .replace(
+          /</g,
+          "&lt;"
+        )
 
-        .replace(/>/g, "&gt;")
+        .replace(
+          />/g,
+          "&gt;"
+        )
 
-        .replace(/"/g, "&quot;")
+        .replace(
+          /"/g,
+          "&quot;"
+        )
 
-        .replace(/'/g, "&#039;");
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
     }
 
 
-    /* TASK BUTTON FOR NOW */
+    /* ========================= */
+    /* TASK BUTTON */
+    /* ========================= */
 
     window.startTask =
-      function(taskId, taskTitle) {
+      function(
+        taskId,
+        taskTitle
+      ) {
 
         alert(
           "Task selected: " +
@@ -965,122 +1189,36 @@
       };
 
 
-    /* MINING BUTTON */
+    /* ========================= */
+    /* MINING */
+    /* ========================= */
 
-    let miningActive = false;
+    let miningActive =
+      false;
 
 
     window.startMining =
       function() {
 
-        if (miningActive) {
+        if (
+          miningActive
+        ) {
 
           return;
 
         }
 
 
-        miningActive = true;
-
-
-        const button =
-          document.getElementById("mineButton");
-
-
-        const status =
-          document.getElementById("miningStatus");
-
-
-        button.textContent =
-          "MINING... ⛏️";
-
-
-        button.disabled =
+        miningActive =
           true;
 
 
-        button.style.opacity =
-          "0.7";
-
-
-        status.textContent =
-          "🟡 Mining is active";
-
-      };
-
-
-    /* PAGE NAVIGATION */
-
-    window.showPage =
-      function(page) {
-
-        const pages = {
-
-          mine:
-            document.getElementById("minePage"),
-
-          tasks:
-            document.getElementById("tasksPage"),
-
-          refer:
-            document.getElementById("referPage"),
-
-          withdraw:
-            document.getElementById("withdrawPage")
-
-        };
-
-
-        Object.values(pages).forEach(
-          p => p.classList.remove("active")
-        );
-
-
-        pages[page].classList.add("active");
-
-
-        /* NAV ACTIVE STATE */
-
-        document
-          .querySelectorAll(".nav-button")
-          .forEach(button => {
-
-            button.classList.remove("active");
-
-          });
-
-
-        const navButton =
+        const button =
           document.getElementById(
-            "nav" +
-            page.charAt(0).toUpperCase() +
-            page.slice(1)
+            "mineButton"
           );
 
 
-        if (navButton) {
-
-          navButton.classList.add("active");
-
-        }
-
-
-        /* LOAD TASKS WHEN OPENED */
-
-        if (page === "tasks") {
-
-          loadTasks();
-
-        }
-
-      };
-
-
-    /* START */
-
-    loadUser();
-
-  </script>
-
-</body>
-  </html>
+        const status =
+          document.getElementById(
+            "miningStatus
