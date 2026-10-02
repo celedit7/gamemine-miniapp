@@ -108,10 +108,16 @@
       font-size: 17px;
       font-weight: bold;
       cursor: pointer;
+      transition: .2s;
     }
 
     .mine-btn:active {
       transform: scale(.97);
+    }
+
+    .mine-btn:disabled {
+      cursor: default;
+      opacity: .7;
     }
 
     .stats {
@@ -198,11 +204,11 @@
         <div class="rate">+0.05 coins / min</div>
       </div>
 
-      <div>🟢</div>
+      <div id="miningStatus">🟢</div>
 
     </div>
 
-    <button class="mine-btn" onclick="startMining()">
+    <button class="mine-btn" id="mineButton" onclick="startMining()">
       START MINING
     </button>
 
@@ -212,12 +218,12 @@
 
     <div class="stat">
       <div class="stat-title">Today's Mining</div>
-      <div class="stat-value">0 / 100 🪙</div>
+      <div class="stat-value" id="todayMining">0 / 100 🪙</div>
     </div>
 
     <div class="stat">
       <div class="stat-title">Referrals</div>
-      <div class="stat-value">0 👥</div>
+      <div class="stat-value" id="referrals">0 👥</div>
     </div>
 
   </div>
@@ -285,8 +291,17 @@
 
         const userData = userSnap.data();
 
+        // Main balance
         document.getElementById("balance").textContent =
           userData.balance || 0;
+
+        // Today's mining
+        document.getElementById("todayMining").textContent =
+          (userData.mining_today || 0) + " / 100 🪙";
+
+        // Referrals
+        document.getElementById("referrals").textContent =
+          (userData.referral_count || 0) + " 👥";
 
         console.log("GameMine user loaded:", userData);
 
@@ -310,9 +325,27 @@
 
 <script>
 
-function startMining() {
-  alert("Mining system will be connected next 🚀");
-}
+  let miningActive = false;
+
+  function startMining() {
+
+    if (miningActive) {
+      return;
+    }
+
+    miningActive = true;
+
+    const button = document.getElementById("mineButton");
+    const status = document.getElementById("miningStatus");
+
+    button.textContent = "MINING... ⛏️";
+    button.disabled = true;
+
+    status.textContent = "🟡";
+
+    console.log("Mining session started.");
+
+  }
 
 </script>
 
