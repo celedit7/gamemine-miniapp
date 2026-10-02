@@ -1,1 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameMine</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b0b0f;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 20px 16px 90px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .level {
+      background: #19191f;
+      padding: 8px 13px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .balance {
+      text-align: center;
+      margin-top: 45px;
+    }
+
+    .coin {
+      width: 115px;
+      height: 115px;
+      margin: auto;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #ffd84d, #f59e0b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 58px;
+      box-shadow: 0 0 45px rgba(245,158,11,.25);
+    }
+
+    .amount {
+      font-size: 42px;
+      font-weight: 800;
+      margin-top: 20px;
+    }
+
+    .label {
+      color: #888;
+      margin-top: 5px;
+    }
+
+    .mining {
+      margin-top: 35px;
+      background: #15151b;
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .mining-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mining-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .rate {
+      color: #f5b942;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .mine-btn {
+      margin-top: 18px;
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      background: #f5b942;
+      color: #111;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .mine-btn:active {
+      transform: scale(.97);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      background: #15151b;
+      padding: 16px;
+      border-radius: 18px;
+    }
+
+    .stat-title {
+      color: #888;
+      font-size: 13px;
+    }
+
+    .stat-value {
+      font-size: 19px;
+      font-weight: bold;
+      margin-top: 7px;
+    }
+
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #111116;
+      border-top: 1px solid #25252c;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 10px 5px 12px;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+    }
+
+    .nav-icon {
+      font-size: 22px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .active {
+      color: #f5b942;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="top">
+    <div class="logo">🎮 GameMine</div>
+    <div class="level">LVL 1</div>
+  </div>
+
+  <div class="balance">
+
+    <div class="coin">🪙</div>
+
+    <div class="amount" id="balance">0</div>
+
+    <div class="label">GAME COINS</div>
+
+  </div>
+
+  <div class="mining">
+
+    <div class="mining-row">
+
+      <div>
+        <div class="mining-title">⛏️ Mining</div>
+        <div class="rate">+0.05 coins / min</div>
+      </div>
+
+      <div>🟢</div>
+
+    </div>
+
+    <button class="mine-btn" onclick="startMining()">
+      START MINING
+    </button>
+
+  </div>
+
+  <div class="stats">
+
+    <div class="stat">
+      <div class="stat-title">Today's Mining</div>
+      <div class="stat-value">0 / 100 🪙</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-title">Referrals</div>
+      <div class="stat-value">0 👥</div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="nav">
+
+  <div class="nav-item active">
+    <span class="nav-icon">⛏️</span>
+    Mine
+  </div>
+
+  <div class="nav-item">
+    <span class="nav-icon">🎯</span>
+    Tasks
+  </div>
+
+  <div class="nav-item">
+    <span class="nav-icon">👥</span>
+    Refer
+  </div>
+
+  <div class="nav-item">
+    <span class="nav-icon">💎</span>
+    Withdraw
+  </div>
+
+</div>
+
+<script>
+
+function startMining() {
+  alert("Mining started! 🚀");
+}
+
+</script>
+
+</body>
+</html>
