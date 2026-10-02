@@ -1,499 +1,609 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#08090d">
-  <title>GameMine Firebase Test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-compat.js"></script>
+<title>GameMine</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    body {
-      margin: 0;
-      background: #08090d;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #070b12;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+}
 
-    .app {
-      max-width: 520px;
-      margin: auto;
-      min-height: 100vh;
-      padding-bottom: 90px;
-    }
+body {
+  overflow-x: hidden;
+}
 
-    .header {
-      padding: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+button,
+input,
+select {
+  font-family: inherit;
+}
 
-    .logo {
-      font-size: 23px;
-      font-weight: 800;
-    }
+button {
+  cursor: pointer;
+  border: 0;
+}
 
-    .logo span {
-      color: #ffd84d;
-    }
+.app {
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+  min-height: 100vh;
+  padding-bottom: 90px;
+}
 
-    .level {
-      background: #171922;
-      border: 1px solid #292c38;
-      border-radius: 20px;
-      padding: 8px 12px;
-      font-size: 13px;
-    }
+.topbar {
+  height: 70px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-    .page {
-      display: none;
-      padding: 12px 16px;
-    }
+.logo {
+  font-size: 23px;
+  font-weight: 900;
+}
 
-    .page.active {
-      display: block;
-    }
+.logo span {
+  color: #f5c542;
+}
 
-    .title {
-      font-size: 27px;
-      font-weight: 800;
-      margin: 10px 0 5px;
-    }
+.level {
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #141b28;
+  border: 1px solid #283448;
+  color: #f5c542;
+  font-size: 12px;
+  font-weight: 700;
+}
 
-    .subtitle {
-      color: #8e929f;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
+.page {
+  display: none;
+  padding: 5px 18px 20px;
+}
 
-    .card,
-    .balance-card,
-    .task,
-    .game-option,
-    .ref-box {
-      background: #111218;
-      border: 1px solid #292c36;
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 14px;
-    }
+.page.active {
+  display: block;
+}
 
-    .balance-card {
-      text-align: center;
-      padding: 28px 20px;
-    }
+.welcome {
+  margin-top: 5px;
+  color: #8996a8;
+  font-size: 14px;
+}
 
-    .coin {
-      width: 80px;
-      height: 80px;
-      margin: auto auto 14px;
-      border-radius: 50%;
-      background: #ffd84d;
-      color: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 38px;
-    }
+.welcome strong {
+  color: #ffffff;
+}
 
-    .balance-label,
-    .muted {
-      color: #8d919d;
-      font-size: 13px;
-    }
+.balance-card {
+  margin-top: 18px;
+  padding: 28px 20px;
+  text-align: center;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #151e2d, #0d131d);
+  border: 1px solid #273348;
+}
 
-    .balance {
-      font-size: 38px;
-      font-weight: 800;
-      margin-top: 5px;
-    }
+.coin {
+  width: 82px;
+  height: 82px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f5c542;
+  font-size: 40px;
+  box-shadow: 0 0 35px rgba(245,197,66,.18);
+}
 
-    .unit {
-      color: #ffd84d;
-      font-size: 14px;
-    }
+.balance-label {
+  margin-top: 15px;
+  color: #8592a5;
+  font-size: 12px;
+}
 
-    .card-title {
-      font-size: 16px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
+.balance {
+  margin-top: 3px;
+  font-size: 37px;
+  font-weight: 900;
+}
 
-    .rate {
-      font-size: 24px;
-      font-weight: 800;
-      margin: 12px 0;
-    }
+.balance-type {
+  color: #f5c542;
+  font-size: 12px;
+  margin-top: 3px;
+}
 
-    .primary-btn,
-    .secondary-btn {
-      width: 100%;
-      padding: 13px;
-      border-radius: 13px;
-      margin-top: 8px;
-      font-weight: 800;
-    }
+.card {
+  margin-top: 14px;
+  padding: 18px;
+  border-radius: 20px;
+  background: #101722;
+  border: 1px solid #202d40;
+}
 
-    .primary-btn {
-      background: #ffd84d;
-      color: #111;
-      border: none;
-    }
+.card-title {
+  font-size: 17px;
+  font-weight: 800;
+}
 
-    .secondary-btn {
-      background: #1b1d25;
-      color: white;
-      border: 1px solid #30333e;
-    }
+.card-subtitle {
+  margin-top: 6px;
+  color: #8794a7;
+  font-size: 13px;
+  line-height: 1.5;
+}
 
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+.rate-row {
+  margin-top: 17px;
+  padding: 13px;
+  border-radius: 13px;
+  background: #080e17;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
 
-    .stat {
-      background: #111218;
-      border: 1px solid #292c36;
-      border-radius: 18px;
-      padding: 16px;
-    }
+.rate {
+  color: #f5c542;
+  font-weight: 800;
+}
 
-    .stat-label {
-      color: #8d919d;
-      font-size: 12px;
-    }
+.primary {
+  width: 100%;
+  margin-top: 13px;
+  padding: 15px;
+  border-radius: 14px;
+  background: #f5c542;
+  color: #171208;
+  font-size: 15px;
+  font-weight: 900;
+}
 
-    .stat-value {
-      font-size: 19px;
-      font-weight: 800;
-      margin-top: 7px;
-    }
+.primary:active,
+.secondary:active,
+.task-button:active,
+.nav-button:active,
+.game-button:active {
+  transform: scale(.98);
+}
 
-    .firebase-status {
-      background: #101820;
-      border: 1px solid #294052;
-      color: #a9d5ee;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-bottom: 14px;
-      word-break: break-word;
-    }
+.secondary {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #1a2535;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+}
 
-    .task-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
+.stats {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
-    .task-number {
-      color: #ffd84d;
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
+.stat {
+  padding: 16px;
+  border-radius: 17px;
+  background: #101722;
+  border: 1px solid #202d40;
+}
 
-    .task-title {
-      font-weight: 800;
-      font-size: 15px;
-    }
+.stat-label {
+  color: #8190a4;
+  font-size: 11px;
+}
 
-    .task-description {
-      color: #8d919d;
-      font-size: 12px;
-      margin-top: 6px;
-      line-height: 1.4;
-    }
+.stat-value {
+  margin-top: 7px;
+  font-size: 19px;
+  font-weight: 900;
+}
 
-    .reward {
-      color: #ffd84d;
-      font-weight: 800;
-      white-space: nowrap;
-    }
+.section-title {
+  margin-top: 7px;
+  font-size: 25px;
+  font-weight: 900;
+}
 
-    .task-btn {
-      width: 100%;
-      margin-top: 13px;
-      padding: 11px;
-      border-radius: 12px;
-      background: #1b1d25;
-      border: 1px solid #30333e;
-      color: white;
-      font-weight: 800;
-    }
+.section-subtitle {
+  margin-top: 5px;
+  color: #8996a8;
+  font-size: 13px;
+}
 
-    .empty {
-      text-align: center;
-      padding: 40px 20px;
-      background: #111218;
-      border: 1px solid #292c36;
-      border-radius: 20px;
-      color: #8d919d;
-    }
+.task {
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #101722;
+  border: 1px solid #202d40;
+}
 
-    .empty-icon {
-      font-size: 38px;
-      margin-bottom: 10px;
-    }
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-    .reward-info {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #252832;
-      font-size: 13px;
-    }
+.task-info {
+  min-width: 0;
+  flex: 1;
+}
 
-    .reward-info:last-child {
-      border-bottom: 0;
-    }
+.task-title {
+  font-size: 15px;
+  font-weight: 800;
+}
 
-    .ref-link {
-      background: #090a0e;
-      border: 1px solid #30333e;
-      padding: 12px;
-      border-radius: 12px;
-      word-break: break-all;
-      color: #bbb;
-      font-size: 12px;
-      margin-top: 14px;
-    }
+.task-description {
+  margin-top: 5px;
+  color: #8794a7;
+  font-size: 12px;
+  line-height: 1.45;
+}
 
-    .game-option.disabled {
-      opacity: .5;
-    }
+.task-reward {
+  white-space: nowrap;
+  color: #f5c542;
+  font-size: 12px;
+  font-weight: 800;
+}
 
-    .available {
-      color: #72db95;
-      font-size: 12px;
-      margin-top: 5px;
-    }
+.task-button {
+  width: 100%;
+  margin-top: 13px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #1b2738;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+}
 
-    .coming {
-      color: #888;
-      font-size: 12px;
-      margin-top: 5px;
-    }
+.task-button.completed {
+  background: #163521;
+  color: #70dc8d;
+}
 
-    .withdraw-form {
-      display: none;
-      margin-top: 15px;
-    }
+.task-button.ad {
+  background: #342b12;
+  color: #f5c542;
+}
 
-    .withdraw-form.show {
-      display: block;
-    }
+.empty {
+  margin-top: 15px;
+  padding: 35px 15px;
+  text-align: center;
+  border-radius: 18px;
+  background: #101722;
+  border: 1px solid #202d40;
+  color: #8592a5;
+}
 
-    label {
-      display: block;
-      color: #aaa;
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
+.empty-icon {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
 
-    input,
-    select {
-      width: 100%;
-      background: #090a0e;
-      color: white;
-      border: 1px solid #30333e;
-      border-radius: 12px;
-      padding: 13px;
-      margin-bottom: 12px;
-      outline: none;
-    }
+.info-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
 
-    .notice {
-      background: #171922;
-      border: 1px solid #292c36;
-      border-radius: 13px;
-      padding: 12px;
-      color: #999;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-bottom: 14px;
-    }
+.info-box {
+  padding: 14px;
+  border-radius: 13px;
+  background: #080e17;
+}
 
-    .status {
-      display: none;
-      background: #171922;
-      border-radius: 12px;
-      padding: 12px;
-      color: #aaa;
-      font-size: 12px;
-      margin-top: 12px;
-    }
+.info-box small {
+  color: #8190a4;
+  font-size: 11px;
+}
 
-    .status.show {
-      display: block;
-    }
+.info-box strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+}
 
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 520px;
-      background: rgba(10,11,15,.97);
-      border-top: 1px solid #252832;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      padding: 8px 5px 10px;
-      z-index: 20;
-    }
+.referral-card {
+  text-align: center;
+}
 
-    .nav-btn {
-      background: transparent;
-      border: none;
-      color: #777c89;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 7px 2px;
-    }
+.referral-icon {
+  font-size: 55px;
+}
 
-    .nav-icon {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 3px;
-    }
+.referral-number {
+  margin-top: 5px;
+  font-size: 36px;
+  font-weight: 900;
+}
 
-    .nav-btn.active {
-      color: #ffd84d;
-    }
+.referral-label {
+  color: #8794a7;
+  font-size: 12px;
+}
 
-    .modal-bg {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.75);
-      display: none;
-      align-items: flex-end;
-      z-index: 100;
-    }
+.referral-name {
+  margin-top: 18px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+}
 
-    .modal-bg.show {
-      display: flex;
-    }
+.referral-link {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #080e17;
+  border: 1px solid #263349;
+  color: #b5c0cf;
+  font-size: 11px;
+  line-height: 1.5;
+  word-break: break-all;
+}
 
-    .modal {
-      width: 100%;
-      max-width: 520px;
-      background: #111218;
-      border: 1px solid #292c36;
-      border-radius: 24px 24px 0 0;
-      padding: 22px;
-    }
+.notice {
+  margin-top: 13px;
+  padding: 13px;
+  border-radius: 14px;
+  background: #111a27;
+  border: 1px solid #253248;
+  color: #8996a8;
+  font-size: 11px;
+  line-height: 1.5;
+}
 
-    .close {
-      float: right;
-      background: #22242d;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 34px;
-      height: 34px;
-      font-size: 20px;
-    }
-  </style>
+.game-card {
+  margin-top: 12px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 18px;
+  background: #101722;
+  border: 1px solid #202d40;
+}
+
+.game-icon {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #1a2535;
+  font-size: 24px;
+}
+
+.game-info {
+  flex: 1;
+}
+
+.game-name {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.game-status {
+  margin-top: 4px;
+  color: #6edc8d;
+  font-size: 11px;
+}
+
+.game-status.soon {
+  color: #7e899a;
+}
+
+.game-button {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f5c542;
+  color: #171208;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.game-button.disabled {
+  background: #202a39;
+  color: #758195;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 520px;
+  height: 72px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(8,13,21,.98);
+  border-top: 1px solid #202d40;
+  z-index: 50;
+}
+
+.nav-button {
+  background: transparent;
+  color: #69778b;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.nav-icon {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 21px;
+}
+
+.nav-button.active {
+  color: #f5c542;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: flex-end;
+  background: rgba(0,0,0,.75);
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+  padding: 22px;
+  border-radius: 25px 25px 0 0;
+  background: #101722;
+  border: 1px solid #29364a;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.input {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #29364a;
+  background: #080e17;
+  color: white;
+  outline: none;
+}
+
+.close-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #1b2738;
+  color: white;
+  font-weight: 800;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 86px;
+  transform: translateX(-50%);
+  width: calc(100% - 35px);
+  max-width: 480px;
+  padding: 13px 15px;
+  border-radius: 13px;
+  background: #1b2636;
+  border: 1px solid #2c3b51;
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  z-index: 200;
+  display: none;
+}
+
+.toast.show {
+  display: block;
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <header class="header">
+  <!-- HEADER -->
+  <header class="topbar">
     <div class="logo">Game<span>Mine</span></div>
-    <div class="level">
-      Level <span id="level">1</span>
-    </div>
+    <div class="level" id="levelBadge">Level 1</div>
   </header>
 
-
   <!-- MINE -->
+  <section class="page active" id="minePage">
 
-  <section id="minePage" class="page active">
-
-    <div class="title">Mining</div>
-
-    <div class="subtitle">
-      Earn GameMine Coins while you're away.
+    <div class="welcome">
+      Welcome, <strong id="userName">Gamer</strong> 👋
     </div>
 
     <div class="balance-card">
 
       <div class="coin">🪙</div>
 
-      <div class="balance-label">
-        Your Balance
-      </div>
+      <div class="balance-label">Your Balance</div>
 
-      <div class="balance">
-        <span id="balance">0</span>
-        <span class="unit">coins</span>
+      <div class="balance" id="balance">0</div>
+
+      <div class="balance-type">
+        GameMine Coins
       </div>
 
     </div>
 
-
     <div class="card">
 
-      <div class="card-title">
-        ⛏️ Mining
+      <div class="card-title">⛏️ Mining</div>
+
+      <div class="card-subtitle">
+        Earn GameMine Coins through your daily mining session.
       </div>
 
-      <div class="muted">
-        Current mining speed
+      <div class="rate-row">
+        <span>Mining rate</span>
+        <span class="rate" id="miningRate">+0.05/min</span>
       </div>
 
-      <div class="rate">
-        +<span id="miningRate">0.05</span>
-        <span class="unit">coins/min</span>
-      </div>
-
-      <div class="muted">
-        Today's Mining:
-        <strong id="todayMining">0</strong>/100
-      </div>
-
-      <button id="mineButton" class="primary-btn">
+      <button class="primary" id="mineButton">
         Start Mining
       </button>
 
     </div>
 
-
     <div class="stats">
 
       <div class="stat">
-        <div class="stat-label">
-          Today's Mining
-        </div>
-
+        <div class="stat-label">Today's Mining</div>
         <div class="stat-value">
-          <span id="statMining">0</span>/100
+          <span id="todayMining">0</span>/100
         </div>
       </div>
 
       <div class="stat">
-        <div class="stat-label">
-          Referrals
-        </div>
-
+        <div class="stat-label">Referrals</div>
         <div class="stat-value" id="referralCount">
           0
         </div>
@@ -503,50 +613,16 @@
 
   </section>
 
-
   <!-- TASKS -->
+  <section class="page" id="tasksPage">
 
-  <section id="tasksPage" class="page">
+    <div class="section-title">Tasks</div>
 
-    <div class="title">
-      Tasks
-    </div>
-
-    <div class="subtitle">
+    <div class="section-subtitle">
       Complete tasks and earn GameMine Coins.
     </div>
 
-    <div id="firebaseStatus" class="firebase-status">
-      Firebase connection: waiting...
-    </div>
-
-
-    <div class="card">
-
-      <div class="reward-info">
-        <span>Tasks per cycle</span>
-        <strong id="tasksPerCycle">7</strong>
-      </div>
-
-      <div class="reward-info">
-        <span>Reward per task</span>
-        <strong>20 coins</strong>
-      </div>
-
-      <div class="reward-info">
-        <span>Full cycle reward</span>
-        <strong>140 coins</strong>
-      </div>
-
-      <div class="reward-info">
-        <span>Cooldown</span>
-        <strong>2 hours</strong>
-      </div>
-
-    </div>
-
-
-    <div id="tasksContainer">
+    <div id="taskList">
 
       <div class="empty">
         <div class="empty-icon">⏳</div>
@@ -555,597 +631,492 @@
 
     </div>
 
-  </section>
+    <div class="card">
 
+      <div class="card-title">📊 Task Cycle</div>
 
-  <!-- REFERRAL -->
+      <div class="info-grid">
 
-  <section id="referPage" class="page">
+        <div class="info-box">
+          <small>Tasks per cycle</small>
+          <strong id="tasksPerCycle">7</strong>
+        </div>
 
-    <div class="title">
-      Refer & Earn
+        <div class="info-box">
+          <small>Reward per task</small>
+          <strong id="taskReward">20 coins</strong>
+        </div>
+
+        <div class="info-box">
+          <small>Full cycle reward</small>
+          <strong id="cycleReward">140 coins</strong>
+        </div>
+
+        <div class="info-box">
+          <small>Cooldown</small>
+          <strong id="cooldown">2 hours</strong>
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="subtitle">
+  </section>
+
+  <!-- REFER -->
+  <section class="page" id="referPage">
+
+    <div class="section-title">Refer & Earn</div>
+
+    <div class="section-subtitle">
       Invite friends and earn GameMine Coins.
     </div>
 
-    <div class="ref-box">
+    <div class="card referral-card">
 
-      <div class="card-title">
-        👥 Your Referrals
+      <div class="referral-icon">👥</div>
+
+      <div class="referral-number" id="referPageCount">
+        0
       </div>
 
-      <div class="balance" style="font-size:32px;">
-        <span id="referralBig">0</span>
-      </div>
-
-      <div class="muted">
+      <div class="referral-label">
         Qualified referrals
       </div>
 
-      <div class="reward-info" style="margin-top:15px;">
-        <span>Reward per qualified referral</span>
-        <strong>100 coins</strong>
+      <div class="referral-name" id="referralName">
+        Gamer
       </div>
 
-      <div id="referralLink" class="ref-link">
+      <div class="info-grid">
+
+        <div class="info-box">
+          <small>Reward per qualified referral</small>
+          <strong id="referralReward">
+            100 coins
+          </strong>
+        </div>
+
+        <div class="info-box">
+          <small>Referral status</small>
+          <strong>Active</strong>
+        </div>
+
+      </div>
+
+      <div class="referral-link" id="referralLink">
         Loading referral link...
       </div>
 
-      <button id="copyReferral" class="primary-btn">
-        Copy Referral Link
+      <button class="primary" id="copyReferral">
+        📋 Copy Referral Link
       </button>
 
-      <button id="shareReferral" class="secondary-btn">
-        Share Referral Link
+      <button class="secondary" id="shareReferral">
+        📤 Share Referral Link
       </button>
 
     </div>
 
     <div class="notice">
-      A referral becomes qualified after the invited user starts using
-      GameMine and completes the required activity.
+      Your friend must join through your referral link and complete
+      the required GameMine activity before the referral becomes qualified.
+      Duplicate and suspicious referrals are not rewarded.
     </div>
 
   </section>
 
-
   <!-- WITHDRAW -->
+  <section class="page" id="withdrawPage">
 
-  <section id="withdrawPage" class="page">
+    <div class="section-title">Withdraw</div>
 
-    <div class="title">
-      Withdraw
+    <div class="section-subtitle">
+      Redeem GameMine Coins for gaming rewards.
     </div>
 
-    <div class="subtitle">
-      Redeem your GameMine Coins for gaming rewards.
-    </div>
+    <!-- FREE FIRE -->
+    <div class="game-card">
 
+      <div class="game-icon">🔥</div>
 
-    <div class="balance-card">
-
-      <div class="balance-label">
-        Available Balance
+      <div class="game-info">
+        <div class="game-name">Free Fire</div>
+        <div class="game-status">Available</div>
       </div>
 
-      <div class="balance">
-        <span id="withdrawBalance">0</span>
-        <span class="unit">coins</span>
-      </div>
-
-    </div>
-
-
-    <div class="notice">
-      GameMine only requires your public game Player UID/ID.
-      Never enter your game password, OTP, Telegram code,
-      or recovery code.
-    </div>
-
-
-    <div class="game-option">
-
-      <div class="card-title">
-        🔥 Free Fire
-      </div>
-
-      <div class="available">
-        Available
-      </div>
-
-      <button id="selectFreeFire" class="primary-btn">
-        Select Free Fire
+      <button class="game-button" id="freeFireButton">
+        Withdraw
       </button>
 
+    </div>
 
-      <div id="freeFireForm" class="withdraw-form">
+    <!-- CODM -->
+    <div class="game-card">
 
-        <label>
-          Reward
-        </label>
+      <div class="game-icon">🎯</div>
 
-        <select id="ffReward">
-
-          <option value="100_diamonds" data-cost="10000">
-            100 Diamonds — 10,000 coins
-          </option>
-
-          <option value="310_diamonds" data-cost="30000">
-            310 Diamonds — 30,000 coins
-          </option>
-
-          <option value="520_diamonds" data-cost="50000">
-            520 Diamonds — 50,000 coins
-          </option>
-
-        </select>
-
-
-        <label>
-          Free Fire Player UID
-        </label>
-
-        <input
-          id="ffUid"
-          type="text"
-          inputmode="numeric"
-          placeholder="Enter your Player UID"
-        >
-
-
-        <button id="submitWithdrawal" class="primary-btn">
-          Submit Withdrawal
-        </button>
-
-        <button id="cancelWithdrawal" class="secondary-btn">
-          Cancel
-        </button>
-
-        <div id="withdrawStatus" class="status"></div>
-
+      <div class="game-info">
+        <div class="game-name">Call of Duty Mobile</div>
+        <div class="game-status soon">Coming Soon</div>
       </div>
+
+      <button class="game-button disabled">
+        Soon
+      </button>
 
     </div>
 
+    <!-- PUBG -->
+    <div class="game-card">
 
-    <div class="game-option disabled">
+      <div class="game-icon">🪖</div>
 
-      <div class="card-title">
-        🎯 COD Mobile
+      <div class="game-info">
+        <div class="game-name">PUBG Mobile</div>
+        <div class="game-status soon">Coming Soon</div>
       </div>
 
-      <div class="coming">
-        Coming Soon
-      </div>
+      <button class="game-button disabled">
+        Soon
+      </button>
 
     </div>
 
-
-    <div class="game-option disabled">
-
-      <div class="card-title">
-        🪖 PUBG Mobile
-      </div>
-
-      <div class="coming">
-        Coming Soon
-      </div>
-
+    <div class="notice">
+      Only your public game Player UID/ID is required.
+      Never submit your game password, OTP, Telegram code,
+      Facebook login, Google login, or recovery code.
     </div>
 
   </section>
 
 </div>
 
+<!-- WITHDRAW MODAL -->
+<div class="modal" id="withdrawModal">
 
-<!-- TASK MODAL -->
+  <div class="modal-box">
 
-<div id="taskModal" class="modal-bg">
+    <div class="modal-title">
+      🔥 Free Fire Withdrawal
+    </div>
 
-  <div class="modal">
+    <div class="card-subtitle">
+      Select a reward and enter your public Free Fire Player UID.
+    </div>
 
-    <button id="closeModal" class="close">
-      ×
+    <select class="input" id="rewardSelect">
+
+      <option value="100_diamonds" data-coins="10000">
+        100 Diamonds — 10,000 Coins
+      </option>
+
+      <option value="310_diamonds" data-coins="30000">
+        310 Diamonds — 30,000 Coins
+      </option>
+
+      <option value="520_diamonds" data-coins="50000">
+        520 Diamonds — 50,000 Coins
+      </option>
+
+    </select>
+
+    <input
+      class="input"
+      id="playerUid"
+      type="text"
+      inputmode="numeric"
+      placeholder="Free Fire Player UID"
+    >
+
+    <button class="primary" id="confirmWithdraw">
+      Submit Withdrawal
     </button>
 
-    <h2 id="modalTitle">
-      Task
-    </h2>
-
-    <p id="modalDescription" class="muted">
-      Task information
-    </p>
-
-    <div class="reward-info">
-      <span>Reward</span>
-      <strong id="modalReward">
-        20 coins
-      </strong>
-    </div>
-
-    <div id="modalNotice" class="notice">
-      Complete this task.
-    </div>
-
-    <button id="modalAction" class="primary-btn">
-      Continue
+    <button class="close-button" id="closeWithdraw">
+      Close
     </button>
 
   </div>
 
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <!-- NAVIGATION -->
-
 <nav class="bottom-nav">
 
-  <button class="nav-btn active" data-page="mine">
+  <button class="nav-button active" data-page="minePage">
     <span class="nav-icon">⛏️</span>
     Mine
   </button>
 
-  <button class="nav-btn" data-page="tasks">
+  <button class="nav-button" data-page="tasksPage">
     <span class="nav-icon">📋</span>
     Tasks
   </button>
 
-  <button class="nav-btn" data-page="refer">
+  <button class="nav-button" data-page="referPage">
     <span class="nav-icon">👥</span>
     Refer
   </button>
 
-  <button class="nav-btn" data-page="withdraw">
+  <button class="nav-button" data-page="withdrawPage">
     <span class="nav-icon">🎁</span>
     Withdraw
   </button>
 
 </nav>
 
-
 <script>
+/* =========================================================
+   GAMEMINE CONFIGURATION
+   ========================================================= */
 
-  /* =====================================================
-     GAME MINE STATE
-  ===================================================== */
+const BOT_USERNAME = "GamecoinRewards_bot";
 
-  const APP_USER_ID = "test_user";
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+  authDomain: "gamemine-5d7ee.firebaseapp.com",
+  projectId: "gamemine-5d7ee",
+  storageBucket: "gamemine-5d7ee.firebasestorage.app",
+  messagingSenderId: "524612369793",
+  appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
+};
 
-  let db = null;
-  let currentUser = null;
-  let settings = null;
-  let tasks = [];
-  let selectedTask = null;
-  let mining = false;
-  let miningTimer = null;
+/* =========================================================
+   STATE
+   ========================================================= */
 
+const state = {
+  telegramId: "",
+  firstName: "Gamer",
+  lastName: "",
+  username: "",
+  balance: 0,
+  miningToday: 0,
+  level: 1,
+  miningSpeed: 0.05,
+  referralCount: 0,
+  referralReward: 100,
+  taskReward: 20,
+  tasksPerCycle: 7,
+  cooldownHours: 2,
+  miningActive: false,
+  tasks: []
+};
 
-  /* =====================================================
-     FIREBASE CONFIG
-  ===================================================== */
+let db = null;
+let firebaseLoaded = false;
 
-  const firebaseConfig = {
+/* =========================================================
+   SAFE TOAST
+   ========================================================= */
 
-    apiKey:
-      "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+function toast(message) {
 
-    authDomain:
-      "gamemine-5d7ee.firebaseapp.com",
+  const box = document.getElementById("toast");
 
-    projectId:
-      "gamemine-5d7ee",
+  box.textContent = message;
+  box.classList.add("show");
 
-    storageBucket:
-      "gamemine-5d7ee.firebasestorage.app",
+  clearTimeout(window.toastTimer);
 
-    messagingSenderId:
-      "524612369793",
+  window.toastTimer = setTimeout(function() {
+    box.classList.remove("show");
+  }, 2800);
+}
 
-    appId:
-      "1:524612369793:web:e425affa42cf1cb3e2bc80"
+/* =========================================================
+   TELEGRAM
+   ========================================================= */
 
-  };
-
-
-  /* =====================================================
-     HELPERS
-  ===================================================== */
-
-  function $(id) {
-    return document.getElementById(id);
-  }
-
-
-  function number(value, fallback = 0) {
-
-    const n = Number(value);
-
-    return Number.isFinite(n)
-      ? n
-      : fallback;
-
-  }
-
-
-  function escapeHTML(value) {
-
-    return String(value ?? "")
-
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
-
-
-  /* =====================================================
-     INITIALIZE FIREBASE
-  ===================================================== */
+function initTelegram() {
 
   try {
 
-    firebase.initializeApp(firebaseConfig);
+    if (
+      window.Telegram &&
+      window.Telegram.WebApp
+    ) {
 
-    db = firebase.firestore();
+      const tg = window.Telegram.WebApp;
 
-    $("firebaseStatus").textContent =
-      "Firebase connected. Ready to test tasks/task_1.";
+      tg.ready();
+
+      if (typeof tg.expand === "function") {
+        tg.expand();
+      }
+
+      const user =
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user
+          ? tg.initDataUnsafe.user
+          : null;
+
+      if (user) {
+
+        state.telegramId =
+          String(user.id || "");
+
+        state.firstName =
+          user.first_name ||
+          "Gamer";
+
+        state.lastName =
+          user.last_name ||
+          "";
+
+        state.username =
+          user.username ||
+          "";
+
+      }
+
+    }
 
   } catch (error) {
 
-    $("firebaseStatus").textContent =
-      "❌ Firebase startup error: " +
-      error.message;
+    console.log("Telegram:", error);
 
   }
 
+}
 
-  /* =====================================================
-     NAVIGATION
-  ===================================================== */
+/* =========================================================
+   USER NAME
+   ========================================================= */
 
-  document.querySelectorAll(".nav-btn")
-    .forEach(button => {
+function getDisplayName() {
 
-      button.addEventListener("click", () => {
+  if (state.firstName) {
+    return state.firstName;
+  }
 
-        showPage(button.dataset.page);
+  if (state.username) {
+    return "@" + state.username;
+  }
 
-      });
+  return "Gamer";
+}
 
+/* =========================================================
+   REFERRAL LINK
+   ========================================================= */
+
+function getReferralCode() {
+
+  if (state.telegramId) {
+    return state.telegramId;
+  }
+
+  return "guest";
+}
+
+function updateReferralLink() {
+
+  const code = getReferralCode();
+
+  const link =
+    "https://t.me/" +
+    BOT_USERNAME +
+    "?start=ref_" +
+    encodeURIComponent(code);
+
+  document.getElementById("referralLink").textContent = link;
+
+  return link;
+}
+
+/* =========================================================
+   UI UPDATE
+   ========================================================= */
+
+function updateUI() {
+
+  document.getElementById("userName").textContent =
+    getDisplayName();
+
+  document.getElementById("referralName").textContent =
+    getDisplayName();
+
+  document.getElementById("balance").textContent =
+    Math.floor(state.balance);
+
+  document.getElementById("todayMining").textContent =
+    Math.floor(state.miningToday);
+
+  document.getElementById("referralCount").textContent =
+    state.referralCount;
+
+  document.getElementById("referPageCount").textContent =
+    state.referralCount;
+
+  document.getElementById("levelBadge").textContent =
+    "Level " + state.level;
+
+  document.getElementById("miningRate").textContent =
+    "+" + Number(state.miningSpeed).toFixed(2) + "/min";
+
+  document.getElementById("taskReward").textContent =
+    state.taskReward + " coins";
+
+  document.getElementById("tasksPerCycle").textContent =
+    state.tasksPerCycle;
+
+  document.getElementById("cycleReward").textContent =
+    (state.taskReward * state.tasksPerCycle) +
+    " coins";
+
+  document.getElementById("cooldown").textContent =
+    state.cooldownHours + " hours";
+
+  document.getElementById("referralReward").textContent =
+    state.referralReward + " coins";
+
+  document.getElementById("mineButton").textContent =
+    state.miningActive
+      ? "Mining Active ⛏️"
+      : "Start Mining";
+
+  updateReferralLink();
+
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function showPage(pageId) {
+
+  document.querySelectorAll(".page")
+    .forEach(function(page) {
+      page.classList.remove("active");
     });
 
+  const target =
+    document.getElementById(pageId);
 
-  function showPage(pageName) {
-
-    document.querySelectorAll(".page")
-      .forEach(page => {
-
-        page.classList.remove("active");
-
-      });
-
-
-    document.querySelectorAll(".nav-btn")
-      .forEach(button => {
-
-        button.classList.remove("active");
-
-      });
-
-
-    const page =
-      $(pageName + "Page");
-
-    if (page) {
-
-      page.classList.add("active");
-
-    }
-
-
-    const nav =
-      document.querySelector(
-        '.nav-btn[data-page="' +
-        pageName +
-        '"]'
-      );
-
-    if (nav) {
-
-      nav.classList.add("active");
-
-    }
-
-
-    if (pageName === "tasks") {
-
-      loadTasks();
-
-    }
-
-
-    if (pageName === "refer") {
-
-      updateReferralUI();
-
-    }
-
-
-    if (pageName === "withdraw") {
-
-      updateWithdrawUI();
-
-    }
-
+  if (target) {
+    target.classList.add("active");
   }
 
+  document.querySelectorAll(".nav-button")
+    .forEach(function(button) {
+      button.classList.remove("active");
+    });
 
-  /* =====================================================
-     LOAD SETTINGS
-  ===================================================== */
+  const activeButton =
+    document.querySelector(
+      '.nav-button[data-page="' +
+      pageId +
+      '"]'
+    );
 
-  async function loadSettings() {
-
-    if (!db) return;
-
-    try {
-
-      const snapshot =
-        await db
-          .collection("settings")
-          .doc("game")
-          .get();
-
-
-      if (snapshot.exists) {
-
-        settings =
-          snapshot.data();
-
-        $("tasksPerCycle").textContent =
-          number(
-            settings.tasks_per_cycle,
-            7
-          );
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "SETTINGS ERROR:",
-        error
-      );
-
-    }
-
+  if (activeButton) {
+    activeButton.classList.add("active");
   }
 
-
-  /* =====================================================
-     LOAD USER
-  ===================================================== */
-
-  async function loadUser() {
-
-    if (!db) return;
-
-    try {
-
-      const snapshot =
-        await db
-          .collection("users")
-          .doc(APP_USER_ID)
-          .get();
-
-
-      if (!snapshot.exists) {
-
-        $("firebaseStatus").textContent =
-          "Firebase connected, but test_user was not found.";
-
-        return;
-
-      }
-
-
-      currentUser =
-        snapshot.data();
-
-      updateUserUI();
-
-    } catch (error) {
-
-      console.error(
-        "USER ERROR:",
-        error
-      );
-
-    }
-
-  }
-
-
-  /* =====================================================
-     USER UI
-  ===================================================== */
-
-  function updateUserUI() {
-
-    if (!currentUser) return;
-
-
-    $("balance").textContent =
-      number(
-        currentUser.balance,
-        0
-      ).toLocaleString();
-
-
-    $("withdrawBalance").textContent =
-      number(
-        currentUser.balance,
-        0
-      ).toLocaleString();
-
-
-    $("level").textContent =
-      number(
-        currentUser.level,
-        1
-      );
-
-
-    $("miningRate").textContent =
-      number(
-        currentUser.mining_speed,
-        0.05
-      ).toFixed(2);
-
-
-    $("todayMining").textContent =
-      Math.floor(
-        number(
-          currentUser.mining_today,
-          0
-        )
-      );
-
-
-    $("statMining").textContent =
-      Math.floor(
-        number(
-          currentUser.mining_today,
-          0
-        )
-      );
-
-
-    $("referralCount").textContent =
-      number(
-        currentUser.referral_count,
-        0
-      );
-
-
-    $("referralBig").textContent =
-      number(
-        currentUser.referral_count,
-        0
-      );
-
-  }
-
-
-  /* =====================================================
-     TASK LOADER — DIRECT FIREBASE TEST
-  ===================================================== */
-
-  async function loadTasks() {
-
-    const contain
+  windo
