@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <title>GameMine</title>
 
   <style>
@@ -10,344 +11,1076 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
+      background: #0b0d12;
+      color: #ffffff;
       font-family: Arial, sans-serif;
-      background: #0b0b0f;
-      color: white;
       min-height: 100vh;
+      padding-bottom: 85px;
+    }
+
+    button {
+      font-family: inherit;
     }
 
     .app {
-      max-width: 480px;
+      max-width: 500px;
       margin: auto;
-      min-height: 100vh;
-      padding: 20px 16px 90px;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 21px;
-      font-weight: bold;
-    }
-
-    .level {
-      background: #19191f;
-      padding: 8px 13px;
-      border-radius: 20px;
-      font-size: 13px;
-    }
-
-    .balance {
-      text-align: center;
-      margin-top: 45px;
-    }
-
-    .coin {
-      width: 115px;
-      height: 115px;
-      margin: auto;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #ffd84d, #f59e0b);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 58px;
-      box-shadow: 0 0 45px rgba(245,158,11,.25);
-    }
-
-    .amount {
-      font-size: 42px;
-      font-weight: 800;
-      margin-top: 20px;
-    }
-
-    .label {
-      color: #888;
-      margin-top: 5px;
-    }
-
-    .mining {
-      margin-top: 35px;
-      background: #15151b;
-      border-radius: 22px;
       padding: 18px;
     }
 
-    .mining-row {
+    /* HEADER */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .logo span {
+      color: #ffd400;
+    }
+
+    .level {
+      background: #171b24;
+      border: 1px solid #292f3b;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #ffd400;
+    }
+
+    /* PAGES */
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-title {
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .page-subtitle {
+      color: #8e96a6;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    /* BALANCE */
+
+    .balance-card {
+      background: linear-gradient(145deg, #171b24, #10131a);
+      border: 1px solid #292f3b;
+      border-radius: 24px;
+      padding: 25px 20px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .coin-icon {
+      font-size: 55px;
+      margin-bottom: 8px;
+    }
+
+    .balance-label {
+      color: #8e96a6;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .balance {
+      font-size: 38px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .coin-name {
+      color: #ffd400;
+      font-size: 14px;
+      margin-top: 5px;
+      font-weight: 700;
+    }
+
+    /* MINING */
+
+    .mining-card {
+      background: #151820;
+      border: 1px solid #292f3b;
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .mining-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 18px;
     }
 
     .mining-title {
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 18px;
+      font-weight: 800;
     }
 
-    .rate {
-      color: #f5b942;
-      font-size: 14px;
-      margin-top: 5px;
+    .mining-rate {
+      color: #ffd400;
+      font-size: 13px;
     }
 
-    .mine-btn {
-      margin-top: 18px;
+    .mine-button {
       width: 100%;
       border: none;
-      border-radius: 16px;
-      padding: 16px;
-      background: #f5b942;
-      color: #111;
+      border-radius: 17px;
+      padding: 17px;
+      background: #ffd400;
+      color: #111111;
       font-size: 17px;
-      font-weight: bold;
+      font-weight: 900;
       cursor: pointer;
-      transition: .2s;
     }
 
-    .mine-btn:active {
-      transform: scale(.97);
+    .mine-button:active {
+      transform: scale(0.98);
     }
 
-    .mine-btn:disabled {
-      cursor: default;
-      opacity: .7;
+    .mine-button:disabled {
+      cursor: not-allowed;
     }
+
+    .mining-status {
+      text-align: center;
+      margin-top: 12px;
+      color: #8e96a6;
+      font-size: 13px;
+    }
+
+    /* STATS */
 
     .stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 15px;
     }
 
-    .stat {
-      background: #15151b;
-      padding: 16px;
+    .stat-card {
+      background: #151820;
+      border: 1px solid #292f3b;
       border-radius: 18px;
+      padding: 17px;
     }
 
-    .stat-title {
-      color: #888;
-      font-size: 13px;
+    .stat-label {
+      color: #8e96a6;
+      font-size: 12px;
+      margin-bottom: 7px;
     }
 
     .stat-value {
       font-size: 19px;
-      font-weight: bold;
-      margin-top: 7px;
+      font-weight: 800;
     }
 
-    .nav {
+    /* TASKS */
+
+    .tasks-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .task-card {
+      background: #151820;
+      border: 1px solid #292f3b;
+      border-radius: 18px;
+      padding: 17px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .task-number {
+      min-width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: #202530;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #ffd400;
+    }
+
+    .task-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .task-description {
+      color: #8e96a6;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .task-reward {
+      color: #ffd400;
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+
+    .task-button {
+      border: none;
+      background: #ffd400;
+      color: #111111;
+      font-size: 12px;
+      font-weight: 900;
+      border-radius: 12px;
+      padding: 10px 12px;
+      white-space: nowrap;
+    }
+
+    .ad-badge {
+      display: inline-block;
+      font-size: 10px;
+      color: #8e96a6;
+      border: 1px solid #363d4b;
+      padding: 3px 6px;
+      border-radius: 6px;
+      margin-left: 4px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #8e96a6;
+      padding: 30px 10px;
+    }
+
+    .error {
+      background: #21171a;
+      border: 1px solid #4a252b;
+      color: #ff9ca7;
+      border-radius: 15px;
+      padding: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* OTHER PAGES */
+
+    .coming-card {
+      background: #151820;
+      border: 1px solid #292f3b;
+      border-radius: 20px;
+      padding: 25px 20px;
+      text-align: center;
+      color: #8e96a6;
+    }
+
+    .coming-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .coming-title {
+      color: #ffffff;
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
       position: fixed;
+      left: 0;
+      right: 0;
       bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      background: rgba(13, 15, 21, 0.97);
+      border-top: 1px solid #292f3b;
+      height: 73px;
+      display: flex;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .nav-inner {
       width: 100%;
-      max-width: 480px;
-      background: #111116;
-      border-top: 1px solid #25252c;
+      max-width: 500px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      padding: 10px 5px 12px;
     }
 
-    .nav-item {
-      text-align: center;
-      color: #777;
-      font-size: 12px;
+    .nav-button {
+      border: none;
+      background: transparent;
+      color: #737b8b;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      cursor: pointer;
     }
 
     .nav-icon {
-      font-size: 22px;
-      display: block;
-      margin-bottom: 4px;
+      font-size: 21px;
     }
 
-    .active {
-      color: #f5b942;
+    .nav-button.active {
+      color: #ffd400;
+    }
+
+    /* SMALL SCREENS */
+
+    @media (max-width: 360px) {
+      .app {
+        padding: 14px;
+      }
+
+      .balance {
+        font-size: 32px;
+      }
+
+      .task-card {
+        padding: 13px;
+      }
+
+      .task-button {
+        padding: 9px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-  <div class="top">
-    <div class="logo">🎮 GameMine</div>
-    <div class="level">LVL 1</div>
-  </div>
+    <!-- HEADER -->
 
-  <div class="balance">
+    <div class="header">
+      <div class="logo">Game<span>Mine</span></div>
+      <div class="level" id="level">Level 1</div>
+    </div>
 
-    <div class="coin">🪙</div>
 
-    <div class="amount" id="balance">0</div>
+    <!-- ========================= -->
+    <!-- MINE PAGE -->
+    <!-- ========================= -->
 
-    <div class="label">GAME COINS</div>
+    <div class="page active" id="minePage">
 
-  </div>
+      <div class="balance-card">
+        <div class="coin-icon">🪙</div>
 
-  <div class="mining">
+        <div class="balance-label">
+          Balance
+        </div>
 
-    <div class="mining-row">
+        <div class="balance" id="balance">
+          0
+        </div>
 
-      <div>
-        <div class="mining-title">⛏️ Mining</div>
-        <div class="rate">+0.05 coins / min</div>
+        <div class="coin-name">
+          GameMine Coins
+        </div>
       </div>
 
-      <div id="miningStatus">🟢</div>
+
+      <div class="mining-card">
+
+        <div class="mining-top">
+
+          <div class="mining-title">
+            Mining
+          </div>
+
+          <div class="mining-rate" id="miningRate">
+            +0.05 coins/min
+          </div>
+
+        </div>
+
+        <button
+          class="mine-button"
+          id="mineButton"
+          onclick="startMining()"
+        >
+          START MINING ⛏️
+        </button>
+
+        <div class="mining-status" id="miningStatus">
+          ⚪ Mining is stopped
+        </div>
+
+      </div>
+
+
+      <div class="stats">
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Today's Mining
+          </div>
+
+          <div class="stat-value">
+            <span id="todayMining">0</span>/100
+          </div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Referrals
+          </div>
+
+          <div class="stat-value" id="referrals">
+            0
+          </div>
+        </div>
+
+      </div>
 
     </div>
 
-    <button class="mine-btn" id="mineButton" onclick="startMining()">
-      START MINING
-    </button>
 
-  </div>
+    <!-- ========================= -->
+    <!-- TASKS PAGE -->
+    <!-- ========================= -->
 
-  <div class="stats">
+    <div class="page" id="tasksPage">
 
-    <div class="stat">
-      <div class="stat-title">Today's Mining</div>
-      <div class="stat-value" id="todayMining">0 / 100 🪙</div>
+      <div class="page-title">
+        Tasks
+      </div>
+
+      <div class="page-subtitle">
+        Complete tasks and earn GameMine Coins.
+      </div>
+
+      <div id="tasksContainer" class="tasks-container">
+
+        <div class="loading">
+          Loading tasks...
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="stat">
-      <div class="stat-title">Referrals</div>
-      <div class="stat-value" id="referrals">0 👥</div>
+
+    <!-- ========================= -->
+    <!-- REFER PAGE -->
+    <!-- ========================= -->
+
+    <div class="page" id="referPage">
+
+      <div class="page-title">
+        Refer
+      </div>
+
+      <div class="page-subtitle">
+        Invite friends and earn coins.
+      </div>
+
+      <div class="coming-card">
+
+        <div class="coming-icon">
+          👥
+        </div>
+
+        <div class="coming-title">
+          Referral System
+        </div>
+
+        <div>
+          Your referral system will be connected next.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- WITHDRAW PAGE -->
+    <!-- ========================= -->
+
+    <div class="page" id="withdrawPage">
+
+      <div class="page-title">
+        Withdraw
+      </div>
+
+      <div class="page-subtitle">
+        Redeem your coins for available gaming rewards.
+      </div>
+
+      <div class="coming-card">
+
+        <div class="coming-icon">
+          🎁
+        </div>
+
+        <div class="coming-title">
+          Free Fire
+        </div>
+
+        <div style="color:#72e6a4; margin-bottom:10px;">
+          ● Available
+        </div>
+
+        <div>
+          Withdrawal system is being prepared.
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="coming-card">
+
+        <div class="coming-icon">
+          🎯
+        </div>
+
+        <div class="coming-title">
+          COD Mobile
+        </div>
+
+        <div>
+          Coming Soon
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="coming-card">
+
+        <div class="coming-icon">
+          🪖
+        </div>
+
+        <div class="coming-title">
+          PUBG Mobile
+        </div>
+
+        <div>
+          Coming Soon
+        </div>
+
+      </div>
+
     </div>
 
   </div>
 
-</div>
 
-<div class="nav">
+  <!-- ========================= -->
+  <!-- BOTTOM NAVIGATION -->
+  <!-- ========================= -->
 
-  <div class="nav-item active">
-    <span class="nav-icon">⛏️</span>
-    Mine
+  <div class="bottom-nav">
+
+    <div class="nav-inner">
+
+      <button
+        class="nav-button active"
+        id="navMine"
+        onclick="showPage('mine')"
+      >
+        <div class="nav-icon">⛏️</div>
+        Mine
+      </button>
+
+
+      <button
+        class="nav-button"
+        id="navTasks"
+        onclick="showPage('tasks')"
+      >
+        <div class="nav-icon">📋</div>
+        Tasks
+      </button>
+
+
+      <button
+        class="nav-button"
+        id="navRefer"
+        onclick="showPage('refer')"
+      >
+        <div class="nav-icon">👥</div>
+        Refer
+      </button>
+
+
+      <button
+        class="nav-button"
+        id="navWithdraw"
+        onclick="showPage('withdraw')"
+      >
+        <div class="nav-icon">🎁</div>
+        Withdraw
+      </button>
+
+    </div>
+
   </div>
 
-  <div class="nav-item">
-    <span class="nav-icon">🎯</span>
-    Tasks
-  </div>
 
-  <div class="nav-item">
-    <span class="nav-icon">👥</span>
-    Refer
-  </div>
+  <!-- ========================= -->
+  <!-- FIREBASE -->
+  <!-- ========================= -->
 
-  <div class="nav-item">
-    <span class="nav-icon">💎</span>
-    Withdraw
-  </div>
+  <script type="module">
 
-</div>
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-<!-- Firebase -->
-<script type="module">
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      query,
+      where,
+      orderBy,
+      getDocs
+    }
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-  import {
-    getFirestore,
-    doc,
-    getDoc
-  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    /* FIREBASE CONFIG */
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBOgOmfmySW0Wh9mlQyJvKHhAHC9wXz8uk",
-    authDomain: "gamemine-5d7ee.firebaseapp.com",
-    projectId: "gamemine-5d7ee",
-    storageBucket: "gamemine-5d7ee.firebasestorage.app",
-    messagingSenderId: "524612369793",
-    appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOgOmfmySW0Wh9mlQJvKHhAHC9wXz8uk",
+      authDomain: "gamemine-5d7ee.firebaseapp.com",
+      projectId: "gamemine-5d7ee",
+      storageBucket: "gamemine-5d7ee.firebasestorage.app",
+      messagingSenderId: "524612369793",
+      appId: "1:524612369793:web:e425affa42cf1cb3e2bc80"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
 
-  // Temporary test user
-  const userId = "test_user";
+    /* INITIALIZE FIREBASE */
 
-  async function loadUser() {
+    const app = initializeApp(firebaseConfig);
 
-    try {
+    const db = getFirestore(app);
 
-      const userRef = doc(db, "users", userId);
-      const userSnap = await getDoc(userRef);
 
-      if (userSnap.exists()) {
+    /* TEST USER FOR NOW */
+
+    const telegramUserId = "test_user";
+
+
+    /* LOAD USER */
+
+    async function loadUser() {
+
+      try {
+
+        const userRef = doc(
+          db,
+          "users",
+          telegramUserId
+        );
+
+        const userSnap = await getDoc(userRef);
+
+
+        if (!userSnap.exists()) {
+
+          console.log("User document does not exist.");
+
+          return;
+
+        }
+
 
         const userData = userSnap.data();
 
-        // Main balance
+
+        /* BALANCE */
+
         document.getElementById("balance").textContent =
-          userData.balance || 0;
+          Number(userData.balance || 0).toLocaleString();
 
-        // Today's mining
+
+        /* TODAY'S MINING */
+
         document.getElementById("todayMining").textContent =
-          (userData.mining_today || 0) + " / 100 🪙";
+          Number(userData.mining_today || 0).toLocaleString();
 
-        // Referrals
+
+        /* REFERRALS */
+
         document.getElementById("referrals").textContent =
-          (userData.referral_count || 0) + " 👥";
+          Number(userData.referral_count || 0).toLocaleString();
 
-        console.log("GameMine user loaded:", userData);
 
-      } else {
+        /* LEVEL */
 
-        console.log("User document not found.");
+        document.getElementById("level").textContent =
+          "Level " + Number(userData.level || 1);
+
+
+        /* MINING RATE */
+
+        const speed =
+          Number(userData.mining_speed || 0.05);
+
+        document.getElementById("miningRate").textContent =
+          "+" + speed.toFixed(2) + " coins/min";
 
       }
 
-    } catch (error) {
+      catch (error) {
 
-      console.error("Firebase error:", error);
+        console.error(
+          "Error loading user:",
+          error
+        );
+
+      }
 
     }
 
-  }
 
-  loadUser();
+    /* LOAD TASKS FROM FIRESTORE */
 
-</script>
+    async function loadTasks() {
 
-<script>
+      const container =
+        document.getElementById("tasksContainer");
 
-  let miningActive = false;
 
-  function startMining() {
+      try {
 
-    if (miningActive) {
-      return;
+        const tasksRef =
+          collection(db, "tasks");
+
+
+        const tasksQuery = query(
+          tasksRef,
+          where("active", "==", true),
+          where("cycle", "==", 1),
+          orderBy("task_number", "asc")
+        );
+
+
+        const snapshot =
+          await getDocs(tasksQuery);
+
+
+        container.innerHTML = "";
+
+
+        if (snapshot.empty) {
+
+          container.innerHTML = `
+            <div class="coming-card">
+              <div class="coming-icon">📋</div>
+              <div class="coming-title">
+                No Tasks Available
+              </div>
+              <div>
+                Check back later for new tasks.
+              </div>
+            </div>
+          `;
+
+          return;
+
+        }
+
+
+        snapshot.forEach((taskDoc) => {
+
+          const task =
+            taskDoc.data();
+
+
+          const taskNumber =
+            task.task_number || 0;
+
+
+          const title =
+            task.title || "GameMine Task";
+
+
+          const description =
+            task.description || "";
+
+
+          const reward =
+            Number(task.reward || 0);
+
+
+          const type =
+            task.type || "normal";
+
+
+          let adBadge = "";
+
+
+          if (type === "rewarded_ad") {
+
+            adBadge =
+              `<span class="ad-badge">AD</span>`;
+
+          }
+
+
+          const card =
+            document.createElement("div");
+
+
+          card.className =
+            "task-card";
+
+
+          card.innerHTML = `
+
+            <div class="task-number">
+              ${taskNumber}
+            </div>
+
+            <div class="task-info">
+
+              <div class="task-title">
+                ${escapeHTML(title)}
+                ${adBadge}
+              </div>
+
+              <div class="task-description">
+                ${escapeHTML(description)}
+              </div>
+
+              <div class="task-reward">
+                +${reward.toLocaleString()} 🪙
+              </div>
+
+            </div>
+
+            <button
+              class="task-button"
+              onclick="startTask('${taskDoc.id}', '${escapeHTML(title)}')"
+            >
+              START
+            </button>
+
+          `;
+
+
+          container.appendChild(card);
+
+        });
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Error loading tasks:",
+          error
+        );
+
+
+        container.innerHTML = `
+
+          <div class="error">
+
+            Unable to load tasks right now.
+
+            <br><br>
+
+            Please check your internet connection
+            and try again.
+
+          </div>
+
+        `;
+
+      }
+
     }
 
-    miningActive = true;
 
-    const button = document.getElementById("mineButton");
-    const status = document.getElementById("miningStatus");
+    /* BASIC HTML ESCAPE */
 
-    button.textContent = "MINING... ⛏️";
-    button.disabled = true;
+    function escapeHTML(value) {
 
-    status.textContent = "🟡";
+      return String(value)
 
-    console.log("Mining session started.");
+        .replace(/&/g, "&amp;")
 
-  }
+        .replace(/</g, "&lt;")
 
-</script>
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* TASK BUTTON FOR NOW */
+
+    window.startTask =
+      function(taskId, taskTitle) {
+
+        alert(
+          "Task selected: " +
+          taskTitle +
+          "\n\nReward claiming will be connected in the next step."
+        );
+
+      };
+
+
+    /* MINING BUTTON */
+
+    let miningActive = false;
+
+
+    window.startMining =
+      function() {
+
+        if (miningActive) {
+
+          return;
+
+        }
+
+
+        miningActive = true;
+
+
+        const button =
+          document.getElementById("mineButton");
+
+
+        const status =
+          document.getElementById("miningStatus");
+
+
+        button.textContent =
+          "MINING... ⛏️";
+
+
+        button.disabled =
+          true;
+
+
+        button.style.opacity =
+          "0.7";
+
+
+        status.textContent =
+          "🟡 Mining is active";
+
+      };
+
+
+    /* PAGE NAVIGATION */
+
+    window.showPage =
+      function(page) {
+
+        const pages = {
+
+          mine:
+            document.getElementById("minePage"),
+
+          tasks:
+            document.getElementById("tasksPage"),
+
+          refer:
+            document.getElementById("referPage"),
+
+          withdraw:
+            document.getElementById("withdrawPage")
+
+        };
+
+
+        Object.values(pages).forEach(
+          p => p.classList.remove("active")
+        );
+
+
+        pages[page].classList.add("active");
+
+
+        /* NAV ACTIVE STATE */
+
+        document
+          .querySelectorAll(".nav-button")
+          .forEach(button => {
+
+            button.classList.remove("active");
+
+          });
+
+
+        const navButton =
+          document.getElementById(
+            "nav" +
+            page.charAt(0).toUpperCase() +
+            page.slice(1)
+          );
+
+
+        if (navButton) {
+
+          navButton.classList.add("active");
+
+        }
+
+
+        /* LOAD TASKS WHEN OPENED */
+
+        if (page === "tasks") {
+
+          loadTasks();
+
+        }
+
+      };
+
+
+    /* START */
+
+    loadUser();
+
+  </script>
 
 </body>
-</html>
+  </html>
